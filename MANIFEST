@@ -1,0 +1,9 @@
+Build.PL
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Lingua/tlhInganHol/yIghun.pm
+t/00.load.t
+t/pod.t
+t/_ol.t
