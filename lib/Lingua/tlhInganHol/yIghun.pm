@@ -1142,12 +1142,12 @@ __END__
 
 =head1 NAME
 
-Lingua::thInganHol::yIghun - "The Klingon Language: hey you, program in it!"
+Lingua::tlhInganHol::yIghun - "The Klingon Language: hey you, program in it!"
 
 
 =head1 SYNOPSIS
 
-	use Lingua::thInganHol::yIghun;
+	use Lingua::tlhInganHol::yIghun;
 	
 	<<'u' nuqneH!\n>> tIghItlh!
 	 
