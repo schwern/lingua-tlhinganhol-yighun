@@ -1,9 +1,15 @@
 Build.PL
 Changes
-MANIFEST
-Makefile.PL
-README
+examples/conj.pl
+examples/eratosthenes.pl
+examples/misc.pl
+examples/sub.pl
+examples/unary.pl
 lib/Lingua/tlhInganHol/yIghun.pm
+Makefile.PL
+MANIFEST			This list of files
+MANIFEST.SKIP
+README
+t/'ol.t
 t/00.load.t
 t/pod.t
-t/'ol.t
