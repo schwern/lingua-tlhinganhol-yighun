@@ -2128,12 +2128,23 @@ What is this extra code doing here?! You I<human>!
 
 =head1 AUTHOR
 
-Damian Conway (damian@conway.org)
+Damian Conway <damian@conway.org> is the original author.
+
+Michael G Schwern <schwern@pobox.com> assisted in its escape.
+
+
+=head1 REPOSITORY
+
+The source code of this module can be taken from
+L<http://github.com/schwern/lingua-tlhinganhol-yighun/tree/master>
 
 
 =head1 BUGS
 
-In this module??? I should kill you where you stand!
+In this module??? I should kill you where you stand!  You speak the
+lies of a tah-keck!  If a p'tahk such as you dares insult our honor
+with your bug report, you will send it to
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Lingua-tlhInganHol-yIghun>!
 
 
 =head1 SEE ALSO
