@@ -13,3 +13,4 @@ README
 t/'ol.t
 t/00.load.t
 t/pod.t
+META.yml
