@@ -119,7 +119,7 @@ sub inqr {
 }
 
 my %n_decl = qw(
-        yoS             package 
+        yoS             package
 );
 my $n_decl = enqr keys %n_decl;
 sub to_decl {
@@ -128,7 +128,7 @@ sub to_decl {
 }
 
 my %sub_decl = qw(
-        nab             sub     
+        nab             sub
 );
 my $sub_decl = enqr keys %sub_decl;
 sub to_sub_decl {
@@ -139,8 +139,8 @@ sub to_sub_decl {
 }
 
 my %v_usage = qw(
-        lo'             use     
-        lo'Qo'          no      
+        lo'             use
+        lo'Qo'          no
 );
 my $v_usage = enqr keys %v_usage;
 sub to_usage {
@@ -150,9 +150,9 @@ sub to_usage {
 
 my %v_go = qw(
         jaH             goto
-        yInargh         last    
-        yItaH           next    
-        yInIDqa'        redo    
+        yInargh         last
+        yItaH           next
+        yInIDqa'        redo
 );
 my $v_go = enqr keys %v_go;
 sub to_go {
@@ -162,9 +162,9 @@ sub to_go {
 }
 
 my %v_listop = qw(
-        mISHa'          sort    
-        wIv             grep    
-        choH            map     
+        mISHa'          sort
+        wIv             grep
+        choH            map
 );
 my $v_listop = enqr keys %v_listop;
 sub to_listop {
@@ -176,8 +176,8 @@ sub to_listop {
 
 
 my %v_blockop = qw(
-        chov            eval    
-        vang            do      
+        chov            eval
+        vang            do
 );
 my $v_blockop = enqr keys %v_blockop;
 sub to_blockop {
@@ -186,7 +186,7 @@ sub to_blockop {
 }
 
 my %v_match = qw(
-        ghov            m       
+        ghov            m
 );
 my $v_match = enqr keys %v_match;
 sub to_match {
@@ -196,8 +196,8 @@ sub to_match {
 }
 
 my %v_change = qw(
-        tam             s       
-        mugh            tr      
+        tam             s
+        mugh            tr
 );
 my $v_change = enqr keys %v_change;
 sub to_change {
@@ -209,86 +209,86 @@ sub to_change {
 
 my %v_arg0 = qw (
         laD             readline
-        chaqpoDmoH      chomp   
-        poDmoH          chop    
-        HaD             study   
-        chImmoH         undef   
-        Say'moH         reset   
-        mIS             rand    
-        juv             length  
-        toq'a'          defined 
-        rIn'a'          eof     
+        chaqpoDmoH      chomp
+        poDmoH          chop
+        HaD             study
+        chImmoH         undef
+        Say'moH         reset
+        mIS             rand
+        juv             length
+        toq'a'          defined
+        rIn'a'          eof
         ghomneH         wantarray
-        mej             exit    
-        Hegh            die     
-        ghuHmoH         warn    
+        mej             exit
+        Hegh            die
+        ghuHmoH         warn
         pa'Hegh         Carp::croak
         pa'ghuHmoH      Carp::carp
-        pongwI'         caller  
-        buv             ref     
-        Del             stat    
-        ghum            alarm   
-        mol             dump    
-        bogh            fork    
-        Qong            sleep   
-        loS             wait    
-        mach            lc      
-        wa'Dichmach     lcfirst 
-        tIn             uc      
-        wa'DichtIn      ucfirst 
+        pongwI'         caller
+        buv             ref
+        Del             stat
+        ghum            alarm
+        mol             dump
+        bogh            fork
+        Qong            sleep
+        loS             wait
+        mach            lc
+        wa'Dichmach     lcfirst
+        tIn             uc
+        wa'DichtIn      ucfirst
         nargh           quotemeta
 );
 my $v_arg0 = enqr keys %v_arg0;
 
 my %v_arg1 = qw (
-        tlhoch          not     
-        noD             reverse         
-        HaD             study   
-        ja'             tell    
-        Such            each    
-        lI'a'           exists  
-        pong            keys    
-        'ar             abs     
-        joqtaH          sin     
-        joqtaHHa'       cos     
-        poD             int     
-        maHghurtaH      log     
-        lo'Sar          sqrt    
-        mIS             rand    
-        mIScher         srand   
-        mach            lc      
-        wa'Dichmach     lcfirst 
-        tIn             uc      
-        wa'DichtIn      ucfirst 
+        tlhoch          not
+        noD             reverse
+        HaD             study
+        ja'             tell
+        Such            each
+        lI'a'           exists
+        pong            keys
+        'ar             abs
+        joqtaH          sin
+        joqtaHHa'       cos
+        poD             int
+        maHghurtaH      log
+        lo'Sar          sqrt
+        mIS             rand
+        mIScher         srand
+        mach            lc
+        wa'Dichmach     lcfirst
+        tIn             uc
+        wa'DichtIn      ucfirst
         nargh           quotemeta
-        juv             length  
-        sIj             split   
-        toq'a'          defined 
-        mob             scalar  
-        lo'laH          values  
-        rIn'a'          eof     
-        chov            eval    
-        mej             exit    
-        Hegh            die     
-        ghuHmoH         warn    
+        juv             length
+        sIj             split
+        toq'a'          defined
+        mob             scalar
+        lo'laH          values
+        rIn'a'          eof
+        chov            eval
+        mej             exit
+        Hegh            die
+        ghuHmoH         warn
         pa'Hegh         Carp::croak
         pa'ghuHmoH      Carp::carp
-        pongwI'         caller  
-        buv             ref     
-        bagh'a'         tied    
-        poQ             require 
-        ghomchoH        chdir   
-        Sach            glob    
-        teq             unlink  
-        ghomtagh        mkdir   
-        ghomteq         rmdir   
-        Del             stat    
-        ghum            alarm   
-        mol             dump    
-        tagh            exec    
-        Qong            sleep   
-        ra'             system  
-        loS             wait    
+        pongwI'         caller
+        buv             ref
+        bagh'a'         tied
+        poQ             require
+        ghomchoH        chdir
+        Sach            glob
+        teq             unlink
+        ghomtagh        mkdir
+        ghomteq         rmdir
+        Del             stat
+        ghum            alarm
+        mol             dump
+        tagh            exec
+        Qong            sleep
+        ra'             system
+        loS             wait
         ghomneH         wantarray
 );
 my $v_arg1 = enqr keys %v_arg1;
@@ -300,19 +300,19 @@ sub to_arg1 {
 }
 
 my %v_arg1_da = qw (
-        poS             open    
+        poS             open
         laD             readline
-        bot             flock   
+        bot             flock
         nup             truncate
-        chaqpoDmoH      chomp   
-        poDmoH          chop    
-        chImmoH         undef   
-        Say'moH         reset   
-        woD             pop     
-        nIH             shift   
-        SoQmoH          close   
-        Qaw'            delete  
-        baghHa'         untie   
+        chaqpoDmoH      chomp
+        poDmoH          chop
+        chImmoH         undef
+        Say'moH         reset
+        woD             pop
+        nIH             shift
+        SoQmoH          close
+        Qaw'            delete
+        baghHa'         untie
 );
 my $v_arg1_da = enqr keys %v_arg1_da;
 sub to_arg1_da {
@@ -324,14 +324,14 @@ sub to_arg1_da {
 }
 
 my %v_arg2 = qw (
-        qojHa'          atan2   
-        So'             crypt   
-        boSHa'          unpack  
-        Sam             index   
-        naw'choH        chmod   
-        pIn'a'choH      chown   
-        rar             link    
-        neq             rename  
+        qojHa'          atan2
+        So'             crypt
+        boSHa'          unpack
+        Sam             index
+        naw'choH        chmod
+        pIn'a'choH      chown
+        rar             link
+        neq             rename
 );
 my $v_arg2 = enqr keys %v_arg2;
 sub to_arg2 {
@@ -350,8 +350,8 @@ sub to_arg2 {
 # }
 
 my %v_arg2_da = qw (
-        DoQ             bless   
-        bot             flock   
+        DoQ             bless
+        bot             flock
 );
 my $v_arg2_da = enqr keys %v_arg2_da;
 sub to_arg2_da {
@@ -386,17 +386,17 @@ sub to_arg2_a {
 }
 
 my %v_args = qw (
-        noD             reverse         
-        boS             pack    
-        sIj             split   
-        muv             join    
-        tatlh           return  
-        Hegh            die     
-        ghuHmoH         warn    
+        noD             reverse
+        boS             pack
+        sIj             split
+        muv             join
+        tatlh           return
+        Hegh            die
+        ghuHmoH         warn
         pa'Hegh         Carp::croak
         pa'ghuHmoH      Carp::carp
-        tagh            exec    
-        HoH             kill    
+        tagh            exec
+        HoH             kill
         muH             kill
         chot            kill
         bach            kill
@@ -438,14 +438,14 @@ sub to_args_ur {
 }
 
 my %v_args_da = qw (
-        ghItlh          print   
-        lagh            substr  
-        yuv             push    
-        DuQ             splice  
-        poS             open    
-        nej             seek    
-        bagh            tie     
-        jegh            unshift 
+        ghItlh          print
+        lagh            substr
+        yuv             push
+        DuQ             splice
+        poS             open
+        nej             seek
+        bagh            tie
+        jegh            unshift
 );
 my $v_args_da = enqr keys %v_args_da;
 sub to_args_da {
@@ -491,7 +491,7 @@ sub to_unop_dpost {
 }
 
 my %v_binop = qw (
-        'ov             cmp     
+        'ov             cmp
         chel            +
         chelHa'         -
         wav             /
@@ -505,8 +505,8 @@ my %v_binop_np = qw (
         logh            x
         je              &&
         joq             ||
-        pIm'a'          ne      
-        rap'a'          eq      
+        pIm'a'          ne
+        rap'a'          eq
         mI'rap'a'       ==
         mI'pIm'a'       !=
 );
@@ -537,11 +537,11 @@ sub to_ternop {
 
 
 my %control = qw(
-        teHchugh        if      
-        teHchughbe'     unless  
-        teHtaHvIS       while   
-        teHtaHvISbe'    until   
-        tIqel           for     
+        teHchugh        if
+        teHchughbe'     unless
+        teHtaHvIS       while
+        teHtaHvISbe'    until
+        tIqel           for
 );
 my $control = enqr keys %control;
 sub to_control {
@@ -550,15 +550,15 @@ sub to_control {
 }
 
 my %s_decl = qw(
-        wIj             my      
-        meywIj          my      
-        pu'wI'          my      
-        maj             our     
-        meymaj          our     
-        pu'ma'          our     
-        vam             local   
-        meyvam          local   
-        pu'vam          local   
+        wIj             my
+        meywIj          my
+        pu'wI'          my
+        maj             our
+        meymaj          our
+        pu'ma'          our
+        vam             local
+        meyvam          local
+        pu'vam          local
 );
 my $s_decl = inqr keys %s_decl;
 
@@ -569,7 +569,7 @@ my %noun_dat = qw(
 my $noun_dat = inqr keys %noun_dat;
 
 my %noun_acc = qw(
-        juH             main    
+        juH             main
         'oH             $_
         chevwI'         $/
         natlhwI'        $|
@@ -578,8 +578,8 @@ my %noun_acc = qw(
 my $noun_acc = inqr keys %noun_acc;
 
 my %noun_abl = qw(
-        mungna'vo'      STDIN   
-        De'Daqvo'       DATA    
+        mungna'vo'      STDIN
+        De'Daqvo'       DATA
 );
 my $noun_abl = inqr keys %noun_abl;
 
@@ -719,7 +719,7 @@ sub change {
 
 sub arg1 {
         my ($func) = @_;
-        my $arg = top('acc') 
+        my $arg = top('acc')
                 or $func->{raw} =~ /$v_arg0/
                 or die "$func: De' Sambe'!\n" ;        # missing data
         $func = tok('verb',$func,$v_arg1{$func});
@@ -728,7 +728,7 @@ sub arg1 {
 
 sub arg1_da {
         my ($func) = @_;
-        my $arg = top('dat','abl','dat_handle','abl_handle') 
+        my $arg = top('dat','abl','dat_handle','abl_handle')
                 or $func =~ /$v_arg0/
                 or die "$func: DoS ghap Hal Sambe'!\n" ;
                                                 # missing target or source
@@ -908,9 +908,9 @@ sub args_ur {
 
 sub control {
         my ($control) = @_;
-        my $condition = top('acc','dat') 
+        my $condition = top('acc','dat')
                 or die "$control: tob Sambe'!\n";       # missing test
-        my $block = top('block') 
+        my $block = top('block')
                 or die "$control: ngoqghom Sambe'!\n";  # missing code group
         $control = tok('control',$control,$control{$control});
         pushtok('cmd', translate($block,$condition,$control));
@@ -949,7 +949,7 @@ sub startblock {
 
 sub endblock {
         print STDERR qq<Treated "}" as end of block\n> if $DEBUG;
-        top('start of block') 
+        top('start of block')
                 or @stack and die "betleH HivtaH Sampa' veQ: $stack[0]{raw}\n "
                                         # garbage found before attacking batleth
                 or die "betleH HivtaH Sambe'";
@@ -1124,7 +1124,7 @@ FILTER {
                                                     $noun_acc{$2})
                 or /\G((\S+?)($type)($nsuff)$EOW)/gc
                                         and pushtok($nsuff{$4},"$1",
-                                                    "$sigil{$3}". nostop $2) 
+                                                    "$sigil{$3}". nostop $2)
                 or /\G(.+)\b/gc         and die "<<$1>>Daq ngoq SovlaHbe'"
                                                         # Unrecognizable code
         }
@@ -1148,12 +1148,12 @@ Lingua::tlhInganHol::yIghun - "The Klingon Language: hey you, program in it!"
 =head1 SYNOPSIS
 
         use Lingua::tlhInganHol::yIghun;
-        
+
         <<'u' nuqneH!\n>> tIghItlh!
-         
+
         {
                 wa' yIQong!
-                Dotlh 'oH yIHoH yInob 
+                Dotlh 'oH yIHoH yInob
                         qoj <mIw Sambe'> 'oH yIHegh jay'!
                 <Qapla'!\n> yIghItlh!
         } jaghmey tIqel!
@@ -1161,7 +1161,7 @@ Lingua::tlhInganHol::yIghun - "The Klingon Language: hey you, program in it!"
 
 =head1 DESCRIPTION
 
-The Lingua::tlhInganHol::yIghun module allows you to write Perl in 
+The Lingua::tlhInganHol::yIghun module allows you to write Perl in
 the original Klingon.
 
 =head2 Introduction
@@ -1170,7 +1170,7 @@ The Klingon language was first explained to Terrans in 1984 by Earth-born
 linguist Dr Marc Okrand. Those who dare can learn more about it at the Klingon
 Language Institute (www.kli.org).
 
-The word order in Klingon sentences is I-O-V-S: indirect object, 
+The word order in Klingon sentences is I-O-V-S: indirect object,
 (direct) object, verb, subject. For example:
 
 =over
@@ -1186,7 +1186,7 @@ Klingon. In imperative statements, such as those used for programming
 instructions, word order becomes I-O-V: indirect object, (direct)
 object, (imperative) verb:
 
-=over 
+=over
 
 B<luSpetna'vaD vay' yIghItlh!>
 
@@ -1206,7 +1206,7 @@ Klingon uses inflection to denote number. So the command:
 B<luSpetna'vaD vay' yIghItlh!>
 
 =back
-           
+
 is:
 
 =over
@@ -1232,7 +1232,7 @@ B<luSpetna'vaD vay'mey yIghItlh!>
 =back
 
 
-So in Klingon scalars and arrays can have the same root name 
+So in Klingon scalars and arrays can have the same root name
 (just as in regular Perl):
 
 =over
@@ -1244,7 +1244,7 @@ B<vay'mey> ---> C<@something>
 =back
 
 The B<-mey> suffix only refers to things incapable of speech.
-If the somethings had been articulate, the inflection would 
+If the somethings had been articulate, the inflection would
 be:
 
 =over
@@ -1253,7 +1253,7 @@ B<luSpetna'vaD vay'I<pu'> yIghItlh!>
 
 =back
 
-From a certain point-of-view, this parallels the difference between 
+From a certain point-of-view, this parallels the difference between
 an array and a hash: arrays are subscripted mutely, with dumb integers;
 whereas hashes are subscripted eloquently, with quoted strings.
 Since hashes are thus in some sense "articulate", they are inflected
@@ -1308,7 +1308,7 @@ B<'ejDo'meyvo' vagh DIchvo' wej Dich yIHoH!>
 
 =back
 
-The B<DIch> tag marks an ordinal number, whilst the ablative 
+The B<DIch> tag marks an ordinal number, whilst the ablative
 B<-vo'> suffix marks something being subscripted (i.e. something
 that an element is taken from).
 
@@ -1360,7 +1360,7 @@ C<kill %enemies{"ancient"}{'human'};>
 
 =head2 Element access through references
 
-With references, the B<DIch> or B<Suq> tag still indicates what kind 
+With references, the B<DIch> or B<Suq> tag still indicates what kind
 of thing is being subscripted. So there is no need for an explicit
 dereferencer. So:
 
@@ -1390,10 +1390,10 @@ C<kill $jeopardyPoster-E<gt>{"stupid"}[1];   # Perl 5 syntax>
 =head2 Distinguishing lvalues
 
 All the variables shown above were written in the (uninflected)
-accusative case. This is because they were used as direct objects 
+accusative case. This is because they were used as direct objects
 (i.e. as data).
 
-When variables are assigned to, they become indirect objects of 
+When variables are assigned to, they become indirect objects of
 the assignment (I<give the weapon B<to me>>). This means
 that targets of assignment (or any other form of modification)
 must be specified in the dative case, using the B<-vaD> suffix:
@@ -1468,7 +1468,7 @@ requires far less punctuation than in the Terran corruption.
 
 The only punctuation components of the language are:
 
-=over 
+=over
 
 =item B<E<lt>> and B<E<gt>>
 
@@ -1476,7 +1476,7 @@ These are B<pach poS> (I<left claw>) and B<pach niH>
 (I<right claw>). They delimit an uninterpolated
 character string. For example:
 
-=over 
+=over
 
 B<E<lt>petaQE<gt> yiHegh!>      --->    C<die 'scum';>
 
@@ -1488,7 +1488,7 @@ These are B<pachmey poS> (I<left claws>) and B<pachmey niH>
 (I<right claws>). They delimit an interpolated
 character string. For example:
 
-=over 
+=over
 
 B<E<lt>E<lt>petaQ\nE<gt>E<gt> yiHegh!>  --->    C<die "scum\n";>
 
@@ -1518,7 +1518,7 @@ B<xvaD wa' cha maH yIchel yIlogh yInob!>        --->    C<$x = 1*(2+10)>
 =item B<{> and B<}>
 
 These are B<betleH HivtaH> and B<betleH HubtaH>
-(I<attacking batleth> and I<defending batleth>). 
+(I<attacking batleth> and I<defending batleth>).
 They are used to group complete statements. For example:
 
 =over
@@ -1554,14 +1554,14 @@ For a complete list, see L<Appendix 2|"Appendix 2: Terran-thlIngan dictionary">
 Note that they all appear at the end of their argument lists:
 
         Qapla' vum toDuj yIchel buDghach yichelHa' yInob!
-               |_| |___| |____| 
-               |______________| |______| |_______| 
+               |_| |___| |____|
+               |______________| |______| |_______|
         |____| |_________________________________| |____|
 
 
 Most of the above examples begin with B<yI-> or B<tI->.
 These prefixes indicate an imperative verb referring to one or
-many objects (respectively). 
+many objects (respectively).
 
 Hence, assignment is B<yInob> (I<give B<it> to...>), whilst
 addition is B<tIchel> (I<add B<them>>).
@@ -1574,7 +1574,7 @@ drop them (i.e. use "clipped Klingon") if you wish.
 =head2 Numeric literals
 
 Klingon uses a decimal numbering system. The
-digits are: 
+digits are:
 
 =over
 
@@ -1596,11 +1596,11 @@ digits are:
 
 8       B<chorgh>
 
-9       B<Hut> 
+9       B<Hut>
 
 =back
 
-Powers of 10 are: 
+Powers of 10 are:
 
 =over
 
@@ -1693,17 +1693,17 @@ B<zvaD x yInob 'ej yIy!>        --->    C<($z = $x) or y();>
 
 Note that (as the above exampe illustrate) changing precedence often
 necessitates a radical change in word order.
-                
+
 
 =head2 Object-oriented features
 
-Klingon Perl does not pander to feeble Terran object-oriented sensibilities 
+Klingon Perl does not pander to feeble Terran object-oriented sensibilities
 by treating objects and methods specially.
 
 A method is a subroutine, so in Klingon Perl
 it is called exactly like a subroutine.
 
-The first argument of a method is special, so 
+The first argument of a method is special, so
 in Klingon Perl it is explicitly marked it as being special.
 
 For example, the procedural command:
@@ -1716,15 +1716,15 @@ B<Hich DoSmey yIbaH!>
 
 translates as:
 
-=over 
+=over
 
 C<fire($weapon,@targets);>
 
 =back
 
 To call the same subroutine as a method, with C<$weapons> as its
-invocant object, it is necessary to mark the referent using the 
-topicalizer B<'e'>: 
+invocant object, it is necessary to mark the referent using the
+topicalizer B<'e'>:
 
 =over
 
@@ -2163,7 +2163,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
 
 =head1 Appendix 1: thlIngan-Terran dictionary
 
-        thlIngan        Terran          
+        thlIngan        Terran
         ========        ======
         'ar             abs
         'ej             and
@@ -2339,7 +2339,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         yInargh         last
         yInHa'          kill
         yInIDqa'        redo
-        yItaH           next 
+        yItaH           next
         yoS             package
         yuv             push
 
@@ -2348,7 +2348,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
 
 =head1 Appendix 2: Terran-thlIngan dictionary
 
-        
+
         Terran          thlIngan        Literal translation
         ======          ========        ===================
         =               nob             "give"
