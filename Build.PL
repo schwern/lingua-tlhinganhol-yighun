@@ -16,6 +16,7 @@ my $builder = Module::Build->new(
     },
     requires => {       
         'Filter::Simple'        => '0.84',
+        perl                    => '5.8.1',
     },
 
     add_to_cleanup      => [ 'Lingua-tlhInganHol-yIghun-*' ],
