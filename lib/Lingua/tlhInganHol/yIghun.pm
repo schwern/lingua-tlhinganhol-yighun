@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Filter::Simple;
 
-our $VERSION = '20090530';
+our $VERSION = '20090601';
 my $DEBUG;
 my $HONOURABLE = 1;
 
