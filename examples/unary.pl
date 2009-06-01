@@ -1,7 +1,7 @@
 use Lingua::tlhInganHol::yIghun
-	"yImugh",
-  	"yIQIj",
-#  	"tera'nganHol",
+        "yImugh",
+        "yIQIj",
+#       "tera'nganHol",
 ;
 
 'oHvaD yIghurQav!

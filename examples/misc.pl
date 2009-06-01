@@ -1,7 +1,7 @@
 use Lingua::tlhInganHol::yIghun
-#	"yImugh",
-#	"yIQIj",
-#  	"tera'nganHol",
+#       "yImugh",
+#       "yIQIj",
+#       "tera'nganHol",
 ;
 
 # <Hol> 'e' yIBatman!
@@ -20,5 +20,5 @@ togh <<\n>> yIghItlh!
 toghmeyvaD ( <<x\n>> ) cha' logh nob!
 toghmey mob <<\n>> yIghItlh!
 {
-	{ ghochna'DoS 'oH yIghItlh! } 'oH mach law' wa'maH mach puS teHchugh!
+        { ghochna'DoS 'oH yIghItlh! } 'oH mach law' wa'maH mach puS teHchugh!
 } 'oHvaD mungna'vo'Hal yIlaD nob teHtaHvIS!

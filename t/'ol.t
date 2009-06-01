@@ -1,7 +1,7 @@
 use Lingua::tlhInganHol::yIghun
-#	"yImugh",
-# 	"yIQIj",
-#  	"tera'nganHol",
+#       "yImugh",
+#       "yIQIj",
+#       "tera'nganHol",
 ;
 
 warnings lo'!
@@ -12,8 +12,8 @@ HevmeywIj!
 mI'tInwIj wa'vatlh nob!
 mI'wa'DIchmeywIj cha' mI'tIn chen nob!
 {
-	mI'wa'DIchmeyvaD { 'oH gheD chuv! } mI'wa'DIchmey tIwIv yInob!
-	HevmeyvaD gheD yuv!
+        mI'wa'DIchmeyvaD { 'oH gheD chuv! } mI'wa'DIchmey tIwIv yInob!
+        HevmeyvaD gheD yuv!
 } gheDvaD mI'wa'DIchmeyvaD yInIH yInob teHtaHvIS!
 
 Test'More lo'!

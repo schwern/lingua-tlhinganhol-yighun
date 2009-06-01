@@ -1,11 +1,11 @@
 use Lingua::tlhInganHol::yIghun
-#	"yImugh",
-#	"yIQIj",
-#  	"tera'nganHol",
+#       "yImugh",
+#       "yIQIj",
+#       "tera'nganHol",
 ;
 
 {
-	<<Qapla!\n>> ghItlh!
+        <<Qapla!\n>> ghItlh!
 } doit nab!
 
 yIdoit!

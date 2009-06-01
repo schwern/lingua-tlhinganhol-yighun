@@ -1,7 +1,7 @@
 use Lingua::tlhInganHol::yIghun
-#	"yImugh",
-# 	"yIQIj",
-#  	"tera'nganHol",
+#       "yImugh",
+#       "yIQIj",
+#       "tera'nganHol",
 ;
 
 ###### mI'wa'DIchvaD 'eratoSHeneS HeghqaD #####
@@ -9,6 +9,6 @@ use Lingua::tlhInganHol::yIghun
 mI'tInwIj wa'vatlh nob!
 mI'wa'DIchmeywIj cha' mI'tIn chen nob!
 {
-	mI'wa'DIchmeyvaD { 'oH gheD chuv! } mI'wa'DIchmey tIwIv yInob!
-	gheD <<\n>> ghItlh!
+        mI'wa'DIchmeyvaD { 'oH gheD chuv! } mI'wa'DIchmey tIwIv yInob!
+        gheD <<\n>> ghItlh!
 } gheDvaD mI'wa'DIchmeyvaD yInIH yInob teHtaHvIS!

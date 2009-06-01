@@ -36,956 +36,956 @@ my $numword = '(?='. join('|',values %numword) . ')';
 $numword{unit} = '(?:'. join('|',@numword{0..9}) . ')';
 
 my $number = qr{  $numword
-		  (?:($numword{unit})($numword{+1000000}))? [ ]*
+                  (?:($numword{unit})($numword{+1000000}))? [ ]*
                   (?:($numword{unit})($numword{+100000}))? [ ]*
                   (?:($numword{unit})($numword{+10000}))? [ ]*
                   (?:($numword{unit})($numword{+1000}))? [ ]*
                   (?:($numword{unit})($numword{+100}))? [ ]*
                   (?:($numword{unit})($numword{+10}))? [ ]*
                   (?:($numword{unit}?) (?!$numword))? [ ]*
-		  (  DoD [ ]* (?:$numword{unit} [ ]+)+ )?
+                  (  DoD [ ]* (?:$numword{unit} [ ]+)+ )?
                 }xi;
 
 sub to_Terran
 {
-    return "" unless $_[0];
-    my @bits = $_[0] =~ $number or return;
-    my @decimals = split /\s+/, ($bits[-1] && $bits[-1] =~ s/^DoD\s*// ? pop @bits : 'pagh');
-    my ($value,$unit,$order) = 0;
-    $value += $val{$unit||$order&&"wa'"||"pagh"} * $val{$order||"wa'"}
-	while ($unit, $order) = splice @bits, 0, 2;
-    $order = 0.1;
-    foreach $unit (@decimals) {
-	    $value += $val{$unit} * $order;
-	    $order /= 10;
-    }
-    return $value;
+        return "" unless $_[0];
+        my @bits = $_[0] =~ $number or return;
+        my @decimals = split /\s+/, ($bits[-1] && $bits[-1] =~ s/^DoD\s*// ? pop @bits : 'pagh');
+        my ($value,$unit,$order) = 0;
+        $value += $val{$unit||$order&&"wa'"||"pagh"} * $val{$order||"wa'"}
+                while ($unit, $order) = splice @bits, 0, 2;
+        $order = 0.1;
+        foreach $unit (@decimals) {
+                $value += $val{$unit} * $order;
+                $order /= 10;
+        }
+        return $value;
 }
 
 sub from_Terran
 {
-    my ($number, $decimal) = split /[.]/, $_[0];
-    my @decimals = $decimal ? split(//, $decimal) : ();
-    my @bits = split //, $number;
-    return $numword{0} unless grep $_, @bits;
-    my $order = 1;
-    my @numwords;
-    my $last;
-    for (reverse @bits) {
-        next unless $_;
-        push @numwords, $numword{$_};
-        $numwords[-1] .= $numword{$order} if $order > 1;
-    }
-    continue { $order *= 10 }
-    @decimals = map($numword{$_}, @decimals);
-    unshift @decimals, 'DoD' if @decimals;
-    return join " ", reverse(@numwords), @decimals;
+        my ($number, $decimal) = split /[.]/, $_[0];
+        my @decimals = $decimal ? split(//, $decimal) : ();
+        my @bits = split //, $number;
+        return $numword{0} unless grep $_, @bits;
+        my $order = 1;
+        my @numwords;
+        my $last;
+        for (reverse @bits) {
+                next unless $_;
+                push @numwords, $numword{$_};
+                $numwords[-1] .= $numword{$order} if $order > 1;
+        }
+        continue { $order *= 10 }
+        @decimals = map($numword{$_}, @decimals);
+        unshift @decimals, 'DoD' if @decimals;
+        return join " ", reverse(@numwords), @decimals;
 }
 
 sub print_honourably {
-	my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
-	@_ = $_ unless @_;
-	my $output = join "", map {defined($_) ? $_ : ""} @_;
-	# $output =~ s{(\d+)[.](\d+)}
-		    # {from_Terran($1).' DoD '.map {from_Terran($_)} split '',$2}e;
-	$output =~ s{(\d+(.\d+)?)}{from_Terran($1)}e;
-	if ($handle) { print {$handle} $output }
-	else         { print $output }
+        my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
+        @_ = $_ unless @_;
+        my $output = join "", map {defined($_) ? $_ : ""} @_;
+        # $output =~ s{(\d+)[.](\d+)}
+                    # {from_Terran($1).' DoD '.map {from_Terran($_)} split '',$2}e;
+        $output =~ s{(\d+(.\d+)?)}{from_Terran($1)}e;
+        if ($handle) { print {$handle} $output }
+        else         { print $output }
 }
 
 sub readline_honourably {
-	my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
-	my $input;
-	if ($handle) { $input = readline $handle }
-	else         { $input = readline }
-	return unless defined $input;
-	$input =~ s{($number)\s*DoD((\s*$number)+)}
-		   {to_Terran($1) . '.' .
-		    map {to_Terran($_)} grep /\S/, split /($number)/,$2}e;
-	$input =~ s{($number)}{to_Terran($1)}e;
-	return $input;
+        my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
+        my $input;
+        if ($handle) { $input = readline $handle }
+        else         { $input = readline }
+        return unless defined $input;
+        $input =~ s{($number)\s*DoD((\s*$number)+)}
+                   {to_Terran($1) . '.' .
+                    map {to_Terran($_)} grep /\S/, split /($number)/,$2}e;
+        $input =~ s{($number)}{to_Terran($1)}e;
+        return $input;
 }
 
 my $EOW = qr/(?![a-zA-Z'])/;
 
 sub enqr {
-	my $pattern = join '|', @_;
-	return qr/((?:$pattern)$EOW)/;
+        my $pattern = join '|', @_;
+        return qr/((?:$pattern)$EOW)/;
 }
 
 sub inqr {
-	my $pattern = join '|', @_;
-	return qr/($pattern)/;
+        my $pattern = join '|', @_;
+        return qr/($pattern)/;
 }
 
 my %n_decl = qw(
-	yoS		package	
+        yoS             package 
 );
 my $n_decl = enqr keys %n_decl;
 sub to_decl {
-	my ($name, $cmd) = @_;
-	return "$cmd->{trans} $name->{trans}";
+        my ($name, $cmd) = @_;
+        return "$cmd->{trans} $name->{trans}";
 }
 
 my %sub_decl = qw(
-	nab		sub	
+        nab             sub     
 );
 my $sub_decl = enqr keys %sub_decl;
 sub to_sub_decl {
-	my ($block, $name, $cmd) = @_;
-	return "$cmd->{trans} $name->{trans}" unless $block->{trans};
-	return "$cmd->{trans} $block->{trans}" unless $name->{trans};
-	return "$cmd->{trans} $name->{trans} $block->{trans}";
+        my ($block, $name, $cmd) = @_;
+        return "$cmd->{trans} $name->{trans}" unless $block->{trans};
+        return "$cmd->{trans} $block->{trans}" unless $name->{trans};
+        return "$cmd->{trans} $name->{trans} $block->{trans}";
 }
 
 my %v_usage = qw(
-	lo'		use	
-	lo'Qo'		no	
+        lo'             use     
+        lo'Qo'          no      
 );
 my $v_usage = enqr keys %v_usage;
 sub to_usage {
-	my ($name, $cmd) = @_;
-	return "$cmd->{trans} $name->{trans}";
+        my ($name, $cmd) = @_;
+        return "$cmd->{trans} $name->{trans}";
 }
 
 my %v_go = qw(
-	jaH		goto
-	yInargh		last	
-	yItaH		next 	
-	yInIDqa'	redo	
+        jaH             goto
+        yInargh         last    
+        yItaH           next    
+        yInIDqa'        redo    
 );
 my $v_go = enqr keys %v_go;
 sub to_go {
-	my ($name, $cmd) = @_;
-	$name||={trans=>""};
-	return "$cmd->{trans} $name->{trans}";
+        my ($name, $cmd) = @_;
+        $name||={trans=>""};
+        return "$cmd->{trans} $name->{trans}";
 }
 
 my %v_listop = qw(
-	mISHa'		sort	
-	wIv		grep	
-	choH		map	
+        mISHa'          sort    
+        wIv             grep    
+        choH            map     
 );
 my $v_listop = enqr keys %v_listop;
 sub to_listop {
-	my ($block, @list) = @_;
-	my $op = pop @list;
-	return join " ", map("$_->{trans} ", $op, $block),
-		join ",", map $_->{trans}, @list;
+        my ($block, @list) = @_;
+        my $op = pop @list;
+        return join " ", map("$_->{trans} ", $op, $block),
+                join ",", map $_->{trans}, @list;
 }
 
 
 my %v_blockop = qw(
-	chov		eval	
-	vang		do	
+        chov            eval    
+        vang            do      
 );
 my $v_blockop = enqr keys %v_blockop;
 sub to_blockop {
-	my ($block, $op) = @_;
-	return "$op->{trans} $block->{trans}";
+        my ($block, $op) = @_;
+        return "$op->{trans} $block->{trans}";
 }
 
 my %v_match = qw(
-	ghov		m	
+        ghov            m       
 );
 my $v_match = enqr keys %v_match;
 sub to_match {
-	my ($expr, $pattern, $op) = @_;
-	$pattern->{trans} =~ s/^qq?<|>$//g;
-	return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}>";
+        my ($expr, $pattern, $op) = @_;
+        $pattern->{trans} =~ s/^qq?<|>$//g;
+        return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}>";
 }
 
 my %v_change = qw(
-	tam		s	
-	mugh		tr	
+        tam             s       
+        mugh            tr      
 );
 my $v_change = enqr keys %v_change;
 sub to_change {
-	my ($expr, $becomes, $pattern, $op) = @_;
-	$pattern->{trans} =~ s/^qq?<|>$//g;
-	$becomes->{trans} =~ s/^qq?<|>$//g;
-	return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}><$becomes->{trans}>";
+        my ($expr, $becomes, $pattern, $op) = @_;
+        $pattern->{trans} =~ s/^qq?<|>$//g;
+        $becomes->{trans} =~ s/^qq?<|>$//g;
+        return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}><$becomes->{trans}>";
 }
 
 my %v_arg0 = qw (
-	laD		readline
-	chaqpoDmoH	chomp	
-	poDmoH		chop	
-	HaD		study	
-	chImmoH		undef	
-	Say'moH		reset	
-	mIS		rand	
-	juv		length	
-	toq'a'		defined	
-	rIn'a'		eof	
-	ghomneH		wantarray
-	mej		exit	
-	Hegh		die	
-	ghuHmoH		warn	
-	pa'Hegh		Carp::croak
-	pa'ghuHmoH	Carp::carp
-	pongwI'		caller	
-	buv		ref	
-	Del		stat	
-	ghum		alarm	
-	mol		dump	
-	bogh		fork	
-	Qong		sleep	
-	loS		wait	
-	mach		lc	
-	wa'Dichmach	lcfirst	
-	tIn		uc	
-	wa'DichtIn	ucfirst	
-	nargh		quotemeta
+        laD             readline
+        chaqpoDmoH      chomp   
+        poDmoH          chop    
+        HaD             study   
+        chImmoH         undef   
+        Say'moH         reset   
+        mIS             rand    
+        juv             length  
+        toq'a'          defined 
+        rIn'a'          eof     
+        ghomneH         wantarray
+        mej             exit    
+        Hegh            die     
+        ghuHmoH         warn    
+        pa'Hegh         Carp::croak
+        pa'ghuHmoH      Carp::carp
+        pongwI'         caller  
+        buv             ref     
+        Del             stat    
+        ghum            alarm   
+        mol             dump    
+        bogh            fork    
+        Qong            sleep   
+        loS             wait    
+        mach            lc      
+        wa'Dichmach     lcfirst 
+        tIn             uc      
+        wa'DichtIn      ucfirst 
+        nargh           quotemeta
 );
 my $v_arg0 = enqr keys %v_arg0;
 
 my %v_arg1 = qw (
-	tlhoch		not	
-	noD		reverse		
-	HaD		study	
-	ja'		tell	
-	Such		each	
-	lI'a'		exists	
-	pong		keys	
-	'ar		abs	
-	joqtaH		sin	
-	joqtaHHa'	cos	
-	poD		int	
-	maHghurtaH	log	
-	lo'Sar		sqrt	
-	mIS		rand	
-	mIScher		srand	
-	mach		lc	
-	wa'Dichmach	lcfirst	
-	tIn		uc	
-	wa'DichtIn	ucfirst	
-	nargh		quotemeta
-	juv		length	
-	sIj		split	
-	toq'a'		defined	
-	mob		scalar	
-	lo'laH		values	
-	rIn'a'		eof	
-	chov		eval	
-	mej		exit	
-	Hegh		die	
-	ghuHmoH		warn	
-	pa'Hegh		Carp::croak
-	pa'ghuHmoH	Carp::carp
-	pongwI'		caller	
-	buv		ref	
-	bagh'a'		tied	
-	poQ		require	
-	ghomchoH	chdir	
-	Sach		glob	
-	teq		unlink	
-	ghomtagh	mkdir	
-	ghomteq		rmdir	
-	Del		stat	
-	ghum		alarm	
-	mol		dump	
-	tagh		exec	
-	Qong		sleep	
-	ra'		system	
-	loS		wait	
-	ghomneH		wantarray
+        tlhoch          not     
+        noD             reverse         
+        HaD             study   
+        ja'             tell    
+        Such            each    
+        lI'a'           exists  
+        pong            keys    
+        'ar             abs     
+        joqtaH          sin     
+        joqtaHHa'       cos     
+        poD             int     
+        maHghurtaH      log     
+        lo'Sar          sqrt    
+        mIS             rand    
+        mIScher         srand   
+        mach            lc      
+        wa'Dichmach     lcfirst 
+        tIn             uc      
+        wa'DichtIn      ucfirst 
+        nargh           quotemeta
+        juv             length  
+        sIj             split   
+        toq'a'          defined 
+        mob             scalar  
+        lo'laH          values  
+        rIn'a'          eof     
+        chov            eval    
+        mej             exit    
+        Hegh            die     
+        ghuHmoH         warn    
+        pa'Hegh         Carp::croak
+        pa'ghuHmoH      Carp::carp
+        pongwI'         caller  
+        buv             ref     
+        bagh'a'         tied    
+        poQ             require 
+        ghomchoH        chdir   
+        Sach            glob    
+        teq             unlink  
+        ghomtagh        mkdir   
+        ghomteq         rmdir   
+        Del             stat    
+        ghum            alarm   
+        mol             dump    
+        tagh            exec    
+        Qong            sleep   
+        ra'             system  
+        loS             wait    
+        ghomneH         wantarray
 );
 my $v_arg1 = enqr keys %v_arg1;
 sub to_arg1 {
-	my ($arg, $func) = @_;
-	$arg ||= {trans=>""};	# handle optional args
-	return $arg->{trans}."->$func->{trans}()" if $arg->{object};
-	return $func->{trans}."($arg->{trans})";
+        my ($arg, $func) = @_;
+        $arg ||= {trans=>""};   # handle optional args
+        return $arg->{trans}."->$func->{trans}()" if $arg->{object};
+        return $func->{trans}."($arg->{trans})";
 }
 
 my %v_arg1_da = qw (
-	poS		open	
-	laD		readline
-	bot		flock	
-	nup		truncate
-	chaqpoDmoH	chomp	
-	poDmoH		chop	
-	chImmoH		undef	
-	Say'moH		reset	
-	woD		pop	
-	nIH		shift	
-	SoQmoH		close	
-	Qaw'		delete	
-	baghHa'		untie	
+        poS             open    
+        laD             readline
+        bot             flock   
+        nup             truncate
+        chaqpoDmoH      chomp   
+        poDmoH          chop    
+        chImmoH         undef   
+        Say'moH         reset   
+        woD             pop     
+        nIH             shift   
+        SoQmoH          close   
+        Qaw'            delete  
+        baghHa'         untie   
 );
 my $v_arg1_da = enqr keys %v_arg1_da;
 sub to_arg1_da {
-	my ($arg, $func) = @_;
-	$arg ||= {trans=>""};	# handle optional args
-	return $arg->{trans}."->$func->{trans}()" if $arg->{object};
-	return "$func->{trans} $arg->{trans}" if $arg->{type} =~ /handle$/;
-	return $func->{trans}."($arg->{trans})";
+        my ($arg, $func) = @_;
+        $arg ||= {trans=>""};   # handle optional args
+        return $arg->{trans}."->$func->{trans}()" if $arg->{object};
+        return "$func->{trans} $arg->{trans}" if $arg->{type} =~ /handle$/;
+        return $func->{trans}."($arg->{trans})";
 }
 
 my %v_arg2 = qw (
-	qojHa'		atan2	
-	So'		crypt	
-	boSHa'		unpack	
-	Sam		index	
-	naw'choH	chmod	
-	pIn'a'choH	chown	
-	rar		link	
-	neq		rename	
+        qojHa'          atan2   
+        So'             crypt   
+        boSHa'          unpack  
+        Sam             index   
+        naw'choH        chmod   
+        pIn'a'choH      chown   
+        rar             link    
+        neq             rename  
 );
 my $v_arg2 = enqr keys %v_arg2;
 sub to_arg2 {
-	my ($arg1, $arg2, $func) = @_;
-	return $arg1->{trans}."->$func->{trans}($arg2->{trans})"
-		if $arg1->{object};
-	return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
+        my ($arg1, $arg2, $func) = @_;
+        return $arg1->{trans}."->$func->{trans}($arg2->{trans})"
+                if $arg1->{object};
+        return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
 }
 
 # my %v_arg2_i = qw (
 # );
 # my $v_arg2_i = enqr keys %v_arg2_i;
 ##  sub to_arg2_i {
-	# my ($arg1, $arg2, $func) = @_;
-	# return "$arg1->{trans} $func->{trans} $arg2->{trans}";
+        # my ($arg1, $arg2, $func) = @_;
+        # return "$arg1->{trans} $func->{trans} $arg2->{trans}";
 # }
 
 my %v_arg2_da = qw (
-	DoQ		bless	
-	bot		flock	
+        DoQ             bless   
+        bot             flock   
 );
 my $v_arg2_da = enqr keys %v_arg2_da;
 sub to_arg2_da {
-	my ($arg1, $arg2, $func) = @_;
-	return $arg1->{trans}."->$func->{trans}($arg2->{trans})"
-		if $arg1->{object};
-	return "$func->{trans} $arg1->{trans} ($arg2->{trans})"
-		if $arg1->{type} =~ /handle$/;
-	return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
+        my ($arg1, $arg2, $func) = @_;
+        return $arg1->{trans}."->$func->{trans}($arg2->{trans})"
+                if $arg1->{object};
+        return "$func->{trans} $arg1->{trans} ($arg2->{trans})"
+                if $arg1->{type} =~ /handle$/;
+        return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
 }
 
 my %v_arg2_a = qw (
-	DIch		[...]
-	DIchvo'		[...]
-	DIchvaD		[...]
-	Suq		{...}
-	Suqvo'		{...}
-	SuqvaD		{...}
+        DIch            [...]
+        DIchvo'         [...]
+        DIchvaD         [...]
+        Suq             {...}
+        Suqvo'          {...}
+        SuqvaD          {...}
 );
 my $v_arg2_a = enqr keys %v_arg2_a;
 sub to_arg2_a {
-	my ($arg1, $arg2, $func) = @_;
-	$arg1->{trans} =~ s/^(\$.*)/$1\->/;
-	$arg1->{trans} =~ s/^([%@])/\$/;
-	die "<<Suq>> yIlo'Qo' <<DIch>> yIlo' jay'"	# Not "Suq"! "DIch"!
-		if substr($func->{raw},0,3) eq 'Suq' && $1 eq '@';
-	die "<<DIch>> yIlo'Qo' <<Suq>> yIlo' jay'"	# Not "DIch"! "Suq"!
-		if substr($func->{raw},0,3) eq 'DIch' && $1 eq '%';
-	$func->{trans} =~ s/\Q.../$arg2->{trans}/;
+        my ($arg1, $arg2, $func) = @_;
+        $arg1->{trans} =~ s/^(\$.*)/$1\->/;
+        $arg1->{trans} =~ s/^([%@])/\$/;
+        die "<<Suq>> yIlo'Qo' <<DIch>> yIlo' jay'"      # Not "Suq"! "DIch"!
+                if substr($func->{raw},0,3) eq 'Suq' && $1 eq '@';
+        die "<<DIch>> yIlo'Qo' <<Suq>> yIlo' jay'"      # Not "DIch"! "Suq"!
+                if substr($func->{raw},0,3) eq 'DIch' && $1 eq '%';
+        $func->{trans} =~ s/\Q.../$arg2->{trans}/;
 
-	return "$arg1->{trans}$func->{trans}";
+        return "$arg1->{trans}$func->{trans}";
 }
 
 my %v_args = qw (
-	noD		reverse		
-	boS		pack	
-	sIj		split	
-	muv		join	
-	tatlh		return	
-	Hegh		die	
-	ghuHmoH		warn	
-	pa'Hegh		Carp::croak
-	pa'ghuHmoH	Carp::carp
-	tagh		exec	
-	HoH		kill	
-	muH		kill
-	chot		kill
-	bach		kill
-	Hiv		kill
-	DIS		kill
-	jey		kill
+        noD             reverse         
+        boS             pack    
+        sIj             split   
+        muv             join    
+        tatlh           return  
+        Hegh            die     
+        ghuHmoH         warn    
+        pa'Hegh         Carp::croak
+        pa'ghuHmoH      Carp::carp
+        tagh            exec    
+        HoH             kill    
+        muH             kill
+        chot            kill
+        bach            kill
+        Hiv             kill
+        DIS             kill
+        jey             kill
 );
 my $v_args = enqr keys %v_args;
 sub to_args {
-	my $func = pop @_;
-	my $arg1 = shift @_;
-	my $args = join(",",map $_->{trans}, @_);
-	return $arg1->{trans}."->$func->{trans}($args)"
-		if $arg1->{object};
-	$args = ",$args" if $args;
-	return "$func->{trans}($arg1->{trans}$args)";
+        my $func = pop @_;
+        my $arg1 = shift @_;
+        my $args = join(",",map $_->{trans}, @_);
+        return $arg1->{trans}."->$func->{trans}($args)"
+                if $arg1->{object};
+        $args = ",$args" if $args;
+        return "$func->{trans}($arg1->{trans}$args)";
 }
 
 sub to_args_u {
-	my $func = pop @_;
-	my $arg1 = shift @_;
-	my $args = join(",",map $_->{trans}, @_);
-	return $arg1->{trans}."->$func->{trans}($args)"
-		if $arg1 && $arg1->{object};
-	$args = ",$args" if $args;
-	return "$func->{trans}($arg1->{trans}$args)" if $arg1;
-	return "$func->{trans}()";
+        my $func = pop @_;
+        my $arg1 = shift @_;
+        my $args = join(",",map $_->{trans}, @_);
+        return $arg1->{trans}."->$func->{trans}($args)"
+                if $arg1 && $arg1->{object};
+        $args = ",$args" if $args;
+        return "$func->{trans}($arg1->{trans}$args)" if $arg1;
+        return "$func->{trans}()";
 }
 
 sub to_args_ur {
-	my $func = pop @_;
-	my $arg1 = shift @_;
-	my $args = join(",",map $_->{trans}, @_);
-	return $arg1->{trans}."->$func->{trans}($args)"
-		if $arg1 && $arg1->{object};
-	$args = ",$args" if $args;
-	return "$func->{trans}->($arg1->{trans}$args)" if $arg1;
-	return "$func->{trans}->()";
+        my $func = pop @_;
+        my $arg1 = shift @_;
+        my $args = join(",",map $_->{trans}, @_);
+        return $arg1->{trans}."->$func->{trans}($args)"
+                if $arg1 && $arg1->{object};
+        $args = ",$args" if $args;
+        return "$func->{trans}->($arg1->{trans}$args)" if $arg1;
+        return "$func->{trans}->()";
 }
 
 my %v_args_da = qw (
-	ghItlh		print	
-	lagh		substr	
-	yuv		push	
-	DuQ		splice	
-	poS		open	
-	nej		seek	
-	bagh		tie	
-	jegh		unshift	
+        ghItlh          print   
+        lagh            substr  
+        yuv             push    
+        DuQ             splice  
+        poS             open    
+        nej             seek    
+        bagh            tie     
+        jegh            unshift 
 );
 my $v_args_da = enqr keys %v_args_da;
 sub to_args_da {
-	my $func = pop @_;
-	my $arg1 = shift @_;
-	$arg1 ||= tok("","","");
-	my $args = join(",",map $_->{trans}, @_);
-	return $arg1->{trans}."->$func->{trans}($args)"
-		if $arg1->{object};
-	return "$func->{trans} $arg1->{trans} ($args)"
-		if $arg1->{type} =~ /handle$/;
-	$args = ",$args" if $args;
-	return "$func->{trans}($arg1->{trans}$args)";
+        my $func = pop @_;
+        my $arg1 = shift @_;
+        $arg1 ||= tok("","","");
+        my $args = join(",",map $_->{trans}, @_);
+        return $arg1->{trans}."->$func->{trans}($args)"
+                if $arg1->{object};
+        return "$func->{trans} $arg1->{trans} ($args)"
+                if $arg1->{type} =~ /handle$/;
+        $args = ",$args" if $args;
+        return "$func->{trans}($arg1->{trans}$args)";
 }
 
 my %v_unop = qw (
-	HUH		-
+        HUH             -
 );
 my $v_unop = enqr keys %v_unop;
 sub to_unop {
-	my ($arg, $op) = @_;
-	return "$op->{trans}$arg->{trans}";
+        my ($arg, $op) = @_;
+        return "$op->{trans}$arg->{trans}";
 }
 
 my %v_unop_dpre = qw (
-	ghur		++
-	nup 		--
+        ghur            ++
+        nup             --
 );
 my $v_unop_dpre = enqr keys %v_unop_dpre;
 sub to_unop_dpre {
-	my ($arg, $op) = @_;
-	return "$op->{trans}$arg->{trans}";
+        my ($arg, $op) = @_;
+        return "$op->{trans}$arg->{trans}";
 }
 
 my %v_unop_dpost = qw (
-	ghurQav		++
-	nupQav 		--
+        ghurQav         ++
+        nupQav          --
 );
 my $v_unop_dpost = enqr keys %v_unop_dpost;
 sub to_unop_dpost {
-	my ($arg, $op) = @_;
-	return "$arg->{trans}$op->{trans}";
+        my ($arg, $op) = @_;
+        return "$arg->{trans}$op->{trans}";
 }
 
 my %v_binop = qw (
-	'ov		cmp	
-	chel		+
-	chelHa'		-
-	wav		/
-	HUH		*
-	chen		..
-	chuv		%
+        'ov             cmp     
+        chel            +
+        chelHa'         -
+        wav             /
+        HUH             *
+        chen            ..
+        chuv            %
 );
 my $v_binop = enqr keys %v_binop;
 
 my %v_binop_np = qw (
-	logh		x
-	je		&&
-	joq		||
-	pIm'a'		ne	
-	rap'a'		eq	
-	mI'rap'a'	==
-	mI'pIm'a'	!=
+        logh            x
+        je              &&
+        joq             ||
+        pIm'a'          ne      
+        rap'a'          eq      
+        mI'rap'a'       ==
+        mI'pIm'a'       !=
 );
 my $v_binop_np = enqr keys %v_binop_np;
 
 sub to_binop {
-	my ($left, $right, $op) = @_;
-	return "$left->{trans} $op->{trans} $right->{trans}";
+        my ($left, $right, $op) = @_;
+        return "$left->{trans} $op->{trans} $right->{trans}";
 }
 
 my %v_binop_d = qw (
-	nob		=
+        nob             =
 );
 my $v_binop_d = enqr keys %v_binop_d;
 sub to_binop_d {
-	my ($left, $right, $op) = @_;
-	return "$left->{trans} $op->{trans} $right->{trans}";
+        my ($left, $right, $op) = @_;
+        return "$left->{trans} $op->{trans} $right->{trans}";
 }
 
 my %v_ternop = qw (
-	wuq		?:
+        wuq             ?:
 );
 my $v_ternop = enqr keys %v_ternop;
 sub to_ternop {
-	my ($cond, $iftrue, $iffalse, $op) = @_;
-	return "$cond->{trans} ? $iftrue->{trans} : $iffalse->{trans}";
+        my ($cond, $iftrue, $iffalse, $op) = @_;
+        return "$cond->{trans} ? $iftrue->{trans} : $iffalse->{trans}";
 }
 
 
 my %control = qw(
-	teHchugh	if	
-	teHchughbe'	unless	
-	teHtaHvIS	while	
-	teHtaHvISbe'	until	
-	tIqel		for	
+        teHchugh        if      
+        teHchughbe'     unless  
+        teHtaHvIS       while   
+        teHtaHvISbe'    until   
+        tIqel           for     
 );
 my $control = enqr keys %control;
 sub to_control {
-	my ($block, $condition, $control) = @_;
-	return "$control->{trans} ($condition->{trans}) $block->{trans}";
+        my ($block, $condition, $control) = @_;
+        return "$control->{trans} ($condition->{trans}) $block->{trans}";
 }
 
 my %s_decl = qw(
-	wIj		my	
-	meywIj		my	
-	pu'wI'		my	
-	maj		our	
-	meymaj		our	
-	pu'ma'		our	
-	vam		local	
-	meyvam		local	
-	pu'vam		local	
+        wIj             my      
+        meywIj          my      
+        pu'wI'          my      
+        maj             our     
+        meymaj          our     
+        pu'ma'          our     
+        vam             local   
+        meyvam          local   
+        pu'vam          local   
 );
 my $s_decl = inqr keys %s_decl;
 
 my %noun_dat = qw(
-	ghochna'	STDOUT
-	luSpetna'	STDERR
+        ghochna'        STDOUT
+        luSpetna'       STDERR
 );
 my $noun_dat = inqr keys %noun_dat;
 
 my %noun_acc = qw(
-	juH		main	
-	'oH		$_
-	chevwI'		$/
-	natlhwI'	$|
-	bIH		@_
+        juH             main    
+        'oH             $_
+        chevwI'         $/
+        natlhwI'        $|
+        bIH             @_
 );
 my $noun_acc = inqr keys %noun_acc;
 
 my %noun_abl = qw(
-	mungna'vo'	STDIN	
-	De'Daqvo'	DATA	
+        mungna'vo'      STDIN   
+        De'Daqvo'       DATA    
 );
 my $noun_abl = inqr keys %noun_abl;
 
 my @stack;
 sub tok {
-	my %tok;
-	@tok{qw(type raw trans)} = @_;
-	return \%tok;
+        my %tok;
+        @tok{qw(type raw trans)} = @_;
+        return \%tok;
 }
 
 sub nostop {
-	my ($word) = @_;
-	$word =~ s/'/Z/g;
-	return $word;
+        my ($word) = @_;
+        $word =~ s/'/Z/g;
+        return $word;
 }
 
 sub pushtok {
-	my ($type, $raw, $trans) = @_;
-	print STDERR qq{Treated "$raw" as $type meaning "$trans"\n} if $DEBUG;
-	my $object;
-	$object = $type = 'dat' if $type eq 'object';
-	if ($type eq 'acc' && @stack && $stack[-1]{type} eq 'noun_conj') {
-		my $conj = pop @stack;
-		my $left = pop @stack;
-		push @stack, tok('acc', "$left->{raw} $conj->{raw} $raw",
-				 "$left->{trans} $conj->{trans} $trans");
-	}
-	else {
-		push @stack, tok($type, @_[1..$#_]);
-	}
-	object() if $object;
-	# use Data::Dumper 'Dumper';
-	# print STDERR Dumper [ \@stack ] if $DEBUG;
-	return $stack[-1];
+        my ($type, $raw, $trans) = @_;
+        print STDERR qq{Treated "$raw" as $type meaning "$trans"\n} if $DEBUG;
+        my $object;
+        $object = $type = 'dat' if $type eq 'object';
+        if ($type eq 'acc' && @stack && $stack[-1]{type} eq 'noun_conj') {
+                my $conj = pop @stack;
+                my $left = pop @stack;
+                push @stack, tok('acc', "$left->{raw} $conj->{raw} $raw",
+                                 "$left->{trans} $conj->{trans} $trans");
+        }
+        else {
+                push @stack, tok($type, @_[1..$#_]);
+        }
+        object() if $object;
+        # use Data::Dumper 'Dumper';
+        # print STDERR Dumper [ \@stack ] if $DEBUG;
+        return $stack[-1];
 }
 
 sub top {
-	return unless @stack and grep $_ eq $stack[-1]{type}, @_;
-	pop @stack;
+        return unless @stack and grep $_ eq $stack[-1]{type}, @_;
+        pop @stack;
 }
 
 sub translate {
-	my $raw = join " ", map { ref $_ ? $_->{raw} : $_ } @_;
-	my $what = (caller(1))[3];
-	$what =~ s/.*:://;
-	no strict 'refs';
-	my $trans = "to_$what"->(@_);
-	return ($raw, $trans);
+        my $raw = join " ", map { ref $_ ? $_->{raw} : $_ } @_;
+        my $what = (caller(1))[3];
+        $what =~ s/.*:://;
+        no strict 'refs';
+        my $trans = "to_$what"->(@_);
+        return ($raw, $trans);
 }
 
 sub decl {
-	my ($decl) = @_;
-	my $name = top('acc')
-		or die "$decl: pong Sambe'!\n" ;	# missing name
-	$name->{trans} = nostop($name->{raw});
-	$decl = tok('adj',$decl,$n_decl{$decl});
-	pushtok('cmd', translate($name,$decl));
+        my ($decl) = @_;
+        my $name = top('acc')
+                or die "$decl: pong Sambe'!\n" ;        # missing name
+        $name->{trans} = nostop($name->{raw});
+        $decl = tok('adj',$decl,$n_decl{$decl});
+        pushtok('cmd', translate($name,$decl));
 }
 
 sub sub_decl {
-	my ($decl) = @_;
-	die "$decl: pong ngoqghom joq Sambe'!\n"	# missing name or block
-		unless @stack;
-	my $name = pop @stack;
-	my $block;
-	if ($name->{type} eq 'block') {
-		$block = $name;
-		$name  = tok("","","");
-	}
-	else {
-		$block = top('block') || tok("","","");
-	}
-	$name->{trans} = nostop($name->{raw});
-	$decl = tok('verb',$decl,$sub_decl{$decl});
-	if ($name->{trans}) { pushtok('cmd', translate($block,$name,$decl)) }
-	else 		    { pushtok('acc', translate($block,$name,$decl)) }
+        my ($decl) = @_;
+        die "$decl: pong ngoqghom joq Sambe'!\n"        # missing name or block
+                unless @stack;
+        my $name = pop @stack;
+        my $block;
+        if ($name->{type} eq 'block') {
+                $block = $name;
+                $name  = tok("","","");
+        }
+        else {
+                $block = top('block') || tok("","","");
+        }
+        $name->{trans} = nostop($name->{raw});
+        $decl = tok('verb',$decl,$sub_decl{$decl});
+        if ($name->{trans}) { pushtok('cmd', translate($block,$name,$decl)) }
+        else                { pushtok('acc', translate($block,$name,$decl)) }
 }
 
 sub usage {
-	my ($use) = @_;
-	my $name = top('acc')
-		or die "$use: pong Sambe'!\n";		# missing name
-	$name->{trans} = $name->{raw};
-	$use = tok('verb',$use,$v_usage{$use});
-	pushtok('cmd', translate($name,$use));
+        my ($use) = @_;
+        my $name = top('acc')
+                or die "$use: pong Sambe'!\n";          # missing name
+        $name->{trans} = $name->{raw};
+        $use = tok('verb',$use,$v_usage{$use});
+        pushtok('cmd', translate($name,$use));
 }
 
 sub go {
-	my ($go) = @_;
-	my $label = top('acc');
-	$label->{trans} = $label->{raw};
-	$go = tok('verb',$go,$v_go{$go});
-	pushtok('cmd', translate($label,$go));
+        my ($go) = @_;
+        my $label = top('acc');
+        $label->{trans} = $label->{raw};
+        $go = tok('verb',$go,$v_go{$go});
+        pushtok('cmd', translate($label,$go));
 }
 
 sub listop {
-	my ($op) = @_;
-	my @list;
-	while (@stack) {
-		unshift @list, top('acc','block')
-			|| die "$op: ngoqghom Sambe'!\n"; # missing codegroup
-		last if $list[0]{type} eq 'block';
-	}
-	$op = tok('verb',$op,$v_listop{$op});
-	pushtok('acc', translate(@list,$op));
+        my ($op) = @_;
+        my @list;
+        while (@stack) {
+                unshift @list, top('acc','block')
+                        || die "$op: ngoqghom Sambe'!\n"; # missing codegroup
+                last if $list[0]{type} eq 'block';
+        }
+        $op = tok('verb',$op,$v_listop{$op});
+        pushtok('acc', translate(@list,$op));
 }
 
 sub blockop {
-	my ($op) = @_;
-	my $name = top('acc','block')
-		or die "$op: ngoqghom Sambe'!\n" ;	# missing codegroup
-	$op = tok('verb',$op,$v_blockop{$op});
-	pushtok('acc', translate($name,$op));
+        my ($op) = @_;
+        my $name = top('acc','block')
+                or die "$op: ngoqghom Sambe'!\n" ;      # missing codegroup
+        $op = tok('verb',$op,$v_blockop{$op});
+        pushtok('acc', translate($name,$op));
 }
 
 sub match {
-	my ($op) = @_;
-	my $pattern = top('acc')
-		or die "$op: nejwI' Sambe'!\n" ;	# missing probe
-	my $expr = top('acc')
-		or die "$op: De' Sambe'!\n" ;		# missing data
-	$op = tok('verb',$op,$v_match{$op});
-	pushtok('acc', translate($expr,$pattern,$op));
+        my ($op) = @_;
+        my $pattern = top('acc')
+                or die "$op: nejwI' Sambe'!\n" ;        # missing probe
+        my $expr = top('acc')
+                or die "$op: De' Sambe'!\n" ;           # missing data
+        $op = tok('verb',$op,$v_match{$op});
+        pushtok('acc', translate($expr,$pattern,$op));
 }
 
 sub change {
-	my ($op) = @_;
-	my $becomes = top('acc')
-		or die "$op: tamwI' Sambe'!\n" ;	# missing substitution
-	my $pattern = top('acc')
-		or die "$op: nejwI' Sambe'!\n" ;	# missing probe
-	my $expr = top('dat')
-		or die "$op: DoS Sambe'!\n" ;		# missing data
-	$op = tok('verb',$op,$v_change{$op});
-	pushtok('acc', translate($expr,$becomes,$pattern,$op));
+        my ($op) = @_;
+        my $becomes = top('acc')
+                or die "$op: tamwI' Sambe'!\n" ;        # missing substitution
+        my $pattern = top('acc')
+                or die "$op: nejwI' Sambe'!\n" ;        # missing probe
+        my $expr = top('dat')
+                or die "$op: DoS Sambe'!\n" ;           # missing data
+        $op = tok('verb',$op,$v_change{$op});
+        pushtok('acc', translate($expr,$becomes,$pattern,$op));
 }
 
 sub arg1 {
-	my ($func) = @_;
-	my $arg = top('acc') 
-		or $func->{raw} =~ /$v_arg0/
-		or die "$func: De' Sambe'!\n" ;        # missing data
-	$func = tok('verb',$func,$v_arg1{$func});
-	pushtok('acc', translate($arg, $func));
+        my ($func) = @_;
+        my $arg = top('acc') 
+                or $func->{raw} =~ /$v_arg0/
+                or die "$func: De' Sambe'!\n" ;        # missing data
+        $func = tok('verb',$func,$v_arg1{$func});
+        pushtok('acc', translate($arg, $func));
 }
 
 sub arg1_da {
-	my ($func) = @_;
-	my $arg = top('dat','abl','dat_handle','abl_handle') 
-		or $func =~ /$v_arg0/
-		or die "$func: DoS ghap Hal Sambe'!\n" ;
-						# missing target or source
-	$func = tok('verb',$func,$v_arg1_da{$func});
-	if ($HONOURABLE && $func->{trans} =~ /print|readline/) {
-		$func->{trans} =
-			"Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
-		if ($arg && $arg->{type} =~ s/_handle$//) {
-			$arg->{trans} = '\\*'.$arg->{trans};
-		}
-	}
-	pushtok('acc', translate($arg, $func));
+        my ($func) = @_;
+        my $arg = top('dat','abl','dat_handle','abl_handle') 
+                or $func =~ /$v_arg0/
+                or die "$func: DoS ghap Hal Sambe'!\n" ;
+                                                # missing target or source
+        $func = tok('verb',$func,$v_arg1_da{$func});
+        if ($HONOURABLE && $func->{trans} =~ /print|readline/) {
+                $func->{trans} =
+                        "Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
+                if ($arg && $arg->{type} =~ s/_handle$//) {
+                        $arg->{trans} = '\\*'.$arg->{trans};
+                }
+        }
+        pushtok('acc', translate($arg, $func));
 }
 
 sub arg2 {
-	my ($func) = @_;
-	my $arg2 = top('acc')
-		or die "$func: De' cha'DIch Sambe'!\n";	# missing second data
-	my $arg1 = top('acc')
-		or die "$func: De' wa'DIch Sambe'!\n";	# missing first data
-	$func = tok('verb',$func,$v_arg2{$func});
-	pushtok('acc', translate($arg1, $arg2, $func));
+        my ($func) = @_;
+        my $arg2 = top('acc')
+                or die "$func: De' cha'DIch Sambe'!\n"; # missing second data
+        my $arg1 = top('acc')
+                or die "$func: De' wa'DIch Sambe'!\n";  # missing first data
+        $func = tok('verb',$func,$v_arg2{$func});
+        pushtok('acc', translate($arg1, $arg2, $func));
 }
 
 sub arg2_da {
-	my ($func) = @_;
-	my $arg2 = top('acc')
-		or die "$func: De' Sambe'!\n";		# missing data
-	my $arg1 = top('dat','abl','dat_handle','abl_handle')
-		or die "$func: DoS ghap Hal Sambe'!\n";
-						# missing target or source
-	$func = tok('verb',$func,$v_arg2_da{$func});
-	pushtok('acc', translate($arg1, $arg2, $func));
+        my ($func) = @_;
+        my $arg2 = top('acc')
+                or die "$func: De' Sambe'!\n";          # missing data
+        my $arg1 = top('dat','abl','dat_handle','abl_handle')
+                or die "$func: DoS ghap Hal Sambe'!\n";
+                                                # missing target or source
+        $func = tok('verb',$func,$v_arg2_da{$func});
+        pushtok('acc', translate($arg1, $arg2, $func));
 }
 
-sub arg2_a {	# pure *a*blative
-	my ($func) = @_;
-	my $arg2 = top('acc')
-		or die "$func: De' Sambe'!\n";	# missing data
-	my $arg1 = top('abl')
-		or die "$func: Hal Sambe'!\n";	# missing source
-	$func = tok('verb',$func,$v_arg2_a{$func});
-	pushtok($func->{raw} =~ /vaD$/ ? 'dat' :
-	        $func->{raw} =~ /vo'$/ ? 'abl' : 'acc',
-		translate($arg1, $arg2, $func));
+sub arg2_a {    # pure *a*blative
+        my ($func) = @_;
+        my $arg2 = top('acc')
+                or die "$func: De' Sambe'!\n";  # missing data
+        my $arg1 = top('abl')
+                or die "$func: Hal Sambe'!\n";  # missing source
+        $func = tok('verb',$func,$v_arg2_a{$func});
+        pushtok($func->{raw} =~ /vaD$/ ? 'dat' :
+                $func->{raw} =~ /vo'$/ ? 'abl' : 'acc',
+                translate($arg1, $arg2, $func));
 }
 
 sub unop {
-	my ($func) = @_;
-	my $arg1 = top('acc')
-		or die "$func: De' wa'DIch Sambe'!\n";	# missing first arg
-	$func = tok('verb',$func,$v_unop{$func});
-	pushtok('acc', translate($arg1, $func));
+        my ($func) = @_;
+        my $arg1 = top('acc')
+                or die "$func: De' wa'DIch Sambe'!\n";  # missing first arg
+        $func = tok('verb',$func,$v_unop{$func});
+        pushtok('acc', translate($arg1, $func));
 }
 
 sub unop_dpre {
-	my ($func) = @_;
-	my $arg1 = top('dat')
-		or die "$func: DoS Sambe'!\n";		# missing target
-	$func = tok('verb',$func,$v_unop_dpre{$func});
-	pushtok('dat', translate($arg1,$func));
+        my ($func) = @_;
+        my $arg1 = top('dat')
+                or die "$func: DoS Sambe'!\n";          # missing target
+        $func = tok('verb',$func,$v_unop_dpre{$func});
+        pushtok('dat', translate($arg1,$func));
 }
 
 sub unop_dpost {
-	my ($func) = @_;
-	my $arg1 = top('dat')
-		or die "$func: DoS Sambe'!\n";		# missing target
-	$func = tok('verb',$func,$v_unop_dpost{$func});
-	pushtok('dat', translate($arg1,$func));
+        my ($func) = @_;
+        my $arg1 = top('dat')
+                or die "$func: DoS Sambe'!\n";          # missing target
+        $func = tok('verb',$func,$v_unop_dpost{$func});
+        pushtok('dat', translate($arg1,$func));
 }
 
 sub binop {
-	my ($func) = @_;
-	my $arg2 = top('acc')
-		or die "$func: De' cha'DIch Sambe'!\n";	# missing second arg
-	my $arg1 = top('acc')
-		or die "$func: De' wa'DIch Sambe'!\n";	# missing first arg
-	$func = tok('verb',$func,$v_binop{$func}||$v_binop_np{$func});
-	pushtok('acc', translate($arg1, $arg2, $func));
+        my ($func) = @_;
+        my $arg2 = top('acc')
+                or die "$func: De' cha'DIch Sambe'!\n"; # missing second arg
+        my $arg1 = top('acc')
+                or die "$func: De' wa'DIch Sambe'!\n";  # missing first arg
+        $func = tok('verb',$func,$v_binop{$func}||$v_binop_np{$func});
+        pushtok('acc', translate($arg1, $arg2, $func));
 }
 
 sub binop_d {
-	my ($func) = @_;
-	my $arg2 = top('acc','dat')
-		or die "$func: De' Sambe'!\n";		# missing data
-	my $arg1 = top('dat')
-		or die "$func: DoS Sambe'!\n";		# missing target
-	$func = tok('verb',$func,$v_binop_d{$func});
-	pushtok('dat', translate($arg1, $arg2, $func));
+        my ($func) = @_;
+        my $arg2 = top('acc','dat')
+                or die "$func: De' Sambe'!\n";          # missing data
+        my $arg1 = top('dat')
+                or die "$func: DoS Sambe'!\n";          # missing target
+        $func = tok('verb',$func,$v_binop_d{$func});
+        pushtok('dat', translate($arg1, $arg2, $func));
 }
 
 sub ternop {
-	my ($func) = @_;
-	my $iffalse = top('acc')
-		or die "$func: vItvaD De' Sambe'!\n";	# missing truth data
-	my $iftrue = top('acc')
-		or die "$func: nepvaD De' Sambe'!\n";	# missing falsehood data
-	my $cond = top('acc')
-		or die "$func: wuqwI' Sambe'!\n";	# missing decider
-	$func = tok('verb',$func,$v_ternop{$func});
-	pushtok('acc', translate($cond, $iftrue, $iffalse, $func));
+        my ($func) = @_;
+        my $iffalse = top('acc')
+                or die "$func: vItvaD De' Sambe'!\n";   # missing truth data
+        my $iftrue = top('acc')
+                or die "$func: nepvaD De' Sambe'!\n";   # missing falsehood data
+        my $cond = top('acc')
+                or die "$func: wuqwI' Sambe'!\n";       # missing decider
+        $func = tok('verb',$func,$v_ternop{$func});
+        pushtok('acc', translate($cond, $iftrue, $iffalse, $func));
 }
 
 sub args_da {
-	my ($func) = @_;
-	my @args;
-	my $first = 1;
-	while (1) {
-		my $arg = top('acc','dat','abl_handle','dat_handle') or last;
-		unshift @args, $arg;
-		last if $arg->{type} eq 'dat';
-		last if $first and $arg->{list};
-		$first=0;
-	}
-	$func = tok('verb',$func,$v_args_da{$func});
-	if ($HONOURABLE && $func->{trans} =~ /print|readline/) {
-		$func->{trans} =
-			"Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
-		if (@args && $args[0]{type} =~ s/_handle$//) {
-			$args[0]{trans} = '\\*'.$args[0]{trans};
-		}
-	}
-	pushtok('acc', translate(@args, $func));
+        my ($func) = @_;
+        my @args;
+        my $first = 1;
+        while (1) {
+                my $arg = top('acc','dat','abl_handle','dat_handle') or last;
+                unshift @args, $arg;
+                last if $arg->{type} eq 'dat';
+                last if $first and $arg->{list};
+                $first=0;
+        }
+        $func = tok('verb',$func,$v_args_da{$func});
+        if ($HONOURABLE && $func->{trans} =~ /print|readline/) {
+                $func->{trans} =
+                        "Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
+                if (@args && $args[0]{type} =~ s/_handle$//) {
+                        $args[0]{trans} = '\\*'.$args[0]{trans};
+                }
+        }
+        pushtok('acc', translate(@args, $func));
 }
 
 sub args {
-	my ($func) = @_;
-	my @args;
-	my $first = 1;
-	while (1) {
-		my $arg = top('acc') or last;
-		unshift @args, $arg;
-		last if $arg->{object};
-		last if $first and $arg->{list};
-		$first=0;
-	}
-	$func = tok('verb',$func,$v_args{$func});
-	if ($HONOURABLE && $func->{trans} eq 'print') {
-		$func->{trans} =
-			"Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
-		if (@args && $args[0]{type} =~ s/_handle$//) {
-			$args[0]{trans} = '\\*'.$args[0]{trans};
-		}
-	}
-	pushtok('acc', translate(@args, $func));
+        my ($func) = @_;
+        my @args;
+        my $first = 1;
+        while (1) {
+                my $arg = top('acc') or last;
+                unshift @args, $arg;
+                last if $arg->{object};
+                last if $first and $arg->{list};
+                $first=0;
+        }
+        $func = tok('verb',$func,$v_args{$func});
+        if ($HONOURABLE && $func->{trans} eq 'print') {
+                $func->{trans} =
+                        "Lingua::tlhInganHol::yIghun::$func->{trans}_honourably";
+                if (@args && $args[0]{type} =~ s/_handle$//) {
+                        $args[0]{trans} = '\\*'.$args[0]{trans};
+                }
+        }
+        pushtok('acc', translate(@args, $func));
 }
 
 sub args_u {
-	my ($func) = @_;
-	my @args;
-	my $first = 1;
-	while (1) {
-		my $arg = top('acc','dat') or last;
-		unshift @args, $arg;
-		last if $first && $arg->{list};
-		last if $arg->{object};
-		$first = 0;
-	}
-	$func = tok('verb',(@args>1 ? 'tI' : 'yI').$func,$func);
-	pushtok('acc', translate(@args, $func));
+        my ($func) = @_;
+        my @args;
+        my $first = 1;
+        while (1) {
+                my $arg = top('acc','dat') or last;
+                unshift @args, $arg;
+                last if $first && $arg->{list};
+                last if $arg->{object};
+                $first = 0;
+        }
+        $func = tok('verb',(@args>1 ? 'tI' : 'yI').$func,$func);
+        pushtok('acc', translate(@args, $func));
 }
 
 sub args_ur {
-	my ($func) = @_;
-	my @args;
-	my $first = 1;
-	while (1) {
-		my $arg = top('acc','dat') or last;
-		unshift @args, $arg;
-		last if $first && $arg->{list};
-		last if $arg->{object};
-		$first = 0;
-	}
-	$func = tok('verb',(@args>1 ? 'tI' : 'yI').$func.'vetlh',"\$$func");
-	pushtok('acc', translate(@args, $func));
+        my ($func) = @_;
+        my @args;
+        my $first = 1;
+        while (1) {
+                my $arg = top('acc','dat') or last;
+                unshift @args, $arg;
+                last if $first && $arg->{list};
+                last if $arg->{object};
+                $first = 0;
+        }
+        $func = tok('verb',(@args>1 ? 'tI' : 'yI').$func.'vetlh',"\$$func");
+        pushtok('acc', translate(@args, $func));
 }
 
 sub control {
-	my ($control) = @_;
-	my $condition = top('acc','dat') 
-		or die "$control: tob Sambe'!\n";	# missing test
-	my $block = top('block') 
-		or die "$control: ngoqghom Sambe'!\n";	# missing code group
-	$control = tok('control',$control,$control{$control});
-	pushtok('cmd', translate($block,$condition,$control));
+        my ($control) = @_;
+        my $condition = top('acc','dat') 
+                or die "$control: tob Sambe'!\n";       # missing test
+        my $block = top('block') 
+                or die "$control: ngoqghom Sambe'!\n";  # missing code group
+        $control = tok('control',$control,$control{$control});
+        pushtok('cmd', translate($block,$condition,$control));
 }
 
 
 my @translation;
 
 sub object {
-	die "'e': Doch Sambe'"
-		unless @stack && $stack[-1]{type} =~ /^(acc|dat)$/;
-	$stack[-1]{raw} .= " 'e'";
-	$stack[-1]{object} = 1;
+        die "'e': Doch Sambe'"
+                unless @stack && $stack[-1]{type} =~ /^(acc|dat)$/;
+        $stack[-1]{raw} .= " 'e'";
+        $stack[-1]{object} = 1;
 }
 
 sub done {
-	my $cmd = top('cmd','acc','dat')
-		or die +(@stack ? "<<$stack[-1]{raw}>>Daq: " : "") .
-			'rIn pIHbe!';
-							# unexpected ending
-	$cmd = "$cmd->{trans};\n";
-	while (my $conj = top('sent_conj')) {
-		my $left = top('cmd','acc','dat')
-		    or die +(@stack ? "<<$stack[-1]{raw} $conj>>Daq: " : "") .
-		           "ra' PoS pIHbe!";		# unexpected left cmd
-		$cmd = "$left->{trans} $conj->{trans} $cmd";
-	}
-	$translation[-1] .= $cmd;
+        my $cmd = top('cmd','acc','dat')
+                or die +(@stack ? "<<$stack[-1]{raw}>>Daq: " : "") .
+                        'rIn pIHbe!';
+                                                        # unexpected ending
+        $cmd = "$cmd->{trans};\n";
+        while (my $conj = top('sent_conj')) {
+                my $left = top('cmd','acc','dat')
+                    or die +(@stack ? "<<$stack[-1]{raw} $conj>>Daq: " : "") .
+                           "ra' PoS pIHbe!";            # unexpected left cmd
+                $cmd = "$left->{trans} $conj->{trans} $cmd";
+        }
+        $translation[-1] .= $cmd;
 }
 
 sub startblock {
-	# print STDERR qq<Treated "{" as start of block\n> if $DEBUG;
-	push @translation, "";
-	pushtok('start of block', "{", "{");
+        # print STDERR qq<Treated "{" as start of block\n> if $DEBUG;
+        push @translation, "";
+        pushtok('start of block', "{", "{");
 }
 
 sub endblock {
-	print STDERR qq<Treated "}" as end of block\n> if $DEBUG;
-	top('start of block') 
-		or @stack and die "betleH HivtaH Sampa' veQ: $stack[0]{raw}\n "
-					# garbage found before attacking batleth
-		or die "betleH HivtaH Sambe'";
-					# missing attacking batleth
-	pushtok('block', "{...}", "{".pop(@translation)."}");
+        print STDERR qq<Treated "}" as end of block\n> if $DEBUG;
+        top('start of block') 
+                or @stack and die "betleH HivtaH Sampa' veQ: $stack[0]{raw}\n "
+                                        # garbage found before attacking batleth
+                or die "betleH HivtaH Sambe'";
+                                        # missing attacking batleth
+        pushtok('block', "{...}", "{".pop(@translation)."}");
 }
 
 my %nsuff = ( "vo'"    => 'abl',
-	      "vo'Hal" => 'abl_handle',
-	      "Hal"    => 'abl_handle',
-	      "vaD"    => 'dat',
-	      "vaDDoS" => 'dat_handle',
-	      "DoS"    => 'dat_handle',
-	      "'e'"    => 'object',
-	      ""       => 'acc' );
+              "vo'Hal" => 'abl_handle',
+              "Hal"    => 'abl_handle',
+              "vaD"    => 'dat',
+              "vaDDoS" => 'dat_handle',
+              "DoS"    => 'dat_handle',
+              "'e'"    => 'object',
+              ""       => 'acc' );
 my $nsuff   = qr/${\join"|",reverse sort keys %nsuff}/;
 
 sub startlist {
-	pushtok('start of list','(','(');
+        pushtok('start of list','(','(');
 }
 
 sub endlist {
-	my $type = $nsuff{$_[0]};
-	print STDERR qq<Treated ")" as end of $type list"\n> if $DEBUG;
-	my @args;
-	while (1) {
-		die "'etlh HivtaH Sambe'" unless @stack;
-						# missing attacking sword
-		my $arg = pop @stack;
-		last if $arg->{type} eq 'start of list';
-		unshift @args, $arg;
-	}
-	my $raw   = join " ", map $_->{raw}, @args;
-	my $trans = join ",", map $_->{trans}, @args;
+        my $type = $nsuff{$_[0]};
+        print STDERR qq<Treated ")" as end of $type list"\n> if $DEBUG;
+        my @args;
+        while (1) {
+                die "'etlh HivtaH Sambe'" unless @stack;
+                                                # missing attacking sword
+                my $arg = pop @stack;
+                last if $arg->{type} eq 'start of list';
+                unshift @args, $arg;
+        }
+        my $raw   = join " ", map $_->{raw}, @args;
+        my $trans = join ",", map $_->{trans}, @args;
 
-	pushtok($type, "($raw)$_[0]", "($trans)")->{list} = 1;
+        pushtok($type, "($raw)$_[0]", "($trans)")->{list} = 1;
 }
 
 my $sing   = qr/(?:yI)?/;
@@ -997,26 +997,26 @@ my $type   = qr/${\join"|",reverse sort keys %sigil}/;
 
 my %comp   = ( "tIn"     => '>',   "mach"     => '<',
                "tInbe'"  => '<=',  "machbe'"  => '<',
-	       "nung"    => 'lt',  "tlha'"    => 'gt',
-	       "nungbe'" => 'ge',  "tlha'be'" => 'le',
-	     );
+               "nung"    => 'lt',  "tlha'"    => 'gt',
+               "nungbe'" => 'ge',  "tlha'be'" => 'le',
+             );
 my $comp = inqr keys %comp;
 
 sub greater {
-	my ($op) = @_;
-	my $arg = top('acc') or die "$op law': DIp $op Sambe'"; # missing noun
-	pushtok('greater', "$arg->{raw} $op law'", "$arg->{trans} $comp{$op}");
+        my ($op) = @_;
+        my $arg = top('acc') or die "$op law': DIp $op Sambe'"; # missing noun
+        pushtok('greater', "$arg->{raw} $op law'", "$arg->{trans} $comp{$op}");
 }
 
 sub lesser {
-	my ($op) = @_;
-	my $arg = top('acc')
-		or die "$op puS: DIp ${op}be' Sambe'!";		# missing noun
-	my $greater = top('greater')
-		or die "$op puS: <<$op law'>> nung Sambe'!";
-						# preceding *op* law missing
-	pushtok('acc', "$greater->{raw} $arg->{raw} $op puS",
-		"$greater->{trans} $arg->{trans}");
+        my ($op) = @_;
+        my $arg = top('acc')
+                or die "$op puS: DIp ${op}be' Sambe'!";         # missing noun
+        my $greater = top('greater')
+                or die "$op puS: <<$op law'>> nung Sambe'!";
+                                                # preceding *op* law missing
+        pushtok('acc', "$greater->{raw} $arg->{raw} $op puS",
+                "$greater->{trans} $arg->{trans}");
 }
 
 # my %conj_h = ( "je"  => '&&',   "joq" => '||' );
@@ -1026,112 +1026,112 @@ my %conj_l = ( "'ej" => 'and',  "qoj" => 'or' );
 my $conj_l = enqr keys %conj_l;
 
 # sub conj_h {
-	# my ($conj) = @_;
-	# die "$conj: DIp poS Sambe'!"			# missing noun on left
-		# unless @stack && $stack[-1]{type} eq 'acc';
-	# pushtok('noun_conj', $conj, $conj_h{$conj});
+        # my ($conj) = @_;
+        # die "$conj: DIp poS Sambe'!"                  # missing noun on left
+                # unless @stack && $stack[-1]{type} eq 'acc';
+        # pushtok('noun_conj', $conj, $conj_h{$conj});
 # }
 
 sub conj_l {
-	pushtok('sent_conj', $_[0], $conj_l{$_[0]});
+        pushtok('sent_conj', $_[0], $conj_l{$_[0]});
 }
 
 
 FILTER {
-	$DEBUG = grep /yIQIj/, @_;
-	$HONOURABLE = !grep /tera('|::)nganHol/, @_;
-	my $TRANS = grep /yImugh/, @_;
-	@stack = ();
-	$translation[0] = "";
-	pos $_ = 0;
-	while (pos $_ < length $_) {
-		   /\G\s+(#.*|jay')?/gc	# skip ws, invective, and comments
-		or /\G!/gc		and done
-		or /\G$conj_l/gc	and conj_l("$1")
-		# or /\G$conj_h/gc	and conj_h("$1")
-		or /\G($number)/gc	and pushtok('acc',"$1",to_Terran($1))
-		or /\G(<<(.*?)>>('e')?)/gc
-					and pushtok($3?'object':'acc',"$1",qq{qq<$2>})
-		or /\G(<(.*?)>('e')?)/gc
-					and pushtok($3?'object':'acc',"$1",qq{q<$2>})
-		or /\G($comp)\s+law'/gc	and greater("$1")
-		or /\G($comp)\s+puS/gc	and lesser("$1")
-		or /\G$n_decl/gc	and decl(nostop $1)
-		or /\G$sub_decl/gc	and sub_decl(nostop $1)
-		or /\G$sing$v_usage/gc	and usage("$1")
-		or /\G$sing$v_go/gc	and go("$1")
-		or /\G$any$v_listop/gc	and listop("$1")
-		or /\G$any$v_blockop/gc	and blockop("$1")
-		or /\G$sing$v_match/gc	and match("$1")
-		or /\G$any$v_change/gc	and change("$1")
-		or /\G$sing$v_arg1/gc	and arg1("$1")
-		or /\G$sing$v_arg1_da/gc	and arg1_da("$1")
-		or /\G$plur$v_arg2/gc	and arg2("$1")
-		# or /\G$plur$v_arg2_i/gc	and arg2_i("$1")
-		or /\G$sing$v_arg2_da/gc	and arg2_da("$1")
-		or /\G$sing$v_arg2_a/gc	and arg2_a("$1")
-		or /\G$any$v_args/gc	and args("$1")
-		or /\G$any$v_args_da/gc	and args_da("$1")
-		or /\G$sing$v_unop/gc	and unop("$1")
-		or /\G$sing$v_unop_dpre/gc
-					and unop_dpre("$1")
-		or /\G$sing$v_unop_dpost/gc
-					and unop_dpost("$1")
-		or /\G$plur$v_binop/gc	and binop("$1")
-		or /\G$v_binop_np/gc	and binop("$1")
-		or /\G$any$v_binop_d/gc	and binop_d("$1")
-		or /\G$plur$v_ternop/gc	and ternop("$1")
-		or /\G$control/gc	and control("$1")
-		or /\G[yt]I([^\s!]+?)vetlh$EOW/gc
-					and args_ur(nostop $1)
-		or /\G[yt]I([^\s!]+)/gc	and args_u(nostop $1)
-		or /\G[{]/gc		and startblock
-		or /\G[}]/gc		and endblock
-		or /\G[(]/gc		and startlist
-		or /\G[)]($nsuff)/gc	and endlist("$1")
-		or /\G((\S+?)$s_decl$EOW)/gc
-					and pushtok('dat', "$1",
-						    "$s_decl{$3} ".
-						    ($sigil{substr$3,0,3}||'$').
-						    nostop $2)
-		or /\G((?:nuqDaq\s+)?(\S+?)laHwI'($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3}, "$1",
-						    "\\&".nostop $2)
-		or /\G(nuqDaq\s+(\S+?)($type)($nsuff)$EOW)/gc
-					and pushtok($nsuff{$4}, "$1",
-						    "\\".$sigil{$3}.nostop $2)
-		or /\G((\S+?)($type)vetlh($nsuff)$EOW)/gc
-					and pushtok($nsuff{$4}, "$1",
-						    $sigil{$3}
-						    . "{".nostop($2)."}")
-		or /\G(nuqDaq\s+$noun_abl($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    "\\*$noun_abl{$2}")
-		or /\G(nuqDaq\s+$noun_dat($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    "\\*$noun_dat{$2}")
-		or /\G($noun_abl($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    $noun_abl{$2})
-		or /\G($noun_dat($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    $noun_dat{$2})
-		or /\G(nuqDaq\s+$noun_acc($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    "\\$noun_acc{$2}")
-		or /\G($noun_acc($nsuff)$EOW)/gc
-					and pushtok($nsuff{$3},"$1",
-						    $noun_acc{$2})
-		or /\G((\S+?)($type)($nsuff)$EOW)/gc
-					and pushtok($nsuff{$4},"$1",
-						    "$sigil{$3}". nostop $2) 
-		or /\G(.+)\b/gc		and die "<<$1>>Daq ngoq SovlaHbe'"
-							# Unrecognizable code
-	}
-	die "ngoq tlhol:\n\t" . join(" ", map $_->{raw}, @stack) . "\n "
-		if @stack;				# unprocessed code
-	$_ = $translation[0];
-	print STDERR and exit if $TRANS;
+        $DEBUG = grep /yIQIj/, @_;
+        $HONOURABLE = !grep /tera('|::)nganHol/, @_;
+        my $TRANS = grep /yImugh/, @_;
+        @stack = ();
+        $translation[0] = "";
+        pos $_ = 0;
+        while (pos $_ < length $_) {
+                   /\G\s+(#.*|jay')?/gc # skip ws, invective, and comments
+                or /\G!/gc              and done
+                or /\G$conj_l/gc        and conj_l("$1")
+                # or /\G$conj_h/gc      and conj_h("$1")
+                or /\G($number)/gc      and pushtok('acc',"$1",to_Terran($1))
+                or /\G(<<(.*?)>>('e')?)/gc
+                                        and pushtok($3?'object':'acc',"$1",qq{qq<$2>})
+                or /\G(<(.*?)>('e')?)/gc
+                                        and pushtok($3?'object':'acc',"$1",qq{q<$2>})
+                or /\G($comp)\s+law'/gc and greater("$1")
+                or /\G($comp)\s+puS/gc  and lesser("$1")
+                or /\G$n_decl/gc        and decl(nostop $1)
+                or /\G$sub_decl/gc      and sub_decl(nostop $1)
+                or /\G$sing$v_usage/gc  and usage("$1")
+                or /\G$sing$v_go/gc     and go("$1")
+                or /\G$any$v_listop/gc  and listop("$1")
+                or /\G$any$v_blockop/gc and blockop("$1")
+                or /\G$sing$v_match/gc  and match("$1")
+                or /\G$any$v_change/gc  and change("$1")
+                or /\G$sing$v_arg1/gc   and arg1("$1")
+                or /\G$sing$v_arg1_da/gc        and arg1_da("$1")
+                or /\G$plur$v_arg2/gc   and arg2("$1")
+                # or /\G$plur$v_arg2_i/gc       and arg2_i("$1")
+                or /\G$sing$v_arg2_da/gc        and arg2_da("$1")
+                or /\G$sing$v_arg2_a/gc and arg2_a("$1")
+                or /\G$any$v_args/gc    and args("$1")
+                or /\G$any$v_args_da/gc and args_da("$1")
+                or /\G$sing$v_unop/gc   and unop("$1")
+                or /\G$sing$v_unop_dpre/gc
+                                        and unop_dpre("$1")
+                or /\G$sing$v_unop_dpost/gc
+                                        and unop_dpost("$1")
+                or /\G$plur$v_binop/gc  and binop("$1")
+                or /\G$v_binop_np/gc    and binop("$1")
+                or /\G$any$v_binop_d/gc and binop_d("$1")
+                or /\G$plur$v_ternop/gc and ternop("$1")
+                or /\G$control/gc       and control("$1")
+                or /\G[yt]I([^\s!]+?)vetlh$EOW/gc
+                                        and args_ur(nostop $1)
+                or /\G[yt]I([^\s!]+)/gc and args_u(nostop $1)
+                or /\G[{]/gc            and startblock
+                or /\G[}]/gc            and endblock
+                or /\G[(]/gc            and startlist
+                or /\G[)]($nsuff)/gc    and endlist("$1")
+                or /\G((\S+?)$s_decl$EOW)/gc
+                                        and pushtok('dat', "$1",
+                                                    "$s_decl{$3} ".
+                                                    ($sigil{substr$3,0,3}||'$').
+                                                    nostop $2)
+                or /\G((?:nuqDaq\s+)?(\S+?)laHwI'($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3}, "$1",
+                                                    "\\&".nostop $2)
+                or /\G(nuqDaq\s+(\S+?)($type)($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$4}, "$1",
+                                                    "\\".$sigil{$3}.nostop $2)
+                or /\G((\S+?)($type)vetlh($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$4}, "$1",
+                                                    $sigil{$3}
+                                                    . "{".nostop($2)."}")
+                or /\G(nuqDaq\s+$noun_abl($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    "\\*$noun_abl{$2}")
+                or /\G(nuqDaq\s+$noun_dat($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    "\\*$noun_dat{$2}")
+                or /\G($noun_abl($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    $noun_abl{$2})
+                or /\G($noun_dat($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    $noun_dat{$2})
+                or /\G(nuqDaq\s+$noun_acc($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    "\\$noun_acc{$2}")
+                or /\G($noun_acc($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$3},"$1",
+                                                    $noun_acc{$2})
+                or /\G((\S+?)($type)($nsuff)$EOW)/gc
+                                        and pushtok($nsuff{$4},"$1",
+                                                    "$sigil{$3}". nostop $2) 
+                or /\G(.+)\b/gc         and die "<<$1>>Daq ngoq SovlaHbe'"
+                                                        # Unrecognizable code
+        }
+        die "ngoq tlhol:\n\t" . join(" ", map $_->{raw}, @stack) . "\n "
+                if @stack;                              # unprocessed code
+        $_ = $translation[0];
+        print STDERR and exit if $TRANS;
 }
 qr/^\s*(Lingua(::|')tlhInganHol(::|')yIghun)?\s*(yI)?lo'Qo'\s*!\s*$/;
 
@@ -1147,16 +1147,16 @@ Lingua::tlhInganHol::yIghun - "The Klingon Language: hey you, program in it!"
 
 =head1 SYNOPSIS
 
-	use Lingua::tlhInganHol::yIghun;
-	
-	<<'u' nuqneH!\n>> tIghItlh!
-	 
-	{
-		wa' yIQong!
-		Dotlh 'oH yIHoH yInob 
-			qoj <mIw Sambe'> 'oH yIHegh jay'!
-		<Qapla'!\n> yIghItlh!
-	} jaghmey tIqel!
+        use Lingua::tlhInganHol::yIghun;
+        
+        <<'u' nuqneH!\n>> tIghItlh!
+         
+        {
+                wa' yIQong!
+                Dotlh 'oH yIHoH yInob 
+                        qoj <mIw Sambe'> 'oH yIHegh jay'!
+                <Qapla'!\n> yIghItlh!
+        } jaghmey tIqel!
 
 
 =head1 DESCRIPTION
@@ -1273,13 +1273,13 @@ B<vay'pu'> ---> C<%something>
 
 Some variables have special names. Specifically:
 
-B<'oH>		C<$_>		I<it>
+B<'oH>          C<$_>           I<it>
 
-B<biH>		C<@_>		I<them>
+B<biH>          C<@_>           I<them>
 
-B<chevwI'>	C<$/>		I<that which separates>
+B<chevwI'>      C<$/>           I<that which separates>
 
-B<natlhwI>	C<$|>		I<that which drains>
+B<natlhwI>      C<$|>           I<that which drains>
 
 
 =head2 Subscripting arrays and hashes
@@ -1429,11 +1429,11 @@ Variable declarations also use suffixes for lexicals:
 
 =over
 
-B<scalarwIj!>	--->	my $scalar;
+B<scalarwIj!>   --->    my $scalar;
 
-B<arraymeywIj!>	--->	my @array;
+B<arraymeywIj!> --->    my @array;
 
-B<hashpu'wI'!>	--->	my %hash;
+B<hashpu'wI'!>  --->    my %hash;
 
 =back
 
@@ -1441,11 +1441,11 @@ for package variables:
 
 =over
 
-B<scalarmaj!>	--->	our $scalar;
+B<scalarmaj!>   --->    our $scalar;
 
-B<arraymeymaj!>	--->	our @array;
+B<arraymeymaj!> --->    our @array;
 
-B<hashpu'ma'!>	--->	our %hash;
+B<hashpu'ma'!>  --->    our %hash;
 
 =back
 
@@ -1453,11 +1453,11 @@ and for temporaries:
 
 =over
 
-B<scalarvam!>	--->	local $scalar;
+B<scalarvam!>   --->    local $scalar;
 
-B<arraymeyvam!>	--->	local @array;
+B<arraymeyvam!> --->    local @array;
 
-B<hashpu'vam!>	--->	local %hash;
+B<hashpu'vam!>  --->    local %hash;
 
 =back
 
@@ -1478,7 +1478,7 @@ character string. For example:
 
 =over 
 
-B<E<lt>petaQE<gt> yiHegh!>	--->	C<die 'scum';>
+B<E<lt>petaQE<gt> yiHegh!>      --->    C<die 'scum';>
 
 =back
 
@@ -1490,7 +1490,7 @@ character string. For example:
 
 =over 
 
-B<E<lt>E<lt>petaQ\nE<gt>E<gt> yiHegh!>	--->	C<die "scum\n";>
+B<E<lt>E<lt>petaQ\nE<gt>E<gt> yiHegh!>  --->    C<die "scum\n";>
 
 =back
 
@@ -1502,7 +1502,7 @@ as grouping expressions. For example:
 
 =over
 
-B<xvaD wa' (cha maH yIfunc) yIlogh yInob!>	--->	C<$x = 1*func(2,10)>
+B<xvaD wa' (cha maH yIfunc) yIlogh yInob!>      --->    C<$x = 1*func(2,10)>
 
 =back
 
@@ -1523,7 +1523,7 @@ They are used to group complete statements. For example:
 
 =over
 
-B<x joq { 'oH yIghItlh! 'oHvaD yIghur! } yIvang!>   --->	S<$x && do{ print $_; $_++ }>
+B<x joq { 'oH yIghItlh! 'oHvaD yIghur! } yIvang!>   --->        S<$x && do{ print $_; $_++ }>
 
 =back
 
@@ -1553,10 +1553,10 @@ For a complete list, see L<Appendix 2|"Appendix 2: Terran-thlIngan dictionary">
 
 Note that they all appear at the end of their argument lists:
 
-	Qapla' vum toDuj yIchel buDghach yichelHa' yInob!
-	       |_| |___| |____| 
+        Qapla' vum toDuj yIchel buDghach yichelHa' yInob!
+               |_| |___| |____| 
                |______________| |______| |_______| 
-	|____| |_________________________________| |____|
+        |____| |_________________________________| |____|
 
 
 Most of the above examples begin with B<yI-> or B<tI->.
@@ -1762,7 +1762,7 @@ To create an object, the B<DoQ> (I<claim ownership of>) command is used:
             buvwIj bIH yInIH!              # my $class = shift @_;
             De'pu'wI' bIH yInob!           # %data = @_;
             nuqDaq De' buv yIDoQ yItatlh!  # return bless \%data, $class;
-        } chu' nab!			   # sub new
+        } chu' nab!                        # sub new
 
 
 =head2 Comparisons
@@ -1855,13 +1855,13 @@ B<teHtaHvISbe'> C<until>        I<while not being true>
 
 B<tIqel>        C<for(each)>    I<consider them>
 
-B<yIjaH>	C<goto>		I<go!>
+B<yIjaH>        C<goto>         I<go!>
 
-B<yInargh>	C<last>		I<escape!>
+B<yInargh>      C<last>         I<escape!>
 
-B<yItaH>	C<next>		I<go on>
+B<yItaH>        C<next>         I<go on>
 
-B<yInIDqa'>	C<redo>		I<try again>
+B<yInIDqa'>     C<redo>         I<try again>
 
 =back
 
@@ -1883,42 +1883,42 @@ command.
 A user-defined subroutine is specified in a B<betleH> delimited block,
 and given a name using the B<nab> (I<procedure>) specifier. For example:
 
-	{
-		<<Qapla'!\n>> ghItlh!
-	} doit nab!
+        {
+                <<Qapla'!\n>> ghItlh!
+        } doit nab!
 
 means:
 
-	sub doit {
-		print "Qapla'!\n";
-	}
+        sub doit {
+                print "Qapla'!\n";
+        }
 
 Such subroutines are then called using the (non-optional) B<yI->
 or B<tI-> prefix:
 
-	yIdoit!
+        yIdoit!
 
 Anonymous subroutines are created by omitting the name:
 
-	refwIj {
-		<<Qapla'!\n>> ghItlh!
-	} nab nob!
+        refwIj {
+                <<Qapla'!\n>> ghItlh!
+        } nab nob!
 
 which is:
 
-	my $ref = sub {
+        my $ref = sub {
                 print "Qapla'!\n";
         }
 
 Subroutine references can also be created by suffixing a subroutine name
 with B<-laHwI'> (I<one who can...>):
 
-	refwIj doitlaHwI' nob!
+        refwIj doitlaHwI' nob!
 
 Either way, the subroutine is called through a reference by appending the
 B<-vetlh> suffix (I<that...">) and prepending the imperative B<yI-> or B<tI->:
 
-	yIrefvetlh!
+        yIrefvetlh!
 
 
 =head2 Pattern matching
@@ -1928,22 +1928,22 @@ Terran Perl.
 
 To match against a pattern, the B<ghov> verb (I<recognize>) is used:
 
-	'oH <\d+> yIghov 'ej <<vItu'>> yIghItlh!
+        'oH <\d+> yIghov 'ej <<vItu'>> yIghItlh!
 
 which means:
 
-	$_ =~ m/\d+/ and print "found it";
+        $_ =~ m/\d+/ and print "found it";
 
 Note that the value being matched against must be explicitly specified,
 even if it is B<'oH>.
 
 To substitute against a pattern, use B<tam> (I<substitute>):
 
-	De'vaD <\d+> <\n> yItam!
+        De'vaD <\d+> <\n> yItam!
 
 which means:
 
-	$data =~ s/\d+/\n/;
+        $data =~ s/\d+/\n/;
 
 The container whose value is being substituted must be explicitly
 specified (again, even if it is B<'oH>). It is also the target of the
@@ -2207,7 +2207,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         DoQ             bless
         DuQ             splice
         ghItlh          print
-        ghochna'	STDOUT (used as name -- i.e. in an open)
+        ghochna'        STDOUT (used as name -- i.e. in an open)
         ghochna'DoS     STDOUT (used as handle -- i.e. in a print)
         ghomchoH        chdir
         ghomneH         wantarray
@@ -2282,7 +2282,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         pongwI'         caller
         poQ             require
         poS             open
-        luSpetna'	STDERR (used as name -- i.e. in an open)
+        luSpetna'       STDERR (used as name -- i.e. in an open)
         luSpetna'DoS    STDERR (used as handle -- i.e. in a print)
         Qaw'            delete
         qoj             or
