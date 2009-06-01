@@ -1,22 +1,16 @@
-Lingua-tlhInganHol-yIghun version 0.0.1
+Lingua-tlhInganHol-yIghun!
 
     Allow Terran scum to program in the Warrior's Tongue!
 
 INSTALLATION
 
-To install this module, run the following commands:
+To install this module, make sure you have Module::Build installed and
+then run the following commands:
 
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-Alternatively, to install with Module::Build, you can use the following commands:
-
-	perl Build.PL
-	./Build
-	./Build test
-	./Build install
+     perl Build.PL
+     ./Build
+     ./Build test
+     ./Build install
 
 
 DEPENDENCIES
@@ -25,6 +19,9 @@ DEPENDENCIES
     Valour
     Strength
     Honour
+    Test::More
+    Test::Harness       3.00 or stronger
+    Filter::Simple
 
 
 COPYRIGHT AND LICENCE
