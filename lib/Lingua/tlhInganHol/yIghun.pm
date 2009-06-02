@@ -31,6 +31,7 @@ my %numword = ( 0 => q{pagh},
             );
 
 my %val = reverse %numword;
+$val{SanID} = 1000; # alias for 'SaD'
 
 my $numword = '(?='. join('|',values %numword) . ')';
 $numword{unit} = '(?:'. join('|',@numword{0..9}) . ')';
@@ -44,7 +45,7 @@ my $number = qr{  $numword
                   (?:($numword{unit})($numword{+10}))? [ ]*
                   (?:($numword{unit}?) (?!$numword))? [ ]*
                   (  DoD [ ]* (?:$numword{unit} [ ]+)+ )?
-                }xi;
+                }x;
 
 sub to_Terran
 {
@@ -162,7 +163,7 @@ sub to_go {
 }
 
 my %v_listop = qw(
-        mISHa'          sort
+        mISHa'moH       sort
         wIv             grep
         choH            map
 );
@@ -233,9 +234,9 @@ my %v_arg0 = qw (
         Qong            sleep
         loS             wait
         mach            lc
-        wa'Dichmach     lcfirst
+        wa'DIchmach     lcfirst
         tIn             uc
-        wa'DichtIn      ucfirst
+        wa'DIchtIn      ucfirst
         nargh           quotemeta
 );
 my $v_arg0 = enqr keys %v_arg0;
@@ -253,16 +254,16 @@ my %v_arg1 = qw (
         joqtaHHa'       cos
         poD             int
         maHghurtaH      log
-        lo'Sar          sqrt
+        loS'ar          sqrt
         mIS             rand
         mIScher         srand
         mach            lc
-        wa'Dichmach     lcfirst
+        wa'DIchmach     lcfirst
         tIn             uc
-        wa'DichtIn      ucfirst
+        wa'DIchtIn      ucfirst
         nargh           quotemeta
         juv             length
-        sIj             split
+        SIj             split
         toq'a'          defined
         mob             scalar
         lo'laH          values
@@ -300,7 +301,7 @@ sub to_arg1 {
 }
 
 my %v_arg1_da = qw (
-        poS             open
+        poSmoH          open
         laD             readline
         bot             flock
         nup             truncate
@@ -331,7 +332,7 @@ my %v_arg2 = qw (
         naw'choH        chmod
         pIn'a'choH      chown
         rar             link
-        neq             rename
+        pongchoH        rename
 );
 my $v_arg2 = enqr keys %v_arg2;
 sub to_arg2 {
@@ -388,7 +389,7 @@ sub to_arg2_a {
 my %v_args = qw (
         noD             reverse
         boS             pack
-        sIj             split
+        SIj             split
         muv             join
         tatlh           return
         Hegh            die
@@ -400,9 +401,10 @@ my %v_args = qw (
         muH             kill
         chot            kill
         bach            kill
-        Hiv             kill
-        DIS             kill
+        HIv             kill
+        mevmoH          kill
         jey             kill
+        chargh          kill
 );
 my $v_args = enqr keys %v_args;
 sub to_args {
@@ -442,7 +444,7 @@ my %v_args_da = qw (
         lagh            substr
         yuv             push
         DuQ             splice
-        poS             open
+        poSmoH          open
         nej             seek
         bagh            tie
         jegh            unshift
@@ -538,9 +540,9 @@ sub to_ternop {
 
 my %control = qw(
         teHchugh        if
-        teHchughbe'     unless
+        teHbe'chugh     unless
         teHtaHvIS       while
-        teHtaHvISbe'    until
+        teHbe'taHvIS    until
         tIqel           for
 );
 my $control = enqr keys %control;
@@ -730,7 +732,7 @@ sub arg1_da {
         my ($func) = @_;
         my $arg = top('dat','abl','dat_handle','abl_handle')
                 or $func =~ /$v_arg0/
-                or die "$func: DoS ghap Hal Sambe'!\n" ;
+                or die "$func: DoS Hal ghap Sambe'!\n" ;
                                                 # missing target or source
         $func = tok('verb',$func,$v_arg1_da{$func});
         if ($HONOURABLE && $func->{trans} =~ /print|readline/) {
@@ -758,7 +760,7 @@ sub arg2_da {
         my $arg2 = top('acc')
                 or die "$func: De' Sambe'!\n";          # missing data
         my $arg1 = top('dat','abl','dat_handle','abl_handle')
-                or die "$func: DoS ghap Hal Sambe'!\n";
+                or die "$func: DoS Hal ghap Sambe'!\n";
                                                 # missing target or source
         $func = tok('verb',$func,$v_arg2_da{$func});
         pushtok('acc', translate($arg1, $arg2, $func));
@@ -929,13 +931,13 @@ sub object {
 sub done {
         my $cmd = top('cmd','acc','dat')
                 or die +(@stack ? "<<$stack[-1]{raw}>>Daq: " : "") .
-                        'rIn pIHbe!';
+                        "rIn pIHbe'!";
                                                         # unexpected ending
         $cmd = "$cmd->{trans};\n";
         while (my $conj = top('sent_conj')) {
                 my $left = top('cmd','acc','dat')
                     or die +(@stack ? "<<$stack[-1]{raw} $conj>>Daq: " : "") .
-                           "ra' PoS pIHbe!";            # unexpected left cmd
+                           "ra' poS pIHbe'!";            # unexpected left cmd
                 $cmd = "$left->{trans} $conj->{trans} $cmd";
         }
         $translation[-1] .= $cmd;
@@ -950,9 +952,9 @@ sub startblock {
 sub endblock {
         print STDERR qq<Treated "}" as end of block\n> if $DEBUG;
         top('start of block')
-                or @stack and die "betleH HivtaH Sampa' veQ: $stack[0]{raw}\n "
+                or @stack and die "HIvbogh betleH tlhopDaq veQ Sam: $stack[0]{raw}\n "
                                         # garbage found before attacking batleth
-                or die "betleH HivtaH Sambe'";
+                or die "HIvbogh betleH Sambe'";
                                         # missing attacking batleth
         pushtok('block', "{...}", "{".pop(@translation)."}");
 }
@@ -976,7 +978,7 @@ sub endlist {
         print STDERR qq<Treated ")" as end of $type list"\n> if $DEBUG;
         my @args;
         while (1) {
-                die "'etlh HivtaH Sambe'" unless @stack;
+                die "HIvbogh 'etlh Sambe'" unless @stack;
                                                 # missing attacking sword
                 my $arg = pop @stack;
                 last if $arg->{type} eq 'start of list';
@@ -996,7 +998,7 @@ my %sigil  = ( "mey" => '@', "pu'" => '%', "" => '$' );
 my $type   = qr/${\join"|",reverse sort keys %sigil}/;
 
 my %comp   = ( "tIn"     => '>',   "mach"     => '<',
-               "tInbe'"  => '<=',  "machbe'"  => '<',
+               "tInbe'"  => '<=',  "machbe'"  => '>=',
                "nung"    => 'lt',  "tlha'"    => 'gt',
                "nungbe'" => 'ge',  "tlha'be'" => 'le',
              );
@@ -1013,7 +1015,7 @@ sub lesser {
         my $arg = top('acc')
                 or die "$op puS: DIp ${op}be' Sambe'!";         # missing noun
         my $greater = top('greater')
-                or die "$op puS: <<$op law'>> nung Sambe'!";
+                or die "$op puS: nungbogh <<$op law'>> Sambe'!";
                                                 # preceding *op* law missing
         pushtok('acc', "$greater->{raw} $arg->{raw} $op puS",
                 "$greater->{trans} $arg->{trans}");
@@ -1039,7 +1041,7 @@ sub conj_l {
 
 FILTER {
         $DEBUG = grep /yIQIj/, @_;
-        $HONOURABLE = !grep /tera('|::)nganHol/, @_;
+        $HONOURABLE = !grep /DIvI('|::)Hol/, @_;
         my $TRANS = grep /yImugh/, @_;
         @stack = ();
         $translation[0] = "";
@@ -1125,7 +1127,7 @@ FILTER {
                 or /\G((\S+?)($type)($nsuff)$EOW)/gc
                                         and pushtok($nsuff{$4},"$1",
                                                     "$sigil{$3}". nostop $2)
-                or /\G(.+)\b/gc         and die "<<$1>>Daq ngoq SovlaHbe'"
+                or /\G(.+)\b/gc         and die "<<$1>>Daq ngoq yajlaHbe'"
                                                         # Unrecognizable code
         }
         die "ngoq tlhol:\n\t" . join(" ", map $_->{raw}, @stack) . "\n "
@@ -1275,11 +1277,11 @@ Some variables have special names. Specifically:
 
 B<'oH>          C<$_>           I<it>
 
-B<biH>          C<@_>           I<them>
+B<bIH>          C<@_>           I<them>
 
 B<chevwI'>      C<$/>           I<that which separates>
 
-B<natlhwI>      C<$|>           I<that which drains>
+B<natlhwI'>     C<$|>           I<that which drains>
 
 
 =head2 Subscripting arrays and hashes
@@ -1304,7 +1306,7 @@ which, in the Warrior's Tongue, is:
 
 =over
 
-B<'ejDo'meyvo' vagh DIchvo' wej Dich yIHoH!>
+B<'ejDo'meyvo' vagh DIchvo' wej DIch yIHoH!>
 
 =back
 
@@ -1366,7 +1368,7 @@ dereferencer. So:
 
 =over
 
-B<jepaHDIlIwI'vo' E<lt>E<lt>stupidE<gt>E<gt> Suqvo' wa' DIch yIHoH!>
+B<jepaHDIlI'wI'vo' E<lt>E<lt>stupidE<gt>E<gt> Suqvo' wa' DIch yIHoH!>
 
 =back
 
@@ -1416,7 +1418,7 @@ C<%enemies = (stupidity=E<gt>1, ignorance=E<gt>2);>
 
 =over
 
-B<jepaHDIlIwI'vo' wa' Dichvo' E<lt>E<lt>stupidE<gt>E<gt> SuqvaD ghur!>
+B<jepaHDIlI'wI'vo' wa' Dichvo' E<lt>E<lt>stupidE<gt>E<gt> SuqvaD ghur!>
 
 C<++$jeopardyPoster-E<gt>[1]{"stupid"};>
 
@@ -1472,37 +1474,37 @@ The only punctuation components of the language are:
 
 =item B<E<lt>> and B<E<gt>>
 
-These are B<pach poS> (I<left claw>) and B<pach niH>
+These are B<pach poS> (I<left claw>) and B<pach nIH>
 (I<right claw>). They delimit an uninterpolated
 character string. For example:
 
 =over
 
-B<E<lt>petaQE<gt> yiHegh!>      --->    C<die 'scum';>
+B<E<lt>petaQE<gt> yIHegh!>      --->    C<die 'scum';>
 
 =back
 
 =item B<E<lt>E<lt>> and B<E<gt>E<gt>>
 
-These are B<pachmey poS> (I<left claws>) and B<pachmey niH>
+These are B<pachmey poS> (I<left claws>) and B<pachmey nIH>
 (I<right claws>). They delimit an interpolated
 character string. For example:
 
 =over
 
-B<E<lt>E<lt>petaQ\nE<gt>E<gt> yiHegh!>  --->    C<die "scum\n";>
+B<E<lt>E<lt>petaQ\nE<gt>E<gt> yIHegh!>  --->    C<die "scum\n";>
 
 =back
 
 =item B<(> and B<)>
 
-These are B<'etlh HivtaH> and B<'etlh HubtaH>
+These are B<HIvbogh 'etlh> and B<Hubbogh 'etlh>
 (I<attaching sword> and I<defending sword>). They are used
 as grouping expressions. For example:
 
 =over
 
-B<xvaD wa' (cha maH yIfunc) yIlogh yInob!>      --->    C<$x = 1*func(2,10)>
+B<xvaD wa' (cha' maH tIfunc) tIlogh yInob!>      --->    C<$x = 1*func(2,10)>
 
 =back
 
@@ -1511,13 +1513,13 @@ of grouping is not needed due to the RPN ordering of Klingon:
 
 =over
 
-B<xvaD wa' cha maH yIchel yIlogh yInob!>        --->    C<$x = 1*(2+10)>
+B<xvaD wa' cha' maH tIchel tIlogh yInob!>        --->    C<$x = 1*(2+10)>
 
 =back
 
 =item B<{> and B<}>
 
-These are B<betleH HivtaH> and B<betleH HubtaH>
+These are B<HIvbogh betleH> and B<Hubbogh betleH>
 (I<attacking batleth> and I<defending batleth>).
 They are used to group complete statements. For example:
 
@@ -1553,7 +1555,7 @@ For a complete list, see L<Appendix 2|"Appendix 2: Terran-thlIngan dictionary">
 
 Note that they all appear at the end of their argument lists:
 
-        Qapla' vum toDuj yIchel buDghach yichelHa' yInob!
+        Qapla' vum toDuj tIchel buDghach tIchelHa' yInob!
                |_| |___| |____|
                |______________| |______| |_______|
         |____| |_________________________________| |____|
@@ -1633,7 +1635,7 @@ For example:
 
 =over
 
-B<pivaD wej DoD wa' loS wa' vagh yInob!>        --->    C<$pi = 3.1415;>
+B<pivaD wej DoD wa' loS wa' vagh Hut yInob!>    --->    C<$pi = 3.14159;>
 
 =back
 
@@ -1691,7 +1693,7 @@ B<zvaD x yInob 'ej yIy!>        --->    C<($z = $x) or y();>
 
 =back
 
-Note that (as the above exampe illustrate) changing precedence often
+Note that (as the above example illustrate) changing precedence often
 necessitates a radical change in word order.
 
 
@@ -1710,7 +1712,7 @@ For example, the procedural command:
 
 =over
 
-B<Hich DoSmey yIbaH!>
+B<HIch DoSmey tIbaH!>
 
 =back
 
@@ -1728,7 +1730,7 @@ topicalizer B<'e'>:
 
 =over
 
-B<Hich'e' DoSmey yIbaH!>
+B<HIch'e' DoSmey tIbaH!>
 
 =back
 
@@ -1761,7 +1763,7 @@ To create an object, the B<DoQ> (I<claim ownership of>) command is used:
         {
             buvwIj bIH yInIH!              # my $class = shift @_;
             De'pu'wI' bIH yInob!           # %data = @_;
-            nuqDaq De' buv yIDoQ yItatlh!  # return bless \%data, $class;
+            nuqDaq De' buv tIDoQ yItatlh!  # return bless \%data, $class;
         } chu' nab!                        # sub new
 
 
@@ -1817,7 +1819,7 @@ The comparators tlhInganHol::yIghun supports are:
 
 =item C<E<gt>=> : B<machbe'>
 
-=item C<E<lt>> : B<tInbe'>
+=item C<E<lt>=> : B<tInbe'>
 
 =item C<gt> : B<tlha'>
 
@@ -1833,9 +1835,9 @@ For example:
 
 =over
 
-B<{ E<lt>E<lt>qaplaE<gt>E<gt> yIghItlh } mebmey mach law' maH mach puS je Soj nungbe' law' E<lt>qaghE<gt> nungbe' puS teHchugh!>
+B<{ E<lt>E<lt>Qapla'E<gt>E<gt> yIghItlh } mebmey mach law' wa'maH mach puS Soj nungbe' law' E<lt>qaghE<gt> nungbe' puS je teHchugh!>
 
-C<print "qapla!" if @guests < 10 && $food ge 'qagh';>
+C<print "Qapla'!" if @guests < 10 && $food ge 'qagh';>
 
 =back
 
@@ -1847,11 +1849,11 @@ The flow control directives are:
 
 B<teHchugh>     C<if>           I<if is true>
 
-B<teHchughbe'>  C<unless>       I<if is not true>
+B<teHbe'chugh>  C<unless>       I<if is not true>
 
 B<teHtaHvIS>    C<while>        I<while being true>
 
-B<teHtaHvISbe'> C<until>        I<while not being true>
+B<teHbe'taHvIS> C<until>        I<while not being true>
 
 B<tIqel>        C<for(each)>    I<consider them>
 
@@ -1867,7 +1869,8 @@ B<yInIDqa'>     C<redo>         I<try again>
 
 =head2 Builtin functions
 
-Perl builtins are represented as imperative verbs in tlhInganHol::yIghun.
+Perl builtins are represented as imperative verbs in
+Lingua::tlhInganHol::yIghun.
 L<Appendix 1|"Appendix 1: thlIngan-Terran dictionary">
 has the complete list.
 
@@ -1957,14 +1960,15 @@ By comparison, programming in Terran languages is an insipid, bloodless
 experience.
 
 Of particular note is the special programming construct: B<jay'>.
-In Klingon it may be appended to a sentence to enhance it's emotional
+In Klingon it may be appended to a sentence to enhance its emotional
 intensity. Thus:
 
 =over
 
-B<qaSpu' nuq 'e' yIja'!>
+B<qaSpu'bogh wanI' HIja'!>
 
 I<Tell me what happened!>
+(Literally, "Report to me the events that occurred!")
 
 =back
 
@@ -1972,18 +1976,18 @@ becomes:
 
 =over
 
-B<qaSpu' nuq 'e' yIja' jay'!>
+B<qaSpu'bogh wanI' HIja' jay'!>
 
 I<Tell me what the *#@& happened!>
 
 =back
 
 This useful and satisfying internal documentation technique can be
-used anywhere in a tlhInganHol::yIghun program. For example:
+used anywhere in a Lingua::tlhInganHol::yIghun program. For example:
 
 =over
 
-B<{ E<lt>E<lt>De' sambe'E<gt>E<gt> yIghItlh jay'! } tu' yItlhoch teHchugh!>
+B<{ E<lt>E<lt>De' Sambe'E<gt>E<gt> yIghItlh jay'! } tu' yItlhoch teHchugh!>
 
 C<if (!$found) { *#@&-ing print "Missing data!" }>
 
@@ -1992,9 +1996,9 @@ C<if (!$found) { *#@&-ing print "Missing data!" }>
 
 =head2 Module control options
 
-If the module is imported with the argument B<yIQij>:
+If the module is imported with the argument B<yIQIj>:
 
-        use Lingua::tlhInganHol::yIghun "yIQij";
+        use Lingua::tlhInganHol::yIghun "yIQIj";
 
 it runs in debugging mode.
 
@@ -2005,10 +2009,10 @@ If the module is imported with the argument B<yImugh>:
 it demeans itself to merely translating your glorious Klingon Perl code
 into a pale Terran Perl imitation.
 
-If the module is imported with the argument B<tera'nganHol> (or
-B<tera::nganHol>:
+If the module is imported with the argument B<DIvI'Hol> (or
+B<DIvI::Hol>:
 
-        use Lingua::tlhInganHol::yIghun "tera'nganHol";
+        use Lingua::tlhInganHol::yIghun "DIvI'Hol";
 
 it debases itself to output numeric values in Terran, rather than in
 the original Klingon.
@@ -2059,7 +2063,7 @@ You forgot to specify the first argument! You clod!
 
 You forgot to specify the second argument! You knucklehead!
 
-=item C<<< %s: DoS ghap Hal Sambe'! >>>
+=item C<<< %s: DoS Hal ghap Sambe'! >>>
 
 You forgot to specify a filehandle! You oaf!
 
@@ -2087,19 +2091,19 @@ You forgot to specify a test for a control statement! You dummy!
 
 You forgot to specify an object! You dunce!
 
-=item C<<< %s %sDaq: ra' PoS pIHbe! >>>
+=item C<<< %s %sDaq: ra' poS pIHbe'! >>>
 
 What is that command doing on the left of that conjunction?! You dimwit!
 
-=item C<<< %s %sDaq: 'rIn pIHbe! >>>
+=item C<<< %s %sDaq: rIn pIHbe'! >>>
 
 Where is the rest of the command?! You nincompoop!
 
-=item C<<< betleH HivtaH Sampa' veQ: %s >>>
+=item C<<< HIvbogh betleH tlhopDaq veQ Sam: %s >>>
 
 What is that garbage before the opening brace?! You dunderhead!
 
-=item C<<< 'etlh HivtaH Sambe' >>>
+=item C<<< HIvbogh 'etlh Sambe' >>>
 
 Where is the opening parenthesis? You numbskull!
 
@@ -2107,7 +2111,7 @@ Where is the opening parenthesis? You numbskull!
 
 Where is the variable you're comparing?! You goose!
 
-=item C<<< %s puS: <<%s law>> nung Sambe' >>>
+=item C<<< %s puS: nungbogh <<%s law'>> Sambe' >>>
 
 Where is the B<I<comparator> law'> for this comparison? You blockhead!
 
@@ -2115,7 +2119,7 @@ Where is the B<I<comparator> law'> for this comparison? You blockhead!
 
 Where is the left operand?! You chump!
 
-=item C<<< %sDaq ngoq Sovlahbe' >>>
+=item C<<< %sDaq ngoq yajlaHbe' >>>
 
 This code is meaningless! You nimrod!
 
@@ -2142,7 +2146,7 @@ L<http://github.com/schwern/lingua-tlhinganhol-yighun/tree/master>
 =head1 BUGS
 
 In this module??? I should kill you where you stand!  You speak the
-lies of a tah-keck!  If a p'tahk such as you dares insult our honor
+lies of a tah-keck!  If a p'tahk such as you dares insult our honour
 with your bug report, you will send it to
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Lingua-tlhInganHol-yIghun>!
 
@@ -2151,7 +2155,7 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Lingua-tlhInganHol-yIghun>!
 
 The Klingon Language Institute <http://www.kli.org/>
 
-The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
+The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
 
 
 =head1 COPYRIGHT
@@ -2185,9 +2189,9 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         buv             ref
         cha'            2
         chaqpoDmoH      chomp
+        chargh          kill
         chel            + (addition)
         chelHa'         - (subtraction)
-        chen            ..
         chen            ..
         chevwI'         $/
         chImmoH         undef
@@ -2201,7 +2205,6 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         DIch            ...[...]
         DIchvaD         ...[...] (when it's an lvalue)
         DIchvo'         ...[...] (when it's to be further indexed)
-        DIS             kill
         Dochmeyvam      @_
         Dochvam         $_
         DoQ             bless
@@ -2218,7 +2221,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         ghum            alarm
         HaD             study
         Hegh            die
-        Hiv             kill
+        HIv             kill
         HoH             kill
         Hut             9
         ja'             tell
@@ -2238,7 +2241,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         lo'             use
         lo'laH          values
         lo'Qo'          no
-        lo'Sar          sqrt
+        loS'ar          sqrt
         logh            x
         loS             4
         loS             wait
@@ -2250,11 +2253,12 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         maHghurtaH      log
         maj             our
         mej             exit
+        mevmoH          kill
         mI'pIm'a'       !=
         mI'rap'a'       ==
         mIS             rand
         mIScher         srand
-        mISHa'          sort
+        mISHa'moH       sort
         mob             scalar
         mol             dump
         mugh            tr
@@ -2265,7 +2269,6 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         natlhwI'        $|
         naw'choH        chmod
         nej             seek
-        neq             rename
         netlh           -0000
         nIH             shift
         nob             =
@@ -2279,9 +2282,10 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         poD             int
         poDmoH          chop
         pong            keys
+        pongchoH        rename
         pongwI'         caller
         poQ             require
-        poS             open
+        poSmoH          open
         luSpetna'       STDERR (used as name -- i.e. in an open)
         luSpetna'DoS    STDERR (used as handle -- i.e. in a print)
         Qaw'            delete
@@ -2292,14 +2296,13 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         rap'a'          eq
         rar             link
         rIn             continue
-        rIn             continue
         rIn'a'          eof
         Sach            glob
         SaD             -000
         Sam             index
         SanID           -000
         Say'moH         reset
-        sIj             split
+        SIj             split
         So'             crypt
         Soch            7
         SoQmoH          close
@@ -2311,9 +2314,9 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         tam             s
         tatlh           return
         teHchugh        if
-        teHchughbe'     unless
+        teHbe'chugh     unless
         teHtaHvIS       while
-        teHtaHvISbe'    until
+        teHbe'taHvIS    until
         teq             unlink
         tI-             imperative prefix (2 or more arguments)
         tIn             uc
@@ -2327,8 +2330,8 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         vang            do
         vatlh           -00
         wa'             1
-        wa'Dichmach     lcfirst
-        wa'DichtIn      ucfirst
+        wa'DIchmach     lcfirst
+        wa'DIchtIn      ucfirst
         wej             3
         wI'             my
         wIj             my
@@ -2354,9 +2357,9 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         =               nob             "give"
         ..              chen            "build up"
         {...}           {...}           "attacking batleth...defending batleth"
-                                        (betleH HivtaH...betleH HubtaH")
+                                        (HIvbogh betleH...Hubbogh betleH")
         (...)           (...)           "attacking sword...defending sword"
-                                        ('etlh HivtaH...'etlh HubtaH")
+                                        (HIvbogh 'etlh...Hubbogh 'etlh")
         ...[...]        DIch            ordinal suffix
         ...{...}        Suq             "get"
         ...?...:...     wuq             "decide"
@@ -2416,12 +2419,13 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         kill            muH             "execute"
         kill            chot            "murder"
         kill            bach            "shoot"
-        kill            Hiv             "attack"
-        kill            DIS             "stop"
+        kill            HIv             "attack"
+        kill            mevmoH          "stop"
         kill            jey             "defeat"
+        kill            chargh          "conquer"
         last            yInargh         "escape"
         lc              mach            "be small"
-        lcfirst         wa'Dichmach     "the first be small"
+        lcfirst         wa'DIchmach     "the first be small"
         le              tInbe' law'     "be not larger"
         length          juv             "measure"
         link            rar             "connect"
@@ -2438,7 +2442,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         next            yItaH           "go on"
         no              lo'Qo'          "don't use"
         not             tlhoch          "contradict"
-        open            poS             "open"
+        open            poSmoH          "open"
         or              qoj             "inclusive or"
         our             ma'             "our sapient"
         our             maj             "our"
@@ -2452,7 +2456,7 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         readline        laD             "read"
         redo            yInIDqa'        "try again"
         ref             buv             "classify"
-        rename          neq             "move"
+        rename          pongchoH        "change name"
         require         poQ             "demand"
         reset           Say'moH         "cause to be clean"
         return          tatlh           "return something"
@@ -2464,10 +2468,10 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         shift           nIH             "steal"
         sin             joqtaH          "waving"
         sleep           Qong            "sleep"
-        sort            mISHa'          "be not mixed up"
+        sort            mISHa'moH       "make not mixed up"
         splice          DuQ             "stab"
         split           sIj             "slit"
-        sqrt            lo'Sar          "fourth how much"
+        sqrt            loS'ar          "fourth how much"
         srand           mIScher         "establish confusion"
         stat            Del             "describe"
         STDIN  <name>   mungna'vo'      "from the origin"
@@ -2486,14 +2490,14 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         tr              mugh            "translate"
         truncate        nup             "decrease"
         uc              tIn             "be big"
-        ucfirst         wa'DichtIn      "the first be big"
+        ucfirst         wa'DIchtIn      "the first be big"
         undef           chImmoH         "cause to be uninhabited"
-        unless          teHchughbe'     "if not true"
+        unless          teHbe'chugh     "if not true"
         unlink          teq             "remove"
         unpack          boSHa'          "un collect"
         unshift         jegh            "surrender"
         untie           baghHa'         "untie"
-        until           teHtaHvISbe'    "while not true"
+        until           teHbe'taHvIS    "while not true"
         use             lo'             "use"
         values          lo'laH          "be valuable"
         wait            loS             "wait for"
@@ -2522,4 +2526,4 @@ The Varaq programming language <http://www.geocities.com/connorbd/varaq/>
         $_              'oH             "it"
         @_              bIH             "them"
         $/              chevwI'         "that which separates"
-        $|              natlhwI'        "drain?"
+        $|              natlhwI'        "that which drains"
