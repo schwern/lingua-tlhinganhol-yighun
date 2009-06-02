@@ -13,3 +13,4 @@ README
 t/'ol.t
 t/00.load.t
 t/pod.t
+t/01.to_Terran.t
