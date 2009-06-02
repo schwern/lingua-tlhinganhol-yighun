@@ -25,6 +25,7 @@
 
 # Avoid temp and backup files.
 ~$
+\B\..*\.swp$
 \.old$
 \#$
 \b\.#
