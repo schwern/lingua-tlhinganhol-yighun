@@ -1,3 +1,5 @@
+#!perl -w
+
 use Lingua::tlhInganHol::yIghun
 #       "yImugh",
 #       "yIQIj",
