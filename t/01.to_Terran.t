@@ -1,4 +1,4 @@
-use Test::More tests => 46;
+use Test::More tests => 47;
 
 require_ok Lingua::tlhInganHol::yIghun;
 
@@ -13,6 +13,7 @@ is to_Terran("wa'maH"), '10', "wa'maH";
 isnt to_Terran("wa'mah"), '10', "wa'mah";
 is to_Terran("HutmaH vagh"), '95', "HutmaH vagh";
 isnt to_Terran("Hut vagh"), '95', "Hut vagh";
+isnt to_Terran("HutmaHvagh"), '95', "HutmaHvagh";
 is to_Terran("HutmaH vagh DoD cha' Soch"), '95.27', "HutmaH vagh DoD cha' Soch";
 is to_Terran("HutmaH vagh DoD cha' Soch "), '95.27', "HutmaH vagh DoD cha' Soch (with space)";
 is to_Terran("wej DoD wa' loS wa' vagh Hut "), '3.14159', 'pi (with space)';
