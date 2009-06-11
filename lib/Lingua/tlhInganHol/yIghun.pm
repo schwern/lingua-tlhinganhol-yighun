@@ -29,29 +29,68 @@ my %numword = ( 0 => q{pagh},
                 100000 => q{bIp},
                 1000000 => q{'uy'},
             );
+my %altnumword = ( 1000 => q{SanID} );
 
-my %val = reverse %numword;
-$val{SanID} = 1000; # alias for 'SaD'
+my %val = (reverse(%numword), reverse(%altnumword));
 
-my $numword = '(?='. join('|',values %numword) . ')';
-$numword{unit} = '(?:'. join('|',@numword{0..9}) . ')';
+my $numword = '(?:' . join('|',values(%numword),values(%altnumword)) . ')';
+$numword{unit} = '(?:' . join('|',@numword{1..9}) . ')';
+$numword{order} = '(?:' . join('|',@numword{qw/10 100 1000 10000 100000 1000000/},@altnumword{qw/1000/}) . ')';
 
-my $number = qr{  $numword
-                  (?:($numword{unit})($numword{+1000000}))? [ ]*
-                  (?:($numword{unit})($numword{+100000}))? [ ]*
-                  (?:($numword{unit})($numword{+10000}))? [ ]*
-                  (?:($numword{unit})($numword{+1000}))? [ ]*
-                  (?:($numword{unit})($numword{+100}))? [ ]*
-                  (?:($numword{unit})($numword{+10}))? [ ]*
-                  (?:($numword{unit}?) (?!$numword))? [ ]*
-                  (  DoD [ ]* (?:$numword{unit} [ ]+)+ )?
+my $number = qr{  (?=$numword)
+
+                  (?:
+                        ($numword{unit})()
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+10})
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+100})
+                        (?: [ ]+ ($numword{unit})($numword{+10}) )?
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+1000}|$altnumword{+1000})
+                        (?: [ ]+ ($numword{unit})($numword{+100}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+10}) )?
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+10000})
+                        (?: [ ]+ ($numword{unit})($numword{+1000}|$altnumword{+1000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+100}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+10}) )?
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+100000})
+                        (?: [ ]+ ($numword{unit})($numword{+10000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+1000}|$altnumword{+1000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+100}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+10}) )?
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  |
+                        ($numword{unit})($numword{+1000000})
+                        (?: [ ]+ ($numword{unit})($numword{+100000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+10000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+1000}|$altnumword{+1000}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+100}) )?
+                        (?: [ ]+ ($numword{unit})($numword{+10}) )?
+                        (?: [ ]+ ($numword{unit})() )?
+                        (?!$numword)
+                  )
+
+                  ( [ ]+ DoD (?: [ ]+ $numword{unit} )+ )?
                 }x;
 
 sub to_Terran
 {
         return "" unless $_[0];
         my @bits = $_[0] =~ $number or return;
-        my @decimals = split /\s+/, ($bits[-1] && $bits[-1] =~ s/^DoD\s*// ? pop @bits : 'pagh');
+        my @decimals = split /\s+/, ($bits[-1] && $bits[-1] =~ s/^\s+DoD\s+// ? pop @bits : 'pagh');
         my ($value,$unit,$order) = 0;
         $value += $val{$unit||$order&&"wa'"||"pagh"} * $val{$order||"wa'"}
                 while ($unit, $order) = splice @bits, 0, 2;
@@ -65,10 +104,14 @@ sub to_Terran
 
 sub from_Terran
 {
-        my ($number, $decimal) = split /[.]/, $_[0];
+        return $numword{0} unless defined $_[0]
+                && length $_[0]
+                && $_[0] =~ /^[0-9.]/;
+        my ($raw_input) = $_[0] =~ /^([0-9.]+)/;
+        my ($number, $decimal) = split /[.]/, $raw_input;
         my @decimals = $decimal ? split(//, $decimal) : ();
         my @bits = split //, $number;
-        return $numword{0} unless grep $_, @bits;
+        return $numword{0} unless grep($_, @bits) || @decimals;
         my $order = 1;
         my @numwords;
         my $last;
@@ -78,6 +121,7 @@ sub from_Terran
                 $numwords[-1] .= $numword{$order} if $order > 1;
         }
         continue { $order *= 10 }
+        @numwords = ($numword{0}) unless @numwords;
         @decimals = map($numword{$_}, @decimals);
         unshift @decimals, 'DoD' if @decimals;
         return join " ", reverse(@numwords), @decimals;
@@ -87,9 +131,7 @@ sub print_honourably {
         my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
         @_ = $_ unless @_;
         my $output = join "", map {defined($_) ? $_ : ""} @_;
-        # $output =~ s{(\d+)[.](\d+)}
-                    # {from_Terran($1).' DoD '.map {from_Terran($_)} split '',$2}e;
-        $output =~ s{(\d+(.\d+)?)}{from_Terran($1)}e;
+        $output =~ s{(\d+(.\d+)?)}{from_Terran($1)}eg;
         if ($handle) { print {$handle} $output }
         else         { print $output }
 }
@@ -100,10 +142,7 @@ sub readline_honourably {
         if ($handle) { $input = readline $handle }
         else         { $input = readline }
         return unless defined $input;
-        $input =~ s{($number)\s*DoD((\s*$number)+)}
-                   {to_Terran($1) . '.' .
-                    map {to_Terran($_)} grep /\S/, split /($number)/,$2}e;
-        $input =~ s{($number)}{to_Terran($1)}e;
+        $input =~ s{($number)}{to_Terran($1)}eg;
         return $input;
 }
 
