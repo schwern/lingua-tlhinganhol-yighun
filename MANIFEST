@@ -14,3 +14,5 @@ t/'ol.t
 t/00.load.t
 t/pod.t
 t/01.to_Terran.t
+t/03.enqr.t
+t/03.inqr.t
