@@ -87,9 +87,7 @@ sub print_honourably {
         my $handle = ref($_[0]) eq 'GLOB' ? shift : undef;
         @_ = $_ unless @_;
         my $output = join "", map {defined($_) ? $_ : ""} @_;
-        # $output =~ s{(\d+)[.](\d+)}
-                    # {from_Terran($1).' DoD '.map {from_Terran($_)} split '',$2}e;
-        $output =~ s{(\d+(.\d+)?)}{from_Terran($1)}e;
+        $output =~ s{(\d+(.\d+)?)}{from_Terran($1)}eg;
         if ($handle) { print {$handle} $output }
         else         { print $output }
 }
