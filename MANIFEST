@@ -17,3 +17,4 @@ t/01.to_Terran.t
 t/02.from_Terran.t
 t/03.enqr.t
 t/03.inqr.t
+t/04.print_honourably.t
