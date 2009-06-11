@@ -139,10 +139,7 @@ sub readline_honourably {
         if ($handle) { $input = readline $handle }
         else         { $input = readline }
         return unless defined $input;
-#       $input =~ s{($number)\s*DoD((\s*$number)+)}
-#                  {to_Terran($1) . '.' .
-#                   map {to_Terran($_)} grep /\S/, split /($number)/,$2}e;
-        $input =~ s{($number)}{to_Terran($1)}e;
+        $input =~ s{($number)}{to_Terran($1)}eg;
         return $input;
 }
 
