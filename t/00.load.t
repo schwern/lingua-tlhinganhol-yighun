@@ -6,5 +6,5 @@ BEGIN {
     use_ok( 'Lingua::tlhInganHol::yIghun' );
 }
 
-<<Testing Lingua::tlhInganHol::yIghun $Lingua::tlhInganHol::yIghun::VERSION">>
+<<Testing Lingua::tlhInganHol::yIghun $Lingua::tlhInganHol::yIghun::VERSION>>
 yIdiag!
