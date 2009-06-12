@@ -1499,7 +1499,7 @@ B<E<lt>E<lt>petaQ\nE<gt>E<gt> yIHegh!>  --->    C<die "scum\n";>
 =item B<(> and B<)>
 
 These are B<HIvbogh 'etlh> and B<Hubbogh 'etlh>
-(I<attaching sword> and I<defending sword>). They are used
+(I<attacking sword> and I<defending sword>). They are used
 as grouping expressions. For example:
 
 =over
