@@ -104,10 +104,14 @@ sub to_Terran
 
 sub from_Terran
 {
-        my ($number, $decimal) = split /[.]/, $_[0];
+        return $numword{0} unless defined $_[0]
+                && length $_[0]
+                && $_[0] =~ /^[0-9.]/;
+        my ($raw_input) = $_[0] =~ /^([0-9.]+)/;
+        my ($number, $decimal) = split /[.]/, $raw_input;
         my @decimals = $decimal ? split(//, $decimal) : ();
         my @bits = split //, $number;
-        return $numword{0} unless grep $_, @bits;
+        return $numword{0} unless grep($_, @bits) || @decimals;
         my $order = 1;
         my @numwords;
         my $last;
@@ -117,6 +121,7 @@ sub from_Terran
                 $numwords[-1] .= $numword{$order} if $order > 1;
         }
         continue { $order *= 10 }
+        @numwords = ($numword{0}) unless @numwords;
         @decimals = map($numword{$_}, @decimals);
         unshift @decimals, 'DoD' if @decimals;
         return join " ", reverse(@numwords), @decimals;
