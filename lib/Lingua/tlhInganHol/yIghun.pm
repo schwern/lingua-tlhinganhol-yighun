@@ -40,7 +40,7 @@ my $number = qr{  $numword
                   (?:($numword{unit})($numword{+1000000}))? [ ]*
                   (?:($numword{unit})($numword{+100000}))? [ ]*
                   (?:($numword{unit})($numword{+10000}))? [ ]*
-                  (?:($numword{unit})($numword{+1000}))? [ ]*
+                  (?:($numword{unit})($numword{+1000}|SanID))? [ ]*
                   (?:($numword{unit})($numword{+100}))? [ ]*
                   (?:($numword{unit})($numword{+10}))? [ ]*
                   (?:($numword{unit}?) (?!$numword))? [ ]*
