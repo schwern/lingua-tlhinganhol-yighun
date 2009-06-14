@@ -41,3 +41,7 @@
 
 # Avoid tags files that are only for development
 \btags$
+
+# Avoid development stdout and stderr files
+\bout$
+\berr$
