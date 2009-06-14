@@ -1,0 +1,226 @@
+!_TAG_FILE_SORTED	1	;" this tag file is sorted ASCIIbetically
+$DEBUG	yIghun.pm	/^my $DEBUG/;"	kind:s	file:
+$EOW	yIghun.pm	/^my $EOW/;"	kind:s	file:
+$HONOURABLE	yIghun.pm	/^my $HONOURABLE/;"	kind:s	file:
+$VERSION	yIghun.pm	/^our $VERSION/;"	kind:s
+$any	yIghun.pm	/^my $any/;"	kind:s	file:
+$comp	yIghun.pm	/^my $comp/;"	kind:s	file:
+$n_decl	yIghun.pm	/^my $n_decl/;"	kind:s	file:
+$noun_abl	yIghun.pm	/^my $noun_abl/;"	kind:s	file:
+$noun_acc	yIghun.pm	/^my $noun_acc/;"	kind:s	file:
+$noun_dat	yIghun.pm	/^my $noun_dat/;"	kind:s	file:
+$nsuff	yIghun.pm	/^my $nsuff/;"	kind:s	file:
+$number	yIghun.pm	/^my $number/;"	kind:s	file:
+$numword	yIghun.pm	/^my $numword/;"	kind:s	file:
+$plur	yIghun.pm	/^my $plur/;"	kind:s	file:
+$s_decl	yIghun.pm	/^my $s_decl/;"	kind:s	file:
+$sing	yIghun.pm	/^my $sing/;"	kind:s	file:
+$type	yIghun.pm	/^my $type/;"	kind:s	file:
+$v_arg0	yIghun.pm	/^my $v_arg0/;"	kind:s	file:
+$v_arg1	yIghun.pm	/^my $v_arg1/;"	kind:s	file:
+$v_arg1_da	yIghun.pm	/^my $v_arg1_da/;"	kind:s	file:
+$v_arg2	yIghun.pm	/^my $v_arg2/;"	kind:s	file:
+$v_arg2_a	yIghun.pm	/^my $v_arg2_a/;"	kind:s	file:
+$v_arg2_da	yIghun.pm	/^my $v_arg2_da/;"	kind:s	file:
+$v_args	yIghun.pm	/^my $v_args/;"	kind:s	file:
+$v_args_da	yIghun.pm	/^my $v_args_da/;"	kind:s	file:
+$v_binop	yIghun.pm	/^my $v_binop/;"	kind:s	file:
+$v_binop_d	yIghun.pm	/^my $v_binop_d/;"	kind:s	file:
+$v_binop_np	yIghun.pm	/^my $v_binop_np/;"	kind:s	file:
+$v_blockop	yIghun.pm	/^my $v_blockop/;"	kind:s	file:
+$v_change	yIghun.pm	/^my $v_change/;"	kind:s	file:
+$v_conj_l	yIghun.pm	/^my $v_conj_l/;"	kind:s	file:
+$v_control	yIghun.pm	/^my $v_control/;"	kind:s	file:
+$v_go	yIghun.pm	/^my $v_go/;"	kind:s	file:
+$v_listop	yIghun.pm	/^my $v_listop/;"	kind:s	file:
+$v_match	yIghun.pm	/^my $v_match/;"	kind:s	file:
+$v_sub_decl	yIghun.pm	/^my $v_sub_decl/;"	kind:s	file:
+$v_ternop	yIghun.pm	/^my $v_ternop/;"	kind:s	file:
+$v_unop	yIghun.pm	/^my $v_unop/;"	kind:s	file:
+$v_unop_dpost	yIghun.pm	/^my $v_unop_dpost/;"	kind:s	file:
+$v_unop_dpre	yIghun.pm	/^my $v_unop_dpre/;"	kind:s	file:
+$v_usage	yIghun.pm	/^my $v_usage/;"	kind:s	file:
+%altnumword	yIghun.pm	/^my %altnumword/;"	kind:h	file:
+%comp	yIghun.pm	/^my %comp/;"	kind:h	file:
+%n_decl	yIghun.pm	/^my %n_decl/;"	kind:h	file:
+%noun_abl	yIghun.pm	/^my %noun_abl/;"	kind:h	file:
+%noun_acc	yIghun.pm	/^my %noun_acc/;"	kind:h	file:
+%noun_dat	yIghun.pm	/^my %noun_dat/;"	kind:h	file:
+%nsuff	yIghun.pm	/^my %nsuff/;"	kind:h	file:
+%numword	yIghun.pm	/^my %numword/;"	kind:h	file:
+%s_decl	yIghun.pm	/^my %s_decl/;"	kind:h	file:
+%sigil	yIghun.pm	/^my %sigil/;"	kind:h	file:
+%v_arg0	yIghun.pm	/^my %v_arg0/;"	kind:h	file:
+%v_arg1	yIghun.pm	/^my %v_arg1/;"	kind:h	file:
+%v_arg1_da	yIghun.pm	/^my %v_arg1_da/;"	kind:h	file:
+%v_arg2	yIghun.pm	/^my %v_arg2/;"	kind:h	file:
+%v_arg2_a	yIghun.pm	/^my %v_arg2_a/;"	kind:h	file:
+%v_arg2_da	yIghun.pm	/^my %v_arg2_da/;"	kind:h	file:
+%v_args	yIghun.pm	/^my %v_args/;"	kind:h	file:
+%v_args_da	yIghun.pm	/^my %v_args_da/;"	kind:h	file:
+%v_binop	yIghun.pm	/^my %v_binop/;"	kind:h	file:
+%v_binop_d	yIghun.pm	/^my %v_binop_d/;"	kind:h	file:
+%v_binop_np	yIghun.pm	/^my %v_binop_np/;"	kind:h	file:
+%v_blockop	yIghun.pm	/^my %v_blockop/;"	kind:h	file:
+%v_change	yIghun.pm	/^my %v_change/;"	kind:h	file:
+%v_conj_l	yIghun.pm	/^my %v_conj_l/;"	kind:h	file:
+%v_control	yIghun.pm	/^my %v_control/;"	kind:h	file:
+%v_go	yIghun.pm	/^my %v_go/;"	kind:h	file:
+%v_listop	yIghun.pm	/^my %v_listop/;"	kind:h	file:
+%v_match	yIghun.pm	/^my %v_match/;"	kind:h	file:
+%v_sub_decl	yIghun.pm	/^my %v_sub_decl/;"	kind:h	file:
+%v_ternop	yIghun.pm	/^my %v_ternop/;"	kind:h	file:
+%v_unop	yIghun.pm	/^my %v_unop/;"	kind:h	file:
+%v_unop_dpost	yIghun.pm	/^my %v_unop_dpost/;"	kind:h	file:
+%v_unop_dpre	yIghun.pm	/^my %v_unop_dpre/;"	kind:h	file:
+%v_usage	yIghun.pm	/^my %v_usage/;"	kind:h	file:
+%val	yIghun.pm	/^my %val/;"	kind:h	file:
+@stack	yIghun.pm	/^my @stack/;"	kind:a	file:
+@translation	yIghun.pm	/^my @translation/;"	kind:a	file:
+DEBUG	yIghun.pm	/^my $DEBUG/;"	kind:s	file:
+EOW	yIghun.pm	/^my $EOW/;"	kind:s	file:
+FILTER	yIghun.pm	/^FILTER {/;"	kind:f	file:
+HONOURABLE	yIghun.pm	/^my $HONOURABLE/;"	kind:s	file:
+VERSION	yIghun.pm	/^our $VERSION/;"	kind:s
+altnumword	yIghun.pm	/^my %altnumword/;"	kind:h	file:
+any	yIghun.pm	/^my $any/;"	kind:s	file:
+arg1	yIghun.pm	/^sub arg1 {/;"	kind:f	file:
+arg1_da	yIghun.pm	/^sub arg1_da {/;"	kind:f	file:
+arg2	yIghun.pm	/^sub arg2 {/;"	kind:f	file:
+arg2_a	yIghun.pm	/^sub arg2_a {/;"	kind:f	file:
+arg2_da	yIghun.pm	/^sub arg2_da {/;"	kind:f	file:
+args	yIghun.pm	/^sub args {/;"	kind:f	file:
+args_da	yIghun.pm	/^sub args_da {/;"	kind:f	file:
+args_u	yIghun.pm	/^sub args_u {/;"	kind:f	file:
+args_ur	yIghun.pm	/^sub args_ur {/;"	kind:f	file:
+binop	yIghun.pm	/^sub binop {/;"	kind:f	file:
+binop_d	yIghun.pm	/^sub binop_d {/;"	kind:f	file:
+blockop	yIghun.pm	/^sub blockop {/;"	kind:f	file:
+change	yIghun.pm	/^sub change {/;"	kind:f	file:
+comp	yIghun.pm	/^my $comp/;"	kind:s	file:
+comp	yIghun.pm	/^my %comp/;"	kind:h	file:
+conj_l	yIghun.pm	/^sub conj_l {/;"	kind:f	file:
+control	yIghun.pm	/^sub control {/;"	kind:f	file:
+decl	yIghun.pm	/^sub decl {/;"	kind:f	file:
+done	yIghun.pm	/^sub done {/;"	kind:f	file:
+endblock	yIghun.pm	/^sub endblock {/;"	kind:f	file:
+endlist	yIghun.pm	/^sub endlist {/;"	kind:f	file:
+enqr	yIghun.pm	/^sub enqr {/;"	kind:f	file:
+from_Terran	yIghun.pm	/^sub from_Terran {/;"	kind:f	file:
+go	yIghun.pm	/^sub go {/;"	kind:f	file:
+greater	yIghun.pm	/^sub greater {/;"	kind:f	file:
+inqr	yIghun.pm	/^sub inqr {/;"	kind:f	file:
+lesser	yIghun.pm	/^sub lesser {/;"	kind:f	file:
+listop	yIghun.pm	/^sub listop {/;"	kind:f	file:
+match	yIghun.pm	/^sub match {/;"	kind:f	file:
+n_decl	yIghun.pm	/^my $n_decl/;"	kind:s	file:
+n_decl	yIghun.pm	/^my %n_decl/;"	kind:h	file:
+nostop	yIghun.pm	/^sub nostop {/;"	kind:f	file:
+noun_abl	yIghun.pm	/^my $noun_abl/;"	kind:s	file:
+noun_abl	yIghun.pm	/^my %noun_abl/;"	kind:h	file:
+noun_acc	yIghun.pm	/^my $noun_acc/;"	kind:s	file:
+noun_acc	yIghun.pm	/^my %noun_acc/;"	kind:h	file:
+noun_dat	yIghun.pm	/^my $noun_dat/;"	kind:s	file:
+noun_dat	yIghun.pm	/^my %noun_dat/;"	kind:h	file:
+nsuff	yIghun.pm	/^my $nsuff/;"	kind:s	file:
+nsuff	yIghun.pm	/^my %nsuff/;"	kind:h	file:
+number	yIghun.pm	/^my $number/;"	kind:s	file:
+numword	yIghun.pm	/^my $numword/;"	kind:s	file:
+numword	yIghun.pm	/^my %numword/;"	kind:h	file:
+object	yIghun.pm	/^sub object {/;"	kind:f	file:
+plur	yIghun.pm	/^my $plur/;"	kind:s	file:
+print_honourably	yIghun.pm	/^sub print_honourably {/;"	kind:f	file:
+pushtok	yIghun.pm	/^sub pushtok {/;"	kind:f	file:
+readline_honourably	yIghun.pm	/^sub readline_honourably {/;"	kind:f	file:
+s_decl	yIghun.pm	/^my $s_decl/;"	kind:s	file:
+s_decl	yIghun.pm	/^my %s_decl/;"	kind:h	file:
+sigil	yIghun.pm	/^my %sigil/;"	kind:h	file:
+sing	yIghun.pm	/^my $sing/;"	kind:s	file:
+stack	yIghun.pm	/^my @stack/;"	kind:a	file:
+startblock	yIghun.pm	/^sub startblock {/;"	kind:f	file:
+startlist	yIghun.pm	/^sub startlist {/;"	kind:f	file:
+sub_decl	yIghun.pm	/^sub sub_decl {/;"	kind:f	file:
+ternop	yIghun.pm	/^sub ternop {/;"	kind:f	file:
+to_Terran	yIghun.pm	/^sub to_Terran {/;"	kind:f	file:
+to_arg1	yIghun.pm	/^sub to_arg1 {/;"	kind:f	file:
+to_arg1_da	yIghun.pm	/^sub to_arg1_da {/;"	kind:f	file:
+to_arg2	yIghun.pm	/^sub to_arg2 {/;"	kind:f	file:
+to_arg2_a	yIghun.pm	/^sub to_arg2_a {/;"	kind:f	file:
+to_arg2_da	yIghun.pm	/^sub to_arg2_da {/;"	kind:f	file:
+to_args	yIghun.pm	/^sub to_args {/;"	kind:f	file:
+to_args_da	yIghun.pm	/^sub to_args_da {/;"	kind:f	file:
+to_args_u	yIghun.pm	/^sub to_args_u {/;"	kind:f	file:
+to_args_ur	yIghun.pm	/^sub to_args_ur {/;"	kind:f	file:
+to_binop	yIghun.pm	/^sub to_binop {/;"	kind:f	file:
+to_binop_d	yIghun.pm	/^sub to_binop_d {/;"	kind:f	file:
+to_blockop	yIghun.pm	/^sub to_blockop {/;"	kind:f	file:
+to_change	yIghun.pm	/^sub to_change {/;"	kind:f	file:
+to_control	yIghun.pm	/^sub to_control {/;"	kind:f	file:
+to_decl	yIghun.pm	/^sub to_decl {/;"	kind:f	file:
+to_go	yIghun.pm	/^sub to_go {/;"	kind:f	file:
+to_listop	yIghun.pm	/^sub to_listop {/;"	kind:f	file:
+to_match	yIghun.pm	/^sub to_match {/;"	kind:f	file:
+to_sub_decl	yIghun.pm	/^sub to_sub_decl {/;"	kind:f	file:
+to_ternop	yIghun.pm	/^sub to_ternop {/;"	kind:f	file:
+to_unop	yIghun.pm	/^sub to_unop {/;"	kind:f	file:
+to_unop_dpost	yIghun.pm	/^sub to_unop_dpost {/;"	kind:f	file:
+to_unop_dpre	yIghun.pm	/^sub to_unop_dpre {/;"	kind:f	file:
+to_usage	yIghun.pm	/^sub to_usage {/;"	kind:f	file:
+tok	yIghun.pm	/^sub tok {/;"	kind:f	file:
+top	yIghun.pm	/^sub top {/;"	kind:f	file:
+translate	yIghun.pm	/^sub translate {/;"	kind:f	file:
+translation	yIghun.pm	/^my @translation/;"	kind:a	file:
+type	yIghun.pm	/^my $type/;"	kind:s	file:
+unop	yIghun.pm	/^sub unop {/;"	kind:f	file:
+unop_dpost	yIghun.pm	/^sub unop_dpost {/;"	kind:f	file:
+unop_dpre	yIghun.pm	/^sub unop_dpre {/;"	kind:f	file:
+usage	yIghun.pm	/^sub usage {/;"	kind:f	file:
+v_arg0	yIghun.pm	/^my $v_arg0/;"	kind:s	file:
+v_arg0	yIghun.pm	/^my %v_arg0/;"	kind:h	file:
+v_arg1	yIghun.pm	/^my $v_arg1/;"	kind:s	file:
+v_arg1	yIghun.pm	/^my %v_arg1/;"	kind:h	file:
+v_arg1_da	yIghun.pm	/^my $v_arg1_da/;"	kind:s	file:
+v_arg1_da	yIghun.pm	/^my %v_arg1_da/;"	kind:h	file:
+v_arg2	yIghun.pm	/^my $v_arg2/;"	kind:s	file:
+v_arg2	yIghun.pm	/^my %v_arg2/;"	kind:h	file:
+v_arg2_a	yIghun.pm	/^my $v_arg2_a/;"	kind:s	file:
+v_arg2_a	yIghun.pm	/^my %v_arg2_a/;"	kind:h	file:
+v_arg2_da	yIghun.pm	/^my $v_arg2_da/;"	kind:s	file:
+v_arg2_da	yIghun.pm	/^my %v_arg2_da/;"	kind:h	file:
+v_args	yIghun.pm	/^my $v_args/;"	kind:s	file:
+v_args	yIghun.pm	/^my %v_args/;"	kind:h	file:
+v_args_da	yIghun.pm	/^my $v_args_da/;"	kind:s	file:
+v_args_da	yIghun.pm	/^my %v_args_da/;"	kind:h	file:
+v_binop	yIghun.pm	/^my $v_binop/;"	kind:s	file:
+v_binop	yIghun.pm	/^my %v_binop/;"	kind:h	file:
+v_binop_d	yIghun.pm	/^my $v_binop_d/;"	kind:s	file:
+v_binop_d	yIghun.pm	/^my %v_binop_d/;"	kind:h	file:
+v_binop_np	yIghun.pm	/^my $v_binop_np/;"	kind:s	file:
+v_binop_np	yIghun.pm	/^my %v_binop_np/;"	kind:h	file:
+v_blockop	yIghun.pm	/^my $v_blockop/;"	kind:s	file:
+v_blockop	yIghun.pm	/^my %v_blockop/;"	kind:h	file:
+v_change	yIghun.pm	/^my $v_change/;"	kind:s	file:
+v_change	yIghun.pm	/^my %v_change/;"	kind:h	file:
+v_conj_l	yIghun.pm	/^my $v_conj_l/;"	kind:s	file:
+v_conj_l	yIghun.pm	/^my %v_conj_l/;"	kind:h	file:
+v_control	yIghun.pm	/^my $v_control/;"	kind:s	file:
+v_control	yIghun.pm	/^my %v_control/;"	kind:h	file:
+v_go	yIghun.pm	/^my $v_go/;"	kind:s	file:
+v_go	yIghun.pm	/^my %v_go/;"	kind:h	file:
+v_listop	yIghun.pm	/^my $v_listop/;"	kind:s	file:
+v_listop	yIghun.pm	/^my %v_listop/;"	kind:h	file:
+v_match	yIghun.pm	/^my $v_match/;"	kind:s	file:
+v_match	yIghun.pm	/^my %v_match/;"	kind:h	file:
+v_sub_decl	yIghun.pm	/^my $v_sub_decl/;"	kind:s	file:
+v_sub_decl	yIghun.pm	/^my %v_sub_decl/;"	kind:h	file:
+v_ternop	yIghun.pm	/^my $v_ternop/;"	kind:s	file:
+v_ternop	yIghun.pm	/^my %v_ternop/;"	kind:h	file:
+v_unop	yIghun.pm	/^my $v_unop/;"	kind:s	file:
+v_unop	yIghun.pm	/^my %v_unop/;"	kind:h	file:
+v_unop_dpost	yIghun.pm	/^my $v_unop_dpost/;"	kind:s	file:
+v_unop_dpost	yIghun.pm	/^my %v_unop_dpost/;"	kind:h	file:
+v_unop_dpre	yIghun.pm	/^my $v_unop_dpre/;"	kind:s	file:
+v_unop_dpre	yIghun.pm	/^my %v_unop_dpre/;"	kind:h	file:
+v_usage	yIghun.pm	/^my $v_usage/;"	kind:s	file:
+v_usage	yIghun.pm	/^my %v_usage/;"	kind:h	file:
+val	yIghun.pm	/^my %val/;"	kind:h	file:

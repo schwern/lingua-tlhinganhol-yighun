@@ -38,3 +38,6 @@
 
 # Avoid archives of this distribution
 \bLingua-tlhInganHol-yIghun-[\d\.\_]+
+
+# Avoid tags files that are only for development
+\btags$

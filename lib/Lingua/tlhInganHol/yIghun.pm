@@ -86,8 +86,7 @@ my $number = qr{  (?=$numword)
                   ( [ ]+ DoD (?: [ ]+ $numword{unit} )+ )?
                 }x;
 
-sub to_Terran
-{
+sub to_Terran {
         return "" unless $_[0];
         my @bits = $_[0] =~ $number or return;
         my @decimals = split /\s+/, ($bits[-1] && $bits[-1] =~ s/^\s+DoD\s+// ? pop @bits : 'pagh');
@@ -102,8 +101,7 @@ sub to_Terran
         return $value;
 }
 
-sub from_Terran
-{
+sub from_Terran {
         my $arg = shift;
         return $numword{0} unless defined $arg
                 && length $arg
@@ -168,10 +166,10 @@ sub to_decl {
         return "$cmd->{trans} $name->{trans}";
 }
 
-my %sub_decl = qw(
+my %v_sub_decl = qw(
         nab             sub
 );
-my $sub_decl = enqr keys %sub_decl;
+my $v_sub_decl = enqr keys %v_sub_decl;
 sub to_sub_decl {
         my ($block, $name, $cmd) = @_;
         return "$cmd->{trans} $name->{trans}" unless $block->{trans};
@@ -578,14 +576,14 @@ sub to_ternop {
 }
 
 
-my %control = qw(
+my %v_control = qw(
         teHchugh        if
         teHbe'chugh     unless
         teHtaHvIS       while
         teHbe'taHvIS    until
         tIqel           for
 );
-my $control = enqr keys %control;
+my $v_control = enqr keys %v_control;
 sub to_control {
         my ($block, $condition, $control) = @_;
         return "$control->{trans} ($condition->{trans}) $block->{trans}";
@@ -695,7 +693,7 @@ sub sub_decl {
                 $block = top('block') || tok("","","");
         }
         $name->{trans} = nostop($name->{raw});
-        $decl = tok('verb',$decl,$sub_decl{$decl});
+        $decl = tok('verb',$decl,$v_sub_decl{$decl});
         if ($name->{trans}) { pushtok('cmd', translate($block,$name,$decl)) }
         else                { pushtok('acc', translate($block,$name,$decl)) }
 }
@@ -954,7 +952,7 @@ sub control {
                 or die "$control: tob Sambe'!\n";       # missing test
         my $block = top('block')
                 or die "$control: ngoqghom Sambe'!\n";  # missing code group
-        $control = tok('control',$control,$control{$control});
+        $control = tok('control',$control,$v_control{$control});
         pushtok('cmd', translate($block,$condition,$control));
 }
 
@@ -1061,21 +1059,21 @@ sub lesser {
                 "$greater->{trans} $arg->{trans}");
 }
 
-# my %conj_h = ( "je"  => '&&',   "joq" => '||' );
-my %conj_l = ( "'ej" => 'and',  "qoj" => 'or' );
+# my %v_conj_h = ( "je"  => '&&',   "joq" => '||' );
+my %v_conj_l = ( "'ej" => 'and',  "qoj" => 'or' );
 
-# my $conj_h = enqr keys %conj_h;
-my $conj_l = enqr keys %conj_l;
+# my $v_conj_h = enqr keys %v_conj_h;
+my $v_conj_l = enqr keys %v_conj_l;
 
 # sub conj_h {
         # my ($conj) = @_;
         # die "$conj: DIp poS Sambe'!"                  # missing noun on left
                 # unless @stack && $stack[-1]{type} eq 'acc';
-        # pushtok('noun_conj', $conj, $conj_h{$conj});
+        # pushtok('noun_conj', $conj, $v_conj_h{$conj});
 # }
 
 sub conj_l {
-        pushtok('sent_conj', $_[0], $conj_l{$_[0]});
+        pushtok('sent_conj', $_[0], $v_conj_l{$_[0]});
 }
 
 
@@ -1089,8 +1087,8 @@ FILTER {
         while (pos $_ < length $_) {
                    /\G\s+(#.*|jay')?/gc # skip ws, invective, and comments
                 or /\G!/gc              and done
-                or /\G$conj_l/gc        and conj_l("$1")
-                # or /\G$conj_h/gc      and conj_h("$1")
+                or /\G$v_conj_l/gc      and conj_l("$1")
+                # or /\G$v_conj_h/gc    and conj_h("$1")
                 or /\G($number)/gc      and pushtok('acc',"$1",to_Terran($1))
                 or /\G(<<(.*?)>>('e')?)/gc
                                         and pushtok($3?'object':'acc',"$1",qq{qq<$2>})
@@ -1099,7 +1097,7 @@ FILTER {
                 or /\G($comp)\s+law'/gc and greater("$1")
                 or /\G($comp)\s+puS/gc  and lesser("$1")
                 or /\G$n_decl/gc        and decl(nostop $1)
-                or /\G$sub_decl/gc      and sub_decl(nostop $1)
+                or /\G$v_sub_decl/gc    and sub_decl(nostop $1)
                 or /\G$sing$v_usage/gc  and usage("$1")
                 or /\G$sing$v_go/gc     and go("$1")
                 or /\G$any$v_listop/gc  and listop("$1")
@@ -1123,7 +1121,7 @@ FILTER {
                 or /\G$v_binop_np/gc    and binop("$1")
                 or /\G$any$v_binop_d/gc and binop_d("$1")
                 or /\G$plur$v_ternop/gc and ternop("$1")
-                or /\G$control/gc       and control("$1")
+                or /\G$v_control/gc     and control("$1")
                 or /\G[yt]I([^\s!]+?)vetlh$EOW/gc
                                         and args_ur(nostop $1)
                 or /\G[yt]I([^\s!]+)/gc and args_u(nostop $1)
