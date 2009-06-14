@@ -1573,6 +1573,20 @@ This is the B<tajmey gho> (I<circle of daggers>), which is used to
 indicate the beginning of a comment (which then runs to the end of the
 line). Its use is widely reviled as a sign of weakness.
 
+TODO: If the very first line after 'use Lingua::tlhInganHol::yIghun'
+starts with a comment, the comment is not recognised. This should either
+be documented suitably, or the parser should be modified so that this
+works as expected by puny Earthlings who don't go ahead and act, but
+first waffle around about what they are doing or why.
+
+(Technically: comments are only recognised after whitespace. So in the
+middle of a program, a line-initial comment will have a newline in front
+of it, and a line-ending comment should have a space in front of it, but
+a comment right on the first line of the script will have neither, so
+it's not recognised. The same problem would apply to a comment
+immediately following -- without a space -- the '!' statement
+terminator, for example.)
+
 =back
 
 =head2 Operators
