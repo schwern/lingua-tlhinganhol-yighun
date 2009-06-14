@@ -19,3 +19,4 @@ t/03.enqr.t
 t/03.inqr.t
 t/04.print_honourably.t
 t/05.readline_honourably.t
+t/06.mock.t
