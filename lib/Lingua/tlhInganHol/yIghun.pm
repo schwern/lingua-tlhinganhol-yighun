@@ -40,7 +40,7 @@ $numword{order} = '(?:' . join('|',@numword{qw/10 100 1000 10000 100000 1000000/
 my $number = qr{  (?=$numword)
 
                   (?:
-                        ($numword{unit})()
+                        ($numword{unit} | $numword{+0})()
                         (?!$numword)
                   |
                         ($numword{unit})($numword{+10})
