@@ -247,7 +247,7 @@ sub to_change {
         return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}><$becomes->{trans}>";
 }
 
-my %v_arg0 = qw (
+my %v_arg0 = qw(
         laD             readline
         chaqpoDmoH      chomp
         poDmoH          chop
@@ -280,7 +280,7 @@ my %v_arg0 = qw (
 );
 my $v_arg0 = enqr keys %v_arg0;
 
-my %v_arg1 = qw (
+my %v_arg1 = qw(
         tlhoch          not
         noD             reverse
         HaD             study
@@ -339,7 +339,7 @@ sub to_arg1 {
         return $func->{trans}."($arg->{trans})";
 }
 
-my %v_arg1_da = qw (
+my %v_arg1_da = qw(
         poSmoH          open
         laD             readline
         bot             flock
@@ -363,7 +363,7 @@ sub to_arg1_da {
         return $func->{trans}."($arg->{trans})";
 }
 
-my %v_arg2 = qw (
+my %v_arg2 = qw(
         qojHa'          atan2
         So'             crypt
         boSHa'          unpack
@@ -381,7 +381,7 @@ sub to_arg2 {
         return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
 }
 
-# my %v_arg2_i = qw (
+# my %v_arg2_i = qw(
 # );
 # my $v_arg2_i = enqr keys %v_arg2_i;
 ##  sub to_arg2_i {
@@ -389,7 +389,7 @@ sub to_arg2 {
         # return "$arg1->{trans} $func->{trans} $arg2->{trans}";
 # }
 
-my %v_arg2_da = qw (
+my %v_arg2_da = qw(
         DoQ             bless
         bot             flock
 );
@@ -403,7 +403,7 @@ sub to_arg2_da {
         return "$func->{trans}($arg1->{trans}, $arg2->{trans})";
 }
 
-my %v_arg2_a = qw (
+my %v_arg2_a = qw(
         DIch            [...]
         DIchvo'         [...]
         DIchvaD         [...]
@@ -425,7 +425,7 @@ sub to_arg2_a {
         return "$arg1->{trans}$func->{trans}";
 }
 
-my %v_args = qw (
+my %v_args = qw(
         noD             reverse
         boS             pack
         SIj             split
@@ -478,7 +478,7 @@ sub to_args_ur {
         return "$func->{trans}->()";
 }
 
-my %v_args_da = qw (
+my %v_args_da = qw(
         ghItlh          print
         lagh            substr
         yuv             push
@@ -502,7 +502,7 @@ sub to_args_da {
         return "$func->{trans}($arg1->{trans}$args)";
 }
 
-my %v_unop = qw (
+my %v_unop = qw(
         HUH             -
 );
 my $v_unop = enqr keys %v_unop;
@@ -511,7 +511,7 @@ sub to_unop {
         return "$op->{trans}$arg->{trans}";
 }
 
-my %v_unop_dpre = qw (
+my %v_unop_dpre = qw(
         ghur            ++
         nup             --
 );
@@ -521,7 +521,7 @@ sub to_unop_dpre {
         return "$op->{trans}$arg->{trans}";
 }
 
-my %v_unop_dpost = qw (
+my %v_unop_dpost = qw(
         ghurQav         ++
         nupQav          --
 );
@@ -531,7 +531,7 @@ sub to_unop_dpost {
         return "$arg->{trans}$op->{trans}";
 }
 
-my %v_binop = qw (
+my %v_binop = qw(
         'ov             cmp
         chel            +
         chelHa'         -
@@ -542,7 +542,7 @@ my %v_binop = qw (
 );
 my $v_binop = enqr keys %v_binop;
 
-my %v_binop_np = qw (
+my %v_binop_np = qw(
         logh            x
         je              &&
         joq             ||
@@ -558,7 +558,7 @@ sub to_binop {
         return "$left->{trans} $op->{trans} $right->{trans}";
 }
 
-my %v_binop_d = qw (
+my %v_binop_d = qw(
         nob             =
 );
 my $v_binop_d = enqr keys %v_binop_d;
@@ -567,7 +567,7 @@ sub to_binop_d {
         return "$left->{trans} $op->{trans} $right->{trans}";
 }
 
-my %v_ternop = qw (
+my %v_ternop = qw(
         wuq             ?:
 );
 my $v_ternop = enqr keys %v_ternop;
@@ -1014,7 +1014,7 @@ sub startlist {
 
 sub endlist {
         my $type = $nsuff{$_[0]};
-        print STDERR qq<Treated ")" as end of $type list"\n> if $DEBUG;
+        print STDERR qq<Treated ")" as end of $type list\n> if $DEBUG;
         my @args;
         while (1) {
                 die "HIvbogh 'etlh Sambe'" unless @stack;
