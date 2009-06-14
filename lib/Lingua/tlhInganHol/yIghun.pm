@@ -983,7 +983,7 @@ sub done {
 }
 
 sub startblock {
-        # print STDERR qq<Treated "{" as start of block\n> if $DEBUG;
+        print STDERR qq<Treated "{" as start of block\n> if $DEBUG;
         push @translation, "";
         pushtok('start of block', "{", "{");
 }
