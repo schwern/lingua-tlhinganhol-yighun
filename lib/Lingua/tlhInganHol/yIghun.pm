@@ -104,10 +104,11 @@ sub to_Terran
 
 sub from_Terran
 {
-        return $numword{0} unless defined $_[0]
-                && length $_[0]
-                && $_[0] =~ /^[0-9.]/;
-        my ($raw_input) = $_[0] =~ /^([0-9.]+)/;
+        my $arg = shift;
+        return $numword{0} unless defined $arg
+                && length $arg
+                && $arg =~ /^[0-9.]/;
+        my ($raw_input) = $arg =~ /^([0-9.]+)/;
         my ($number, $decimal) = split /[.]/, $raw_input;
         my @decimals = $decimal ? split(//, $decimal) : ();
         my @bits = split //, $number;
