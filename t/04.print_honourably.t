@@ -1,4 +1,4 @@
-use Test::More qw(no_plan);
+use Test::More tests => 10;
 
 require_ok Lingua::tlhInganHol::yIghun;
 
