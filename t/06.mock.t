@@ -1,8 +1,9 @@
 #!perl -w
 #
-use Test::More tests => 11;
+use Test::More tests => 40;
 use Carp;
 use Data::Dumper;
+use strict;
 my $DEBUG;
 
 BEGIN { $DEBUG = 0; }
@@ -10,6 +11,12 @@ BEGIN { $DEBUG = 0; }
 BEGIN { require_ok 'Lingua::tlhInganHol::yIghun' }
 
 my @callstack;
+my $vars;
+BEGIN { $vars = {} }
+
+# dummy subroutines to find our place in the call stack
+sub lIH { }
+sub van { }
 
 # Wrap a called subroutine in a way that will record the call stack.
 sub wrap {
@@ -18,6 +25,7 @@ sub wrap {
         if (!defined(&$fullname)) {
                 croak "Can't wrap non-existent function $subname";
         }
+        no strict "refs";
         my $original_function = *{$fullname}{CODE};
 
         no warnings 'redefine';
@@ -114,31 +122,134 @@ wrap $_ for qw(
 
 }
 
-# number
-note "Simple number";
+my %end_index;
+
+sub extract_stack($) {
+        my $step = shift;
+        # Find the portion of the callstack that's actually part of this step
+        my @stack = @callstack;
+        my($start_index, $end_index) = (-1, -1);
+        my $i;
+        for ($i = $end_index{($step - 1)} || 0; $i <= $#stack; $i++) {
+                my $entry = $stack[$i];
+                $start_index = $i
+                        if $entry->{name} eq 'pushtok'
+                        && $entry->{args}->[2] =~ /^lIH\($step\)$/;
+                $end_index{$step} = $end_index = $i
+                        if $entry->{name} eq 'pushtok'
+                        && $entry->{args}->[2] =~ /^van\($step\)$/;
+        }
+        carp "Can't find start index for step $step!" unless $start_index >= 0;
+        carp "Can't find end index for step $step!" unless $end_index >= 0;
+        @stack = @stack[$start_index+1 .. $end_index-3];
+        warn "Step $step: using stack " . Dumper(\@stack) if $DEBUG;
+        return @stack;
+}
 
 my $Zol = [sub {
-        # remove stuff that's just for calling us
-        splice @callstack, -6;
-        is scalar(@callstack), 3, '3 entries on callstack';
-        is $callstack[0]{name}, 'to_Terran', 'translate number first';
-        is scalar(@{$callstack[0]{args}}), 1, 'to_Terran($)';
-        is $callstack[0]{args}[0], "loSvatlh wa'maH cha'", 'to_Terran(arg)';
-        is scalar(@{$callstack[0]{result}}), 1, '$ = to_Terran';
-        is $callstack[0]{result}[0], '412', 'to_Terran = 412';
-        is $callstack[1]{name}, 'pushtok', 'Push token';
-        is $callstack[1]{args}[0], 'acc', 'token->type = "acc"';
-        is $callstack[1]{args}[1], "loSvatlh wa'maH cha'", 'token->raw';
-        is $callstack[1]{args}[2], '412', 'token->trans = 412';
-}];
+        note "Simple number";
+        my $step = shift;
+        is $step, 0, 'step 0';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 2, '2 entries on callstack';
+        is $stack[0]{name}, 'to_Terran', 'translate number first';
+        is scalar(@{$stack[0]{args}}), 1, 'to_Terran($)';
+        is $stack[0]{args}[0], "loSvatlh wa'maH cha'", 'to_Terran(arg)';
+        is scalar(@{$stack[0]{result}}), 1, '$ = to_Terran';
+        is $stack[0]{result}[0], '412', 'to_Terran = 412';
+        is $stack[1]{name}, 'pushtok', 'Push token';
+        is $stack[1]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[1]{args}[1], "loSvatlh wa'maH cha'", 'token->raw';
+        is $stack[1]{args}[2], '412', 'token->trans = 412';
+},
+sub {
+        note "Double-quoted string (1)";
+        my $step = shift;
+        is $step, 1, 'step 1';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 1, '1 entry on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token';
+        is $stack[0]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[0]{args}[1], '<< maHIv>>', 'token->raw';
+        my $result = eval $stack[0]{args}[2];
+        is $@, '', 'no error evaluating token->trans';
+        is $result, ' maHIv', 'token->trans';
+},
+sub {
+        note "Double-quoted string (2)";
+        my $step = shift;
+        is $step, 2, 'step 2';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 1, '1 entry on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token';
+        is $stack[0]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[0]{args}[1], '<< tab\\tnewline\\nalarm\\a>>', 'token->raw';
+        my $result = eval $stack[0]{args}[2];
+        is $@, '', 'no error evaluating token->trans';
+        is $result, " tab\tnewline\nalarm\a", 'token->trans';
+},
+sub {
+        note "Single-quoted string (1)";
+        my $step = shift;
+        is $step, 3, 'step 3';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 1, '1 entry on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token';
+        is $stack[0]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[0]{args}[1], '< maHIv>', 'token->raw';
+        my $result = eval $stack[0]{args}[2];
+        is $@, '', 'no error evaluating token->trans';
+        is $result, ' maHIv', 'token->trans';
+},
+sub {
+        note "Single-quoted string (2)";
+        my $step = shift;
+        is $step, 4, 'step 4';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 1, '1 entry on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token';
+        is $stack[0]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[0]{args}[1], '< tab\\tnewline\\nalarm\\a>', 'token->raw';
+        my $result = eval $stack[0]{args}[2];
+        is $@, '', 'no error evaluating token->trans';
+        is $result, ' tab\\tnewline\\nalarm\\a', 'token->trans';
+},
+];
 
 my @module_args;
 BEGIN { push @module_args, 'yIQIj' if $DEBUG; }
+# BEGIN { push @module_args, 'yImugh' if $DEBUG; }
 no warnings 'void';
 use Lingua::tlhInganHol::yIghun @module_args;
+nabwIj!
+
+pagh yIlIH!
 loSvatlh wa'maH cha' !
-# TODO: should be 'nabwIj*vaD*' but that grammar isn't currently accepted
-# (and this syntax should *not* be accepted, but is... in fact, the
-# documentation uses the plain -wIj form in assignments a couple of times!)
-nabwIj 'olvo' pagh DIch yInob!
-yInabvetlh!
+pagh yIvan!
+nabvaD 'olvo' pagh DIch yInob!
+pagh tInabvetlh! #'
+
+wa' yIlIH! #'
+<< maHIv>>!
+wa' yIvan! #'
+nabvaD 'olvo' wa' DIch yInob! #'
+wa' yInabvetlh! #'
+
+cha' yIlIH! #'
+<< tab\tnewline\nalarm\a>>!
+cha' yIvan! #'
+nabvaD 'olvo' cha' DIch yInob! #'
+cha' yInabvetlh! #'
+
+wej yIlIH! #'
+< maHIv>!
+wej yIvan! #'
+nabvaD 'olvo' wej DIch yInob! #'
+wej yInabvetlh! #'
+
+loS yIlIH! #'
+< tab\tnewline\nalarm\a>!
+loS yIvan! #'
+nabvaD 'olvo' loS DIch yInob! #'
+loS yInabvetlh! #'
+
