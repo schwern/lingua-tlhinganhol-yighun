@@ -1,4 +1,4 @@
-use Test::More tests => 10;
+use Test::More tests => 13;
 
 require_ok Lingua::tlhInganHol::yIghun;
 
@@ -20,6 +20,10 @@ $_ = 'This is text with 456 numbers';
 ph($fh);
 is $output, 'This is text with loSvatlh vaghmaH jav numbers', 'text with numbers ($_)';
 setup;
+$_ = 'There are 0 mistakes in this text.';
+ph($fh);
+is $output, 'There are pagh mistakes in this text.', 'text with zero ($_)';
+setup;
 $_ = '87.65 numbers in 98.4 words';
 ph($fh);
 is $output, 'chorghmaH Soch DoD jav vagh numbers in HutmaH chorgh DoD loS words', 'text with numbers ($_)';
@@ -32,6 +36,9 @@ setup;
 ph($fh, 'This is text with 456 numbers');
 is $output, 'This is text with loSvatlh vaghmaH jav numbers', 'text with numbers (literal)';
 setup;
+ph($fh, 'There are 0 mistakes in this text.');
+is $output, 'There are pagh mistakes in this text.', 'text with zero (literal)';
+setup;
 ph($fh, '87.65 numbers in 98.4 words');
 is $output, 'chorghmaH Soch DoD jav vagh numbers in HutmaH chorgh DoD loS words', 'text with numbers (literal)';
 
@@ -42,6 +49,9 @@ is $output, 'Thisissometext', 'multiple parameters';
 setup;
 ph($fh, 'With', '642', 'numbers');
 is $output, "Withjavvatlh loSmaH cha'numbers", 'multi + numbers';
+setup;
+ph($fh, 'Found', '0', 'mistakes');
+is $output, 'Foundpaghmistakes', 'multi + zero';
 setup;
 ph($fh, 'Split 4', '7 up');
 is $output, "Split loSmaH Soch up", 'multi + split-up numbers';
