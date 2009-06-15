@@ -1,7 +1,9 @@
 #!perl -w
-# vim:set et:
+# vim:set et si:
 #
-use Test::More tests => 202;
+use Test::More
+        tests => 254
+;
 use Carp;
 use Data::Dumper;
 use strict;
@@ -425,6 +427,82 @@ sub {
         is $stack[5]{name}, 'lesser', 'lesser';
         is $stack[5]{args}[0], "tlha'be'", "tlha'be' (lesser)";
 },
+sub {
+        # TODO: actually test the generated code
+        # For this, we'd have to mock "done", I suppose,
+        # since the code is not actually pieced together anywhere else.
+        # But this would lead to lots more "useless" stack entries.
+        note "Low-priority and";
+        my $step = shift;
+        is $step, 14, 'step 14';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token(a)';
+        is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
+        is $stack[1]{name}, 'pushtok', 'Push token(and)';
+        is $stack[1]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[1]{args}[1], "'ej", 'token->raw';
+        is $stack[1]{args}[2], 'and', 'token->trans = and';
+        is $stack[2]{name}, 'pushtok', 'Push token(b)';
+        is $stack[2]{args}[2], 'q<b>', 'token->trans = b';
+},
+sub {
+        note "Low-priority or";
+        my $step = shift;
+        is $step, 15, 'step 15';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token(a)';
+        is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
+        is $stack[1]{name}, 'pushtok', 'Push token(or)';
+        is $stack[1]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[1]{args}[1], "qoj", 'token->raw';
+        is $stack[1]{args}[2], 'or', 'token->trans = or';
+        is $stack[2]{name}, 'pushtok', 'Push token(b)';
+        is $stack[2]{args}[2], 'q<b>', 'token->trans = b';
+},
+sub {
+        note "Low-priority and with multiple arguments";
+        my $step = shift;
+        is $step, 16, 'step 16';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token(a)';
+        is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
+        is $stack[1]{name}, 'pushtok', 'Push token(and)';
+        is $stack[1]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[1]{args}[1], "'ej", 'token->raw';
+        is $stack[1]{args}[2], 'and', 'token->trans = and';
+        is $stack[2]{name}, 'pushtok', 'Push token(b)';
+        is $stack[2]{args}[2], 'q<b>', 'token->trans = b';
+        is $stack[3]{name}, 'pushtok', 'Push token(and)';
+        is $stack[3]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[3]{args}[1], "'ej", 'token->raw';
+        is $stack[3]{args}[2], 'and', 'token->trans = and';
+        is $stack[4]{name}, 'pushtok', 'Push token(c)';
+        is $stack[4]{args}[2], 'q<c>', 'token->trans = c';
+},
+sub {
+        note "Low-priority or with multiple arguments";
+        my $step = shift;
+        is $step, 17, 'step 17';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token(a)';
+        is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
+        is $stack[1]{name}, 'pushtok', 'Push token(or)';
+        is $stack[1]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[1]{args}[1], "qoj", 'token->raw';
+        is $stack[1]{args}[2], 'or', 'token->trans = or';
+        is $stack[2]{name}, 'pushtok', 'Push token(b)';
+        is $stack[2]{args}[2], 'q<b>', 'token->trans = b';
+        is $stack[3]{name}, 'pushtok', 'Push token(or)';
+        is $stack[3]{args}[0], 'sent_conj', 'token->type = sent_conj';
+        is $stack[3]{args}[1], "qoj", 'token->raw';
+        is $stack[3]{args}[2], 'or', 'token->trans = or';
+        is $stack[4]{name}, 'pushtok', 'Push token(c)';
+        is $stack[4]{args}[2], 'q<c>', 'token->trans = c';
+},
 ];
 
 my @module_args;
@@ -517,5 +595,29 @@ wa'maH wej yIlIH! #'
 wa'maH wej yIvan! #'
 nabvaD 'olvo' wa'maH wej DIch yInob! #'
 wa'maH wej yInabvetlh! #'
+
+wa'maH loS yIlIH! #'
+<a> 'ej <b>! #'
+wa'maH loS yIvan! #'
+nabvaD 'olvo' wa'maH loS DIch yInob! #'
+wa'maH loS yInabvetlh! #'
+
+wa'maH vagh yIlIH! #'
+<a> qoj <b>!
+wa'maH vagh yIvan! #'
+nabvaD 'olvo' wa'maH vagh DIch yInob! #'
+wa'maH vagh yInabvetlh! #'
+
+wa'maH jav yIlIH! #'
+<a> 'ej <b> 'ej <c>!
+wa'maH jav yIvan! #'
+nabvaD 'olvo' wa'maH jav DIch yInob! #'
+wa'maH jav yInabvetlh! #'
+
+wa'maH Soch yIlIH! #'
+<a> qoj <b> qoj <c>!
+wa'maH Soch yIvan! #'
+nabvaD 'olvo' wa'maH Soch DIch yInob! #'
+wa'maH Soch yInabvetlh! #'
 
 yIdone_testing!
