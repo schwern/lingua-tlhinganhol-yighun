@@ -1,6 +1,7 @@
 #!perl -w
+# vim:set et:
 #
-use Test::More tests => 40;
+use Test::More tests => 76;
 use Carp;
 use Data::Dumper;
 use strict;
@@ -51,6 +52,8 @@ wrap $_ for qw(
         to_Terran
         from_Terran
         pushtok
+        greater
+        lesser
 );
 
 =for comment
@@ -114,8 +117,6 @@ wrap $_ for qw(
         endblock
         startlist
         endlist
-        greater
-        lesser
         conj_l
 
 =cut
@@ -214,6 +215,55 @@ sub {
         is $@, '', 'no error evaluating token->trans';
         is $result, ' tab\\tnewline\\nalarm\\a', 'token->trans';
 },
+sub {
+        note "Comparison (>)";
+        my $step = shift;
+        is $step, 5, 'step 5';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 8, '8 entries on callstack';
+        is $stack[1]{name}, 'pushtok', 'Push token(5)';
+        is $stack[1]{args}[2], '5', 'token->trans = 5';
+        is $stack[2]{name}, 'pushtok', 'Push token(greater)';
+        is $stack[2]{args}[0], 'greater', 'token->type = greater';
+        is $stack[2]{args}[1], "vagh tIn law'", 'token->raw';
+        is $stack[2]{args}[2], '5 >', 'token->trans';
+        is $stack[3]{name}, 'greater', 'greater';
+        is $stack[3]{args}[0], 'tIn', 'tIn (greater)';
+        is $stack[5]{name}, 'pushtok', 'Push token(2)';
+        is $stack[5]{args}[2], '2', 'token->trans = 2';
+        is $stack[6]{name}, 'pushtok', 'Push token(lesser)';
+        is $stack[6]{args}[0], 'acc', 'token->type for lesser = acc';
+        is $stack[6]{args}[1], "vagh tIn law' cha' tIn puS", 'token->raw';
+        is $stack[6]{args}[2], '5 > 2', 'token->trans';
+        is $stack[7]{name}, 'lesser', 'lesser';
+        is $stack[7]{args}[0], 'tIn', 'tIn (lesser)';
+},
+sub {
+        note "Comparison (><)";
+        my $step = shift;
+        is $step, 6, 'step 6';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 8, '8 entries on callstack';
+        is $stack[1]{name}, 'pushtok', 'Push token(10)';
+        is $stack[1]{args}[2], '10', 'token->trans = 10';
+        is $stack[2]{name}, 'pushtok', 'Push token(greater)';
+        is $stack[2]{args}[0], 'greater', 'token->type = greater';
+        is $stack[2]{args}[1], "wa'maH tIn law'", 'token->raw';
+        is $stack[2]{args}[2], '10 >', 'token->trans';
+        is $stack[3]{name}, 'greater', 'greater';
+        is $stack[3]{args}[0], 'tIn', 'tIn (greater)';
+        is $stack[5]{name}, 'pushtok', 'Push token(300)';
+        is $stack[5]{args}[2], '300', 'token->trans = 300';
+        is $stack[6]{name}, 'pushtok', 'Push token(lesser)';
+        is $stack[6]{args}[0], 'acc', 'token->type for lesser = acc';
+        is $stack[6]{args}[1], "wa'maH tIn law' wejvatlh mach puS", 'token->raw';
+        is $stack[6]{args}[2], '10 > 300', 'token->trans';
+        is $stack[7]{name}, 'lesser', 'lesser';
+        is $stack[7]{args}[0], 'mach', 'mach (lesser)';
+        # TODO: If the two operators are not the same, this should
+        # probably be checked and raise an exception.
+        # Currently, we don't even notice this.
+},
 ];
 
 my @module_args;
@@ -253,3 +303,14 @@ loS yIvan! #'
 nabvaD 'olvo' loS DIch yInob! #'
 loS yInabvetlh! #'
 
+vagh yIlIH!
+vagh tIn law' cha' tIn puS!
+vagh yIvan!
+nabvaD 'olvo' vagh DIch yInob!
+vagh yInabvetlh!
+
+jav yIlIH!
+wa'maH tIn law' wejvatlh mach puS!
+jav yIvan!
+nabvaD 'olvo' jav DIch yInob!
+jav yInabvetlh!
