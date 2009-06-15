@@ -1,7 +1,7 @@
 #!perl -w
 # vim:set et:
 #
-use Test::More;
+use Test::More tests => 202;
 use Carp;
 use Data::Dumper;
 use strict;
