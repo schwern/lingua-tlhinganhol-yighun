@@ -1,4 +1,5 @@
 package Lingua::tlhInganHol::yIghun;
+# vim:set et:
 
 use strict;
 use warnings;
@@ -664,6 +665,10 @@ sub top {
 sub translate {
         my $raw = join " ", map { ref $_ ? $_->{raw} : $_ } @_;
         my $what = (caller(1))[3];
+        if ($what =~ /__ANON__/) {
+                # Allow for developer tests
+                $what = (caller(2))[3];
+        }
         $what =~ s/.*:://;
         no strict 'refs';
         my $trans = "to_$what"->(@_);
