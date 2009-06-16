@@ -2,14 +2,16 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 285
+        # tests => 285
 ;
 use Carp;
 use Data::Dumper;
 use strict;
 my $DEBUG;
+my $TRANSLATE;
 
 BEGIN { $DEBUG = 0; }
+BEGIN { $TRANSLATE = 0; }
 
 BEGIN { require_ok 'Lingua::tlhInganHol::yIghun' }
 
@@ -59,6 +61,8 @@ wrap $_ for qw(
         translate
         decl
         to_decl
+        to_sub_decl
+        sub_decl
 );
 
 =for comment
@@ -67,7 +71,6 @@ wrap $_ for qw(
         print_honourably
         readline_honourably
         top
-        to_sub_decl
         to_usage
         to_go
         to_listop
@@ -90,7 +93,6 @@ wrap $_ for qw(
         to_binop_d
         to_ternop
         to_control
-        sub_decl
         usage
         go
         listop
@@ -540,11 +542,68 @@ sub {
         is $stack[5+2]{name}, 'translate', 'Translate (2)';
         is $stack[5+2]{result}[1], 'package main', 'translate()->trans';
 },
+sub {
+        note "sub declaration (just block)";
+        my $step = shift;
+        is $step, 19, 'step 19';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 6, '6 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token startblock';
+        is $stack[0]{args}[0], 'start of block', 'token->type';
+        is $stack[0]{args}[1], '{', 'token->raw';
+        is $stack[0]{args}[2], '{', 'token->trans';
+        is $stack[1]{name}, 'pushtok', 'Push token endblock';
+        is $stack[1]{args}[0], 'block', 'token->type';
+        is $stack[1]{args}[1], '{...}', 'token->raw';
+        is $stack[1]{args}[2], '{}', 'token->trans';
+        is $stack[2]{name}, 'to_sub_decl';
+        is $stack[3]{name}, 'translate';
+        is $stack[4]{name}, 'pushtok';
+        is $stack[5]{name}, 'sub_decl';
+},
+sub {
+        note "sub declaration (just name)";
+        my $step = shift;
+        is $step, 20, 'step 20';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push subname token';
+        is $stack[0]{args}[0], 'acc', 'token->type';
+        is $stack[0]{args}[1], 'exampletwenty', 'token->raw';
+        is $stack[0]{args}[2], '$exampletwenty', 'token->trans';
+        is $stack[1]{name}, 'to_sub_decl';
+        is $stack[2]{name}, 'translate';
+        is $stack[3]{name}, 'pushtok';
+        is $stack[4]{name}, 'sub_decl';
+},
+sub {
+        note "sub declaration (name and block)";
+        my $step = shift;
+        is $step, 21, 'step 21';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 7, '7 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token startblock';
+        is $stack[0]{args}[0], 'start of block', 'token->type';
+        is $stack[0]{args}[1], '{', 'token->raw';
+        is $stack[0]{args}[2], '{', 'token->trans';
+        is $stack[1]{name}, 'pushtok', 'Push token endblock';
+        is $stack[1]{args}[0], 'block', 'token->type';
+        is $stack[1]{args}[1], '{...}', 'token->raw';
+        is $stack[1]{args}[2], '{}', 'token->trans';
+        is $stack[2]{name}, 'pushtok', 'Push subname token';
+        is $stack[2]{args}[0], 'acc', 'token->type';
+        is $stack[2]{args}[1], 'exampletwentyone', 'token->raw';
+        is $stack[2]{args}[2], '$exampletwentyone', 'token->trans';
+        is $stack[3]{name}, 'to_sub_decl';
+        is $stack[4]{name}, 'translate';
+        is $stack[5]{name}, 'pushtok';
+        is $stack[6]{name}, 'sub_decl';
+},
 ];
 
 my @module_args;
 BEGIN { push @module_args, 'yIQIj' if $DEBUG; }
-# BEGIN { push @module_args, 'yImugh' if $DEBUG; }
+BEGIN { push @module_args, 'yImugh' if $TRANSLATE; }
 no warnings 'void';
 use Lingua::tlhInganHol::yIghun @module_args;
 nabwIj!
@@ -553,7 +612,7 @@ pagh yIlIH!
 loSvatlh wa'maH cha' !
 pagh yIvan!
 nabvaD 'olvo' pagh DIch yInob!
-pagh tInabvetlh! #'
+pagh yInabvetlh!
 
 wa' yIlIH! #'
 << maHIv>>!
@@ -663,5 +722,23 @@ main yoS!
 wa'maH chorgh yIvan! #'
 nabvaD 'olvo' wa'maH chorgh DIch yInob! #'
 wa'maH chorgh yInabvetlh! #'
+
+wa'maH Hut yIlIH! #'
+{ } nab!
+wa'maH Hut yIvan! #'
+nabvaD 'olvo' wa'maH Hut DIch yInob! #'
+wa'maH Hut yInabvetlh! #'
+
+cha'maH yIlIH! #'
+exampletwenty nab!
+cha'maH yIvan! #'
+nabvaD 'olvo' cha'maH DIch yInob! #'
+cha'maH yInabvetlh! #'
+
+cha'maH wa' yIlIH!
+{ } exampletwentyone nab!
+cha'maH wa' yIvan!
+nabvaD 'olvo' cha'maH wa' DIch yInob!
+cha'maH wa' yInabvetlh!
 
 yIdone_testing!
