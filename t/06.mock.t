@@ -56,6 +56,9 @@ wrap $_ for qw(
         pushtok
         greater
         lesser
+        translate
+        decl
+        to_decl
 );
 
 =for comment
@@ -64,8 +67,6 @@ wrap $_ for qw(
         print_honourably
         readline_honourably
         top
-        translate
-        to_decl
         to_sub_decl
         to_usage
         to_go
@@ -89,7 +90,6 @@ wrap $_ for qw(
         to_binop_d
         to_ternop
         to_control
-        decl
         sub_decl
         usage
         go
@@ -144,7 +144,7 @@ sub extract_stack($) {
         }
         carp "Can't find start index for step $step!" unless $start_index >= 0;
         carp "Can't find end index for step $step!" unless $end_index >= 0;
-        @stack = @stack[$start_index+1 .. $end_index-3];
+        @stack = @stack[$start_index+1 .. $end_index-4];
         warn "Step $step: using stack " . Dumper(\@stack) if $DEBUG;
         return @stack;
 }
