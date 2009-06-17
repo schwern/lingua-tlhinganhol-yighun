@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        # tests => 285
+        tests => 393
 ;
 use Carp;
 use Data::Dumper;
@@ -557,9 +557,31 @@ sub {
         is $stack[1]{args}[1], '{...}', 'token->raw';
         is $stack[1]{args}[2], '{}', 'token->trans';
         is $stack[2]{name}, 'to_sub_decl';
+        is $stack[2]{args}[0]{type}, 'block', 'block->type';
+        is $stack[2]{args}[0]{trans}, '{}', 'block->trans';
+        is $stack[2]{args}[1]{type}, '', 'block->type';
+        is $stack[2]{args}[1]{trans}, '', 'name->trans';
+        is $stack[2]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[2]{args}[2]{trans}, 'sub', 'cmd->trans';
         is $stack[3]{name}, 'translate';
+        is $stack[3]{args}[0]{type}, 'block', 'block->type';
+        is $stack[3]{args}[0]{trans}, '{}', 'block->trans';
+        is $stack[3]{args}[1]{type}, '', 'block->type';
+        is $stack[3]{args}[1]{trans}, '', 'name->trans';
+        is $stack[3]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[3]{args}[2]{trans}, 'sub', 'cmd->trans';
+        like $stack[3]{result}[0], qr/^\s*\{\.\.\.\}\s+nab\s*$/, 'translate()->raw';
+        like $stack[3]{result}[1], qr/^\s*sub\s+\{\}\s*$/, 'translate()->trans';
         is $stack[4]{name}, 'pushtok';
+        is $stack[4]{args}[0], 'acc', 'token->type';
+        like $stack[4]{args}[1], qr/^\s*\{\.\.\.\}\s+nab\s*$/, 'token->raw';
+        like $stack[4]{args}[2], qr/^\s*sub\s+\{\}\s*$/, 'token->trans';
         is $stack[5]{name}, 'sub_decl';
+        is $stack[5]{args}[0], 'nab';
+        is ref $stack[5]{result}[0], 'HASH', 'sub_decl()';
+        is $stack[5]{result}[0]{type}, 'acc', 'token->type';
+        like $stack[5]{result}[0]{raw}, qr/^\s*\{\.\.\.\}\s+nab\s*$/, 'token->raw';
+        like $stack[5]{result}[0]{trans}, qr/^\s*sub\s+\{\}\s*$/, 'token->trans';
 },
 sub {
         note "sub declaration (just name)";
@@ -572,9 +594,31 @@ sub {
         is $stack[0]{args}[1], 'exampletwenty', 'token->raw';
         is $stack[0]{args}[2], '$exampletwenty', 'token->trans';
         is $stack[1]{name}, 'to_sub_decl';
+        is $stack[1]{args}[0]{type}, '', 'block->type';
+        is $stack[1]{args}[0]{trans}, '', 'block->trans';
+        is $stack[1]{args}[1]{type}, 'acc', 'block->type';
+        is $stack[1]{args}[1]{trans}, 'exampletwenty', 'name->trans';
+        is $stack[1]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[1]{args}[2]{trans}, 'sub', 'cmd->trans';
         is $stack[2]{name}, 'translate';
+        is $stack[2]{args}[0]{type}, '', 'block->type';
+        is $stack[2]{args}[0]{trans}, '', 'block->trans';
+        is $stack[2]{args}[1]{type}, 'acc', 'block->type';
+        is $stack[2]{args}[1]{trans}, 'exampletwenty', 'name->trans';
+        is $stack[2]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[2]{args}[2]{trans}, 'sub', 'cmd->trans';
+        like $stack[2]{result}[0], qr/^\s*exampletwenty\s+nab\s*$/, 'translate()->raw';
+        like $stack[2]{result}[1], qr/^\s*sub\s+exampletwenty\s*$/, 'translate()->trans';
         is $stack[3]{name}, 'pushtok';
+        is $stack[3]{args}[0], 'cmd', 'token->type';
+        like $stack[3]{args}[1], qr/^\s*exampletwenty\s+nab\s*$/, 'token->trans';
+        like $stack[3]{args}[2], qr/^\s*sub\s+exampletwenty\s*$/, 'token->raw';
         is $stack[4]{name}, 'sub_decl';
+        is $stack[4]{args}[0], 'nab';
+        is ref $stack[4]{result}[0], 'HASH', 'sub_decl()';
+        is $stack[4]{result}[0]{type}, 'cmd', 'token->type';
+        like $stack[4]{result}[0]{raw}, qr/^\s*exampletwenty\s+nab\s*$/, 'token->raw';
+        like $stack[4]{result}[0]{trans}, qr/^\s*sub\s+exampletwenty\s*$/, 'token->trans';
 },
 sub {
         note "sub declaration (name and block)";
@@ -595,9 +639,31 @@ sub {
         is $stack[2]{args}[1], 'exampletwentyone', 'token->raw';
         is $stack[2]{args}[2], '$exampletwentyone', 'token->trans';
         is $stack[3]{name}, 'to_sub_decl';
+        is $stack[3]{args}[0]{type}, 'block', 'block->type';
+        is $stack[3]{args}[0]{trans}, '{}', 'block->trans';
+        is $stack[3]{args}[1]{type}, 'acc', 'block->type';
+        is $stack[3]{args}[1]{trans}, 'exampletwentyone', 'name->trans';
+        is $stack[3]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[3]{args}[2]{trans}, 'sub', 'cmd->trans';
         is $stack[4]{name}, 'translate';
+        is $stack[4]{args}[0]{type}, 'block', 'block->type';
+        is $stack[4]{args}[0]{trans}, '{}', 'block->trans';
+        is $stack[4]{args}[1]{type}, 'acc', 'block->type';
+        is $stack[4]{args}[1]{trans}, 'exampletwentyone', 'name->trans';
+        is $stack[4]{args}[2]{type}, 'verb', 'block->type';
+        is $stack[4]{args}[2]{trans}, 'sub', 'cmd->trans';
+        like $stack[4]{result}[0], qr/^\s*\{\.\.\.\}\s+exampletwentyone\s+nab\s*$/, 'translate()->raw';
+        like $stack[4]{result}[1], qr/^\s*sub\s+exampletwentyone\s+\{\}\s*$/, 'translate()->trans';
         is $stack[5]{name}, 'pushtok';
+        is $stack[5]{args}[0], 'cmd';
+        like $stack[5]{args}[1], qr/^\s*\{\.\.\.\}\s+exampletwentyone\s+nab\s*$/, 'translate()->raw';
+        like $stack[5]{args}[2], qr/^\s*sub\s+exampletwentyone\s+\{\}\s*$/, 'translate()->trans';
         is $stack[6]{name}, 'sub_decl';
+        is $stack[6]{args}[0], 'nab';
+        is ref $stack[6]{result}[0], 'HASH', 'sub_decl()';
+        is $stack[6]{result}[0]{type}, 'cmd', 'token->type';
+        like $stack[6]{result}[0]{raw}, qr/^\s*\{\.\.\.\}\s+exampletwentyone\s+nab\s*$/, 'token->raw';
+        like $stack[6]{result}[0]{trans}, qr/^\s*sub\s+exampletwentyone\s+\{\}\s*$/, 'token->trans';
 },
 ];
 
