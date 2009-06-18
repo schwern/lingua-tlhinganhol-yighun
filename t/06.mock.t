@@ -674,6 +674,11 @@ sub {
         is $step, 22, 'step 22';
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok';
+        is $stack[1]{name}, 'to_usage';
+        is $stack[2]{name}, 'translate';
+        is $stack[3]{name}, 'pushtok';
+        is $stack[4]{name}, 'usage';
 },
 sub {
         note "use (2)";
@@ -681,6 +686,11 @@ sub {
         is $step, 23, 'step 23';
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok';
+        is $stack[1]{name}, 'to_usage';
+        is $stack[2]{name}, 'translate';
+        is $stack[3]{name}, 'pushtok';
+        is $stack[4]{name}, 'usage';
 },
 sub {
         note "use (3)";
@@ -688,6 +698,11 @@ sub {
         is $step, 24, 'step 24';
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok';
+        is $stack[1]{name}, 'to_usage';
+        is $stack[2]{name}, 'translate';
+        is $stack[3]{name}, 'pushtok';
+        is $stack[4]{name}, 'usage';
 },
 sub {
         note "use (4)";
@@ -695,6 +710,11 @@ sub {
         is $step, 25, 'step 25';
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
+        is $stack[0]{name}, 'pushtok';
+        is $stack[1]{name}, 'to_usage';
+        is $stack[2]{name}, 'translate';
+        is $stack[3]{name}, 'pushtok';
+        is $stack[4]{name}, 'usage';
 },
 ];
 
