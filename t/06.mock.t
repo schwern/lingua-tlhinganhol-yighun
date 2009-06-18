@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 396
+        # tests => 396
 ;
 use Carp;
 use Data::Dumper;
@@ -668,6 +668,34 @@ sub {
         like $stack[6]{result}[0]{raw}, qr/^\s*\{\.\.\.\}\s+exampletwentyone\s+nab\s*$/, 'token->raw';
         like $stack[6]{result}[0]{trans}, qr/^\s*sub\s+exampletwentyone\s+\{\}\s*$/, 'token->trans';
 },
+sub {
+        note "use (1)";
+        my $step = shift;
+        is $step, 22, 'step 22';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+},
+sub {
+        note "use (2)";
+        my $step = shift;
+        is $step, 23, 'step 23';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+},
+sub {
+        note "use (3)";
+        my $step = shift;
+        is $step, 24, 'step 24';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+},
+sub {
+        note "use (4)";
+        my $step = shift;
+        is $step, 25, 'step 25';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 3, '3 entries on callstack';
+},
 ];
 
 my @module_args;
@@ -809,5 +837,29 @@ cha'maH wa' yIlIH!
 cha'maH wa' yIvan!
 nabvaD 'olvo' cha'maH wa' DIch yInob!
 cha'maH wa' yInabvetlh!
+
+cha'maH cha' yIlIH!
+constant lo'! #'
+cha'maH cha' yIvan!
+nabvaD 'olvo' cha'maH cha' DIch yInob!
+cha'maH cha' yInabvetlh!
+
+cha'maH wej yIlIH! #'
+constant yIlo'! #'
+cha'maH wej yIvan! #'
+nabvaD 'olvo' cha'maH wej DIch yInob! #'
+cha'maH wej yInabvetlh! #'
+
+cha'maH loS yIlIH! #'
+constant lo'Qo'!
+cha'maH loS yIvan! #'
+nabvaD 'olvo' cha'maH loS DIch yInob! #'
+cha'maH loS yInabvetlh! #'
+
+cha'maH vagh yIlIH! #'
+constant yIlo'Qo'!
+cha'maH vagh yIvan! #'
+nabvaD 'olvo' cha'maH vagh DIch yInob! #'
+cha'maH vagh yInabvetlh! #'
 
 yIdone_testing!
