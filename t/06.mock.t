@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        # tests => 396
+        tests => 500
 ;
 use Carp;
 use Data::Dumper;
@@ -675,10 +675,29 @@ sub {
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok';
+        is $stack[0]{args}[0], 'acc', 'token->type';
+        is $stack[0]{args}[1], 'constant', 'token->raw';
+        is $stack[0]{args}[2], '$constant', 'token->trans';
         is $stack[1]{name}, 'to_usage';
+        is $stack[1]{result}[0], 'use constant';
         is $stack[2]{name}, 'translate';
+        is $stack[2]{args}[0]{type}, 'acc';
+        is $stack[2]{args}[0]{raw}, 'constant';
+        is $stack[2]{args}[0]{trans}, 'constant';
+        is $stack[2]{args}[1]{type}, 'verb';
+        is $stack[2]{args}[1]{raw}, "lo'";
+        is $stack[2]{args}[1]{trans}, 'use';
+        is $stack[2]{result}[0], "constant lo'";
+        is $stack[2]{result}[1], 'use constant';
         is $stack[3]{name}, 'pushtok';
+        is $stack[3]{result}[0]{type}, 'cmd';
+        is $stack[3]{result}[0]{raw}, "constant lo'";
+        is $stack[3]{result}[0]{trans}, 'use constant';
         is $stack[4]{name}, 'usage';
+        is $stack[4]{args}[0], "lo'";
+        is $stack[4]{result}[0]{type}, 'cmd';
+        is $stack[4]{result}[0]{raw}, "constant lo'";
+        is $stack[4]{result}[0]{trans}, 'use constant';
 },
 sub {
         note "use (2)";
@@ -687,10 +706,29 @@ sub {
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok';
+        is $stack[0]{args}[0], 'acc', 'token->type';
+        is $stack[0]{args}[1], 'constant', 'token->raw';
+        is $stack[0]{args}[2], '$constant', 'token->trans';
         is $stack[1]{name}, 'to_usage';
+        is $stack[1]{result}[0], 'use constant';
         is $stack[2]{name}, 'translate';
+        is $stack[2]{args}[0]{type}, 'acc';
+        is $stack[2]{args}[0]{raw}, 'constant';
+        is $stack[2]{args}[0]{trans}, 'constant';
+        is $stack[2]{args}[1]{type}, 'verb';
+        is $stack[2]{args}[1]{raw}, "lo'";
+        is $stack[2]{args}[1]{trans}, 'use';
+        is $stack[2]{result}[0], "constant lo'";
+        is $stack[2]{result}[1], 'use constant';
         is $stack[3]{name}, 'pushtok';
+        is $stack[3]{result}[0]{type}, 'cmd';
+        is $stack[3]{result}[0]{raw}, "constant lo'";
+        is $stack[3]{result}[0]{trans}, 'use constant';
         is $stack[4]{name}, 'usage';
+        is $stack[4]{args}[0], "lo'";
+        is $stack[4]{result}[0]{type}, 'cmd';
+        is $stack[4]{result}[0]{raw}, "constant lo'";
+        is $stack[4]{result}[0]{trans}, 'use constant';
 },
 sub {
         note "use (3)";
@@ -699,10 +737,29 @@ sub {
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok';
+        is $stack[0]{args}[0], 'acc', 'token->type';
+        is $stack[0]{args}[1], 'constant', 'token->raw';
+        is $stack[0]{args}[2], '$constant', 'token->trans';
         is $stack[1]{name}, 'to_usage';
+        is $stack[1]{result}[0], 'no constant';
         is $stack[2]{name}, 'translate';
+        is $stack[2]{args}[0]{type}, 'acc';
+        is $stack[2]{args}[0]{raw}, 'constant';
+        is $stack[2]{args}[0]{trans}, 'constant';
+        is $stack[2]{args}[1]{type}, 'verb';
+        is $stack[2]{args}[1]{raw}, "lo'Qo'";
+        is $stack[2]{args}[1]{trans}, 'no';
+        is $stack[2]{result}[0], "constant lo'Qo'";
+        is $stack[2]{result}[1], 'no constant';
         is $stack[3]{name}, 'pushtok';
+        is $stack[3]{result}[0]{type}, 'cmd';
+        is $stack[3]{result}[0]{raw}, "constant lo'Qo'";
+        is $stack[3]{result}[0]{trans}, 'no constant';
         is $stack[4]{name}, 'usage';
+        is $stack[4]{args}[0], "lo'Qo'";
+        is $stack[4]{result}[0]{type}, 'cmd';
+        is $stack[4]{result}[0]{raw}, "constant lo'Qo'";
+        is $stack[4]{result}[0]{trans}, 'no constant';
 },
 sub {
         note "use (4)";
@@ -711,10 +768,29 @@ sub {
         my @stack = extract_stack($step);
         is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok';
+        is $stack[0]{args}[0], 'acc', 'token->type';
+        is $stack[0]{args}[1], 'constant', 'token->raw';
+        is $stack[0]{args}[2], '$constant', 'token->trans';
         is $stack[1]{name}, 'to_usage';
+        is $stack[1]{result}[0], 'no constant';
         is $stack[2]{name}, 'translate';
+        is $stack[2]{args}[0]{type}, 'acc';
+        is $stack[2]{args}[0]{raw}, 'constant';
+        is $stack[2]{args}[0]{trans}, 'constant';
+        is $stack[2]{args}[1]{type}, 'verb';
+        is $stack[2]{args}[1]{raw}, "lo'Qo'";
+        is $stack[2]{args}[1]{trans}, 'no';
+        is $stack[2]{result}[0], "constant lo'Qo'";
+        is $stack[2]{result}[1], 'no constant';
         is $stack[3]{name}, 'pushtok';
+        is $stack[3]{result}[0]{type}, 'cmd';
+        is $stack[3]{result}[0]{raw}, "constant lo'Qo'";
+        is $stack[3]{result}[0]{trans}, 'no constant';
         is $stack[4]{name}, 'usage';
+        is $stack[4]{args}[0], "lo'Qo'";
+        is $stack[4]{result}[0]{type}, 'cmd';
+        is $stack[4]{result}[0]{raw}, "constant lo'Qo'";
+        is $stack[4]{result}[0]{trans}, 'no constant';
 },
 ];
 
