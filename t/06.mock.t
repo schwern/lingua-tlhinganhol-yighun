@@ -63,6 +63,8 @@ wrap $_ for qw(
         to_decl
         to_sub_decl
         sub_decl
+        to_usage
+        usage
 );
 
 =for comment
@@ -71,7 +73,6 @@ wrap $_ for qw(
         print_honourably
         readline_honourably
         top
-        to_usage
         to_go
         to_listop
         to_blockop
@@ -93,7 +94,6 @@ wrap $_ for qw(
         to_binop_d
         to_ternop
         to_control
-        usage
         go
         listop
         blockop
@@ -673,28 +673,28 @@ sub {
         my $step = shift;
         is $step, 22, 'step 22';
         my @stack = extract_stack($step);
-        is scalar(@stack), 3, '3 entries on callstack';
+        is scalar(@stack), 5, '5 entries on callstack';
 },
 sub {
         note "use (2)";
         my $step = shift;
         is $step, 23, 'step 23';
         my @stack = extract_stack($step);
-        is scalar(@stack), 3, '3 entries on callstack';
+        is scalar(@stack), 5, '5 entries on callstack';
 },
 sub {
         note "use (3)";
         my $step = shift;
         is $step, 24, 'step 24';
         my @stack = extract_stack($step);
-        is scalar(@stack), 3, '3 entries on callstack';
+        is scalar(@stack), 5, '5 entries on callstack';
 },
 sub {
         note "use (4)";
         my $step = shift;
         is $step, 25, 'step 25';
         my @stack = extract_stack($step);
-        is scalar(@stack), 3, '3 entries on callstack';
+        is scalar(@stack), 5, '5 entries on callstack';
 },
 ];
 
