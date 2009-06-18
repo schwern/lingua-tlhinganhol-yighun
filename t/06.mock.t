@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 393
+        tests => 396
 ;
 use Carp;
 use Data::Dumper;
@@ -563,6 +563,7 @@ sub {
         is $stack[2]{args}[1]{trans}, '', 'name->trans';
         is $stack[2]{args}[2]{type}, 'verb', 'block->type';
         is $stack[2]{args}[2]{trans}, 'sub', 'cmd->trans';
+        is $stack[2]{result}[0], 'sub {}', 'to_sub_decl()';
         is $stack[3]{name}, 'translate';
         is $stack[3]{args}[0]{type}, 'block', 'block->type';
         is $stack[3]{args}[0]{trans}, '{}', 'block->trans';
@@ -600,6 +601,7 @@ sub {
         is $stack[1]{args}[1]{trans}, 'exampletwenty', 'name->trans';
         is $stack[1]{args}[2]{type}, 'verb', 'block->type';
         is $stack[1]{args}[2]{trans}, 'sub', 'cmd->trans';
+        is $stack[1]{result}[0], 'sub exampletwenty', 'to_sub_decl';
         is $stack[2]{name}, 'translate';
         is $stack[2]{args}[0]{type}, '', 'block->type';
         is $stack[2]{args}[0]{trans}, '', 'block->trans';
@@ -645,6 +647,7 @@ sub {
         is $stack[3]{args}[1]{trans}, 'exampletwentyone', 'name->trans';
         is $stack[3]{args}[2]{type}, 'verb', 'block->type';
         is $stack[3]{args}[2]{trans}, 'sub', 'cmd->trans';
+        is $stack[3]{result}[0], 'sub exampletwentyone {}', 'to_sub_decl()';
         is $stack[4]{name}, 'translate';
         is $stack[4]{args}[0]{type}, 'block', 'block->type';
         is $stack[4]{args}[0]{trans}, '{}', 'block->trans';
