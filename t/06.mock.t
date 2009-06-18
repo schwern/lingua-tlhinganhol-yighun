@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 500
+        # tests => 500
 ;
 use Carp;
 use Data::Dumper;
@@ -10,8 +10,8 @@ use strict;
 my $DEBUG;
 my $TRANSLATE;
 
-BEGIN { $DEBUG = 0; }
-BEGIN { $TRANSLATE = 0; }
+BEGIN { $DEBUG = 1; }
+BEGIN { $TRANSLATE = 1; }
 
 BEGIN { require_ok 'Lingua::tlhInganHol::yIghun' }
 
@@ -792,6 +792,13 @@ sub {
         is $stack[4]{result}[0]{raw}, "constant lo'Qo'";
         is $stack[4]{result}[0]{trans}, 'no constant';
 },
+sub {
+        note "goto";
+        my $step = shift;
+        is $step, 26, 'step 26';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 5, '5 entries on callstack';
+},
 ];
 
 my @module_args;
@@ -957,5 +964,12 @@ constant yIlo'Qo'!
 cha'maH vagh yIvan! #'
 nabvaD 'olvo' cha'maH vagh DIch yInob! #'
 cha'maH vagh yInabvetlh! #'
+
+cha'maH jav yIlIH! #'
+LABEL yIjaH!
+LABEL: <maQapbej>!
+cha'maH jav yIvan! #'
+nabvaD 'olvo' cha'maH jav DIch yInob! #'
+cha'maH jav yInabvetlh! #'
 
 yIdone_testing!
