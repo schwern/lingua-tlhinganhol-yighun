@@ -65,6 +65,8 @@ wrap $_ for qw(
         sub_decl
         to_usage
         usage
+        to_listop
+        listop
 );
 
 =for comment
@@ -74,7 +76,6 @@ wrap $_ for qw(
         readline_honourably
         top
         to_go
-        to_listop
         to_blockop
         to_match
         to_change
@@ -95,7 +96,6 @@ wrap $_ for qw(
         to_ternop
         to_control
         go
-        listop
         blockop
         match
         change
@@ -793,11 +793,11 @@ sub {
         is $stack[4]{result}[0]{trans}, 'no constant';
 },
 sub {
-        note "goto";
+        note "listop";
         my $step = shift;
         is $step, 26, 'step 26';
         my @stack = extract_stack($step);
-        is scalar(@stack), 5, '5 entries on callstack';
+        is scalar(@stack), 0, '0 entries on callstack';
 },
 ];
 
@@ -966,8 +966,6 @@ nabvaD 'olvo' cha'maH vagh DIch yInob! #'
 cha'maH vagh yInabvetlh! #'
 
 cha'maH jav yIlIH! #'
-LABEL yIjaH!
-LABEL: <maQapbej>!
 cha'maH jav yIvan! #'
 nabvaD 'olvo' cha'maH jav DIch yInob! #'
 cha'maH jav yInabvetlh! #'
