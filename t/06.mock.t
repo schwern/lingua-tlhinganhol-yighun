@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        # tests => 500
+        tests => 542
 ;
 use Carp;
 use Data::Dumper;
@@ -793,11 +793,51 @@ sub {
         is $stack[4]{result}[0]{trans}, 'no constant';
 },
 sub {
-        note "listop";
+        note "listop 1: sort";
         my $step = shift;
         is $step, 26, 'step 26';
         my @stack = extract_stack($step);
-        is scalar(@stack), 0, '0 entries on callstack';
+        is scalar(@stack), 14, '14 entries on callstack';
+        is $stack[0]{name}, 'pushtok', 'Push token {';
+        is $stack[0]{result}[0]{trans}, '{';
+        is $stack[1]{name}, 'to_Terran';
+        is $stack[1]{result}[0], '0';
+        is $stack[2]{name}, 'pushtok', 'Push token 0 (in sort block)';
+        is $stack[2]{result}[0]{trans}, '0';
+        is $stack[3]{name}, 'pushtok', 'Push token }';
+        is $stack[3]{result}[0]{raw}, '{...}';
+        is $stack[3]{result}[0]{trans}, "{0;\n}";
+        is $stack[4]{name}, 'to_Terran';
+        is $stack[4]{result}[0], '1';
+        is $stack[5]{name}, 'pushtok', 'Push token 1';
+        is $stack[5]{result}[0]{trans}, '1';
+        is $stack[6]{name}, 'to_Terran';
+        is $stack[6]{result}[0], '2';
+        is $stack[7]{name}, 'pushtok', 'Push token 2';
+        is $stack[7]{result}[0]{trans}, '2';
+        is $stack[8]{name}, 'to_Terran';
+        is $stack[8]{result}[0], '3';
+        is $stack[9]{name}, 'pushtok', 'Push token 3';
+        is $stack[9]{result}[0]{trans}, '3';
+        is $stack[10]{name}, 'to_listop', 'to_listop';
+        is scalar(@{$stack[10]{args}}), 5, '5 args for to_listop';
+        is $stack[10]{args}[0]{type}, 'block';
+        is $stack[10]{args}[1]{type}, 'acc';
+        is $stack[10]{args}[2]{type}, 'acc';
+        is $stack[10]{args}[3]{type}, 'acc';
+        is $stack[10]{args}[4]{type}, 'verb';
+        is $stack[10]{result}[0], "sort {0;\n} 1,2,3", 'to_listop()';
+        is $stack[11]{name}, 'translate', 'translate';
+        is $stack[11]{result}[0], "{...} wa' cha' wej mISHa'moH", 'translate->raw';
+        is $stack[11]{result}[1], "sort {0;\n} 1,2,3", 'translate->trans';
+        is $stack[12]{name}, 'pushtok', 'Push token acc';
+        is $stack[12]{result}[0]{type}, 'acc', 'token->type';
+        is $stack[12]{result}[0]{raw}, "{...} wa' cha' wej mISHa'moH", 'token->raw';
+        is $stack[12]{result}[0]{trans}, "sort {0;\n} 1,2,3", 'token->trans';
+        is $stack[13]{name}, 'listop', 'listop';
+        is $stack[13]{result}[0]{type}, 'acc', 'token->type';
+        is $stack[13]{result}[0]{raw}, "{...} wa' cha' wej mISHa'moH", 'token->raw';
+        is $stack[13]{result}[0]{trans}, "sort {0;\n} 1,2,3", 'token->trans';
 },
 ];
 
@@ -966,6 +1006,7 @@ nabvaD 'olvo' cha'maH vagh DIch yInob! #'
 cha'maH vagh yInabvetlh! #'
 
 cha'maH jav yIlIH! #'
+{ pagh! } wa' cha' wej tImISHa'moH! #'
 cha'maH jav yIvan! #'
 nabvaD 'olvo' cha'maH jav DIch yInob! #'
 cha'maH jav yInabvetlh! #'
