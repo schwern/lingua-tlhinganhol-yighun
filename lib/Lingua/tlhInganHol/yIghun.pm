@@ -209,7 +209,7 @@ my $v_listop = enqr keys %v_listop;
 sub to_listop {
         my ($block, @list) = @_;
         my $op = pop @list;
-        return join " ", map("$_->{trans} ", $op, $block),
+        return join " ", map($_->{trans}, $op, $block),
                 join ",", map $_->{trans}, @list;
 }
 
