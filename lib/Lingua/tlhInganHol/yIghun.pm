@@ -209,7 +209,7 @@ my $v_listop = enqr keys %v_listop;
 sub to_listop {
         my ($block, @list) = @_;
         my $op = pop @list;
-        return join " ", map("$_->{trans} ", $op, $block),
+        return join " ", map($_->{trans}, $op, $block),
                 join ",", map $_->{trans}, @list;
 }
 
@@ -240,7 +240,7 @@ my %v_change = qw(
 );
 my $v_change = enqr keys %v_change;
 sub to_change {
-        my ($expr, $becomes, $pattern, $op) = @_;
+        my ($expr, $pattern, $becomes, $op) = @_;
         $pattern->{trans} =~ s/^qq?<|>$//g;
         $becomes->{trans} =~ s/^qq?<|>$//g;
         return "$expr->{trans} =~ $op->{trans}<$pattern->{trans}><$becomes->{trans}>";
@@ -754,7 +754,7 @@ sub change {
         my $expr = top('dat')
                 or die "$op: DoS Sambe'!\n" ;           # missing data
         $op = tok('verb',$op,$v_change{$op});
-        pushtok('acc', translate($expr,$becomes,$pattern,$op));
+        pushtok('acc', translate($expr,$pattern,$becomes,$op));
 }
 
 sub arg1 {
