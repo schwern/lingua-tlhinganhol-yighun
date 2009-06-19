@@ -1,0 +1,11 @@
+Things we have to do, or items to consider.
+
+- yInargh 'last' and nargh 'quotemeta' possibly clash.
+- yInargh 'last', yItaH 'next', yInIDqa' 'redo' on the one hand clash with
+  jaH 'goto' on the other hand (which has no 'yI').
+  Also, the 'go' verbs take a $sing in front of them, so currently even
+  'yIyItaH' would be legal. This seems nonsense to me.
+  Either make them all take a mandatory 'yI-' (including, then, yIjaH),
+  or make 'yI-' optional on all of them, so %v_go contains only the keys
+  qw/jaH nargh taH nIDqa'/. (Modulo possible clash on nargh 'quotemeta'.)
+- We can't goto anywhere since we can't do labels yet.
