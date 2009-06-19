@@ -10,8 +10,8 @@ use strict;
 my $DEBUG;
 my $TRANSLATE;
 
-BEGIN { $DEBUG = 1; }
-BEGIN { $TRANSLATE = 1; }
+BEGIN { $DEBUG = 0; }
+BEGIN { $TRANSLATE = 0; }
 
 BEGIN { require_ok 'Lingua::tlhInganHol::yIghun' }
 
