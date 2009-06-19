@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Lingua/tlhInganHol/yIghun.pm',
 
     build_requires => {
-        'Test::More'    => '0.47',
+        'Test::More'    => '0.88',
         'Test::Harness' => 3
     },
     requires => {       
