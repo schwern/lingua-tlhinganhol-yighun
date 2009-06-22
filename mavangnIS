@@ -37,3 +37,5 @@ Things we have to do, or items to consider.
   Unless we say that 0-arg functions do not have trailing parentheses
   (this is what -MO=Deparse,-p thinks, too) and invent a special alias
   for 0-arg C<eof>.
+- split is classified as a 1-arg function??? Check whether this does the
+  right thing.
