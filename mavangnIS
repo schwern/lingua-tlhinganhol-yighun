@@ -30,3 +30,10 @@ Things we have to do, or items to consider.
   This should probably be fixed.
 - arg1 always pops the stack, even for obligatorily 0-arg functions.
   This should be fixed.
+- We probably can't support both C<eof> and C<eof()> -- 0-arg functions
+  will either have trailing parentheses or not, and 01-arg functions
+  (that take one optional arg, which is probably where C<eof> belongs)
+  will presumably always have parentheses.
+  Unless we say that 0-arg functions do not have trailing parentheses
+  (this is what -MO=Deparse,-p thinks, too) and invent a special alias
+  for 0-arg C<eof>.
