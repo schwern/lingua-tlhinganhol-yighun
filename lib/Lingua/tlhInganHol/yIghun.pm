@@ -248,14 +248,34 @@ sub to_change {
 }
 
 my %v_arg0 = qw(
+        poH             time
+        ghomneH         wantarray
+        bogh            fork
+);
+my $v_arg0 = enqr keys %v_arg0;
+
+sub to_arg0 {
+        my ($func) = @_;
+        return $func->{trans}."()";
+}
+
+my %v_arg01 = qw(
         HaD             study
+        'ar             abs
+        joqtaH          sin
+        joqtaHHa'       cos
+        poD             int
+        maHghurtaH      log
+        loS'ar          sqrt
         mIS             rand
+        mIScher         srand
         mach            lc
         wa'DIchmach     lcfirst
         tIn             uc
         wa'DIchtIn      ucfirst
         nargh           quotemeta
         juv             length
+        SIj             split
         toq'a'          defined
         rIn'a'          eof
         mej             exit
@@ -270,19 +290,10 @@ my %v_arg0 = qw(
         mol             dump
         Qong            sleep
         loS             wait
-        ghomneH         wantarray
-        bogh            fork
+        SeppoH          localtime
+        Qo'noSpoH       gmtime
 );
-my $v_arg0 = enqr keys %v_arg0;
-
-my %v_arg0_da = qw(
-        laD             readline
-        chaqpoDmoH      chomp
-        poDmoH          chop
-        chImmoH         undef
-        Say'moH         reset
-);
-my $v_arg0_da = enqr keys %v_arg0_da;
+my $v_arg01 = enqr keys %v_arg01;
 
 my %v_arg1 = qw(
         tlhoch          not
@@ -344,6 +355,15 @@ sub to_arg1 {
         return $func->{trans}."($arg->{trans})";
 }
 
+my %v_arg01_da = qw(
+        laD             readline
+        chaqpoDmoH      chomp
+        poDmoH          chop
+        chImmoH         undef
+        Say'moH         reset
+);
+my $v_arg01_da = enqr keys %v_arg01_da;
+
 my %v_arg1_da = qw(
         poSmoH          open
         laD             readline
@@ -360,6 +380,7 @@ my %v_arg1_da = qw(
         baghHa'         untie
 );
 my $v_arg1_da = enqr keys %v_arg1_da;
+
 sub to_arg1_da {
         my ($arg, $func) = @_;
         $arg ||= {trans=>""};   # handle optional args
@@ -767,10 +788,16 @@ sub change {
         pushtok('acc', translate($expr,$pattern,$becomes,$op));
 }
 
+sub arg0 {
+        my ($func) = @_;
+        $func = tok('verb',$func,$v_arg0{$func});
+        pushtok('acc', translate($func));
+}
+
 sub arg1 {
         my ($func) = @_;
         my $arg = top('acc')
-                or $func->{raw} =~ /$v_arg0/
+                or $func->{raw} =~ /$v_arg01/
                 or die "$func: De' Sambe'!\n" ;        # missing data
         $func = tok('verb',$func,$v_arg1{$func});
         pushtok('acc', translate($arg, $func));
@@ -779,7 +806,7 @@ sub arg1 {
 sub arg1_da {
         my ($func) = @_;
         my $arg = top('dat','abl','dat_handle','abl_handle')
-                or $func =~ /$v_arg0_da/
+                or $func =~ /$v_arg01_da/
                 or die "$func: DoS Hal ghap Sambe'!\n" ;
                                                 # missing target or source
         $func = tok('verb',$func,$v_arg1_da{$func});
@@ -2329,6 +2356,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         pIn'a'choH      chown
         poD             int
         poDmoH          chop
+        poH             time
         pong            keys
         pongchoH        rename
         pongwI'         caller
@@ -2337,6 +2365,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         luSpetna'       STDERR (used as name -- i.e. in an open)
         luSpetna'DoS    STDERR (used as handle -- i.e. in a print)
         Qaw'            delete
+        Qo'noSpoH       gmtime
         qoj             or
         qojHa'          atan2
         Qong            sleep
@@ -2350,6 +2379,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         Sam             index
         SanID           -000
         Say'moH         reset
+        SeppoH          localtime
         SIj             split
         So'             crypt
         Soch            7
@@ -2455,6 +2485,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         fork            bogh            "be born"
         ge              machbe' law'    "be not smaller"
         glob            Sach            "expand"
+        gmtime          Qo'noS poH      "Kronos time"
         goto            jaH             "go"
         grep            wIv             "choose"
         gt              tIn law'        "be larger"
@@ -2478,6 +2509,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         length          juv             "measure"
         link            rar             "connect"
         local           vam             "this"
+        localtime       SeppoH          "region's time"
         log             maHghurtaH      "ten log"
         lt              mach law'       "be smaller"
         m               ghov            "recognize"
@@ -2535,6 +2567,7 @@ The var'aq programming language <http://www.geocities.com/connorbd/varaq/>
         tell            ja'             "report"
         tie             bagh            "tie"
         tied            bagh'a'         "is tied"
+        time            poH             "time"
         tr              mugh            "translate"
         truncate        nup             "decrease"
         uc              tIn             "be big"
