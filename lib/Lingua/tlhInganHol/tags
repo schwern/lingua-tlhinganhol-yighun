@@ -17,7 +17,8 @@ $s_decl	yIghun.pm	/^my $s_decl/;"	kind:s	file:
 $sing	yIghun.pm	/^my $sing/;"	kind:s	file:
 $type	yIghun.pm	/^my $type/;"	kind:s	file:
 $v_arg0	yIghun.pm	/^my $v_arg0/;"	kind:s	file:
-$v_arg0_da	yIghun.pm	/^my $v_arg0_da/;"	kind:s	file:
+$v_arg01	yIghun.pm	/^my $v_arg01/;"	kind:s	file:
+$v_arg01_da	yIghun.pm	/^my $v_arg01_da/;"	kind:s	file:
 $v_arg1	yIghun.pm	/^my $v_arg1/;"	kind:s	file:
 $v_arg1_da	yIghun.pm	/^my $v_arg1_da/;"	kind:s	file:
 $v_arg2	yIghun.pm	/^my $v_arg2/;"	kind:s	file:
@@ -52,7 +53,8 @@ $v_usage	yIghun.pm	/^my $v_usage/;"	kind:s	file:
 %s_decl	yIghun.pm	/^my %s_decl/;"	kind:h	file:
 %sigil	yIghun.pm	/^my %sigil/;"	kind:h	file:
 %v_arg0	yIghun.pm	/^my %v_arg0/;"	kind:h	file:
-%v_arg0_da	yIghun.pm	/^my %v_arg0_da/;"	kind:h	file:
+%v_arg01	yIghun.pm	/^my %v_arg01/;"	kind:h	file:
+%v_arg01_da	yIghun.pm	/^my %v_arg01_da/;"	kind:h	file:
 %v_arg1	yIghun.pm	/^my %v_arg1/;"	kind:h	file:
 %v_arg1_da	yIghun.pm	/^my %v_arg1_da/;"	kind:h	file:
 %v_arg2	yIghun.pm	/^my %v_arg2/;"	kind:h	file:
@@ -86,6 +88,7 @@ HONOURABLE	yIghun.pm	/^my $HONOURABLE/;"	kind:s	file:
 VERSION	yIghun.pm	/^our $VERSION/;"	kind:s
 altnumword	yIghun.pm	/^my %altnumword/;"	kind:h	file:
 any	yIghun.pm	/^my $any/;"	kind:s	file:
+arg0	yIghun.pm	/^sub arg0 {/;"	kind:f	file:
 arg1	yIghun.pm	/^sub arg1 {/;"	kind:f	file:
 arg1_da	yIghun.pm	/^sub arg1_da {/;"	kind:f	file:
 arg2	yIghun.pm	/^sub arg2 {/;"	kind:f	file:
@@ -144,6 +147,7 @@ startlist	yIghun.pm	/^sub startlist {/;"	kind:f	file:
 sub_decl	yIghun.pm	/^sub sub_decl {/;"	kind:f	file:
 ternop	yIghun.pm	/^sub ternop {/;"	kind:f	file:
 to_Terran	yIghun.pm	/^sub to_Terran {/;"	kind:f	file:
+to_arg0	yIghun.pm	/^sub to_arg0 {/;"	kind:f	file:
 to_arg1	yIghun.pm	/^sub to_arg1 {/;"	kind:f	file:
 to_arg1_da	yIghun.pm	/^sub to_arg1_da {/;"	kind:f	file:
 to_arg2	yIghun.pm	/^sub to_arg2 {/;"	kind:f	file:
@@ -179,6 +183,10 @@ unop_dpre	yIghun.pm	/^sub unop_dpre {/;"	kind:f	file:
 usage	yIghun.pm	/^sub usage {/;"	kind:f	file:
 v_arg0	yIghun.pm	/^my $v_arg0/;"	kind:s	file:
 v_arg0	yIghun.pm	/^my %v_arg0/;"	kind:h	file:
+v_arg01	yIghun.pm	/^my $v_arg01/;"	kind:s	file:
+v_arg01	yIghun.pm	/^my %v_arg01/;"	kind:h	file:
+v_arg01_da	yIghun.pm	/^my $v_arg01_da/;"	kind:s	file:
+v_arg01_da	yIghun.pm	/^my %v_arg01_da/;"	kind:s	file:
 v_arg1	yIghun.pm	/^my $v_arg1/;"	kind:s	file:
 v_arg1	yIghun.pm	/^my %v_arg1/;"	kind:h	file:
 v_arg1_da	yIghun.pm	/^my $v_arg1_da/;"	kind:s	file:
