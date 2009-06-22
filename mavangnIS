@@ -1,11 +1,28 @@
+# vim:set ai sw=2 et tw=72 fo+=t2c com=fb\:-:
 Things we have to do, or items to consider.
 
 - yInargh 'last' and nargh 'quotemeta' possibly clash.
-- yInargh 'last', yItaH 'next', yInIDqa' 'redo' on the one hand clash with
-  jaH 'goto' on the other hand (which has no 'yI').
+- yInargh 'last', yItaH 'next', yInIDqa' 'redo' on the one hand clash
+  with jaH 'goto' on the other hand (which has no 'yI').
   Also, the 'go' verbs take a $sing in front of them, so currently even
   'yIyItaH' would be legal. This seems nonsense to me.
   Either make them all take a mandatory 'yI-' (including, then, yIjaH),
   or make 'yI-' optional on all of them, so %v_go contains only the keys
-  qw/jaH nargh taH nIDqa'/. (Modulo possible clash on nargh 'quotemeta'.)
+  qw/jaH nargh taH nIDqa'/. (Modulo possible clash on nargh
+  'quotemeta'.)
 - We can't goto anywhere since we can't do labels yet.
+- Variables can't contain colons or underscores, since the rule for
+  arbitrary variables uses EOW and that checks for [^a-zA-Z']. Which is
+  fine for Klingon names, but sometimes you have to call subroutines or
+  access variables in other packages which contain underscores (for the
+  variable/subroutine name itself) or colons (for accessing the package
+  containing the variable/subroutine). Proposed solution: EOW should
+  probably be changed to accept ':' and '_' as well.
+- Match and search operations can't specify options (egimosx).
+  This can be partially compensated by adding an (?egimosx:) inside the
+  regular expression "line noise", but we might wish to consider
+  allowing the user to specify the options somehow. Not sure whether to
+  do so with a string ("egimosx"), a list ("e", "g", "i"), or through
+  Klingon words.
+  We could also decide always to set certain options (such as /x), but
+  I'm not sure this is desirable.
