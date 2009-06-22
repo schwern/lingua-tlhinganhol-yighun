@@ -26,3 +26,7 @@ Things we have to do, or items to consider.
   Klingon words.
   We could also decide always to set certain options (such as /x), but
   I'm not sure this is desirable.
+- We can't call time() (or localtime, gmtime).
+  This should probably be fixed.
+- arg1 always pops the stack, even for obligatorily 0-arg functions.
+  This should be fixed.
