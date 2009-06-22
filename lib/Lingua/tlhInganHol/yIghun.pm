@@ -248,17 +248,16 @@ sub to_change {
 }
 
 my %v_arg0 = qw(
-        laD             readline
-        chaqpoDmoH      chomp
-        poDmoH          chop
         HaD             study
-        chImmoH         undef
-        Say'moH         reset
         mIS             rand
+        mach            lc
+        wa'DIchmach     lcfirst
+        tIn             uc
+        wa'DIchtIn      ucfirst
+        nargh           quotemeta
         juv             length
         toq'a'          defined
         rIn'a'          eof
-        ghomneH         wantarray
         mej             exit
         Hegh            die
         ghuHmoH         warn
@@ -269,16 +268,21 @@ my %v_arg0 = qw(
         Del             stat
         ghum            alarm
         mol             dump
-        bogh            fork
         Qong            sleep
         loS             wait
-        mach            lc
-        wa'DIchmach     lcfirst
-        tIn             uc
-        wa'DIchtIn      ucfirst
-        nargh           quotemeta
+        ghomneH         wantarray
+        bogh            fork
 );
 my $v_arg0 = enqr keys %v_arg0;
+
+my %v_arg0_da = qw(
+        laD             readline
+        chaqpoDmoH      chomp
+        poDmoH          chop
+        chImmoH         undef
+        Say'moH         reset
+);
+my $v_arg0_da = enqr keys %v_arg0_da;
 
 my %v_arg1 = qw(
         tlhoch          not
@@ -330,6 +334,7 @@ my %v_arg1 = qw(
         ra'             system
         loS             wait
         ghomneH         wantarray
+        bogh            fork
 );
 my $v_arg1 = enqr keys %v_arg1;
 sub to_arg1 {
@@ -774,7 +779,7 @@ sub arg1 {
 sub arg1_da {
         my ($func) = @_;
         my $arg = top('dat','abl','dat_handle','abl_handle')
-                or $func =~ /$v_arg0/
+                or $func =~ /$v_arg0_da/
                 or die "$func: DoS Hal ghap Sambe'!\n" ;
                                                 # missing target or source
         $func = tok('verb',$func,$v_arg1_da{$func});
