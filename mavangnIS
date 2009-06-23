@@ -39,3 +39,7 @@ Things we have to do, or items to consider.
   for 0-arg C<eof>.
 - split is classified as a 1-arg function??? Check whether this does the
   right thing.
+- Check whether we can handle both C<require Pack::age;> and C<require
+  "library.pl";>.
+- Possibly handle subroutine prototypes -- perhaps via an optional 'acc'
+  token after the 'block' token, a la C<< { ... } <$\@> name nab >>.
