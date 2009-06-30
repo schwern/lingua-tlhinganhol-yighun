@@ -43,3 +43,7 @@ Things we have to do, or items to consider.
   "library.pl";>.
 - Possibly handle subroutine prototypes -- perhaps via an optional 'acc'
   token after the 'block' token, a la C<< { ... } <$\@> name nab >>.
+- Possibly do globs, perhaps with {-Du'}, the third plural suffix?
+  (Internal rationale: a glob is like a body with various parts -
+  scalar, array, hash, filehandle, etc. -, so it can take the body-part
+  plural suffix.)
