@@ -47,3 +47,5 @@ Things we have to do, or items to consider.
   (Internal rationale: a glob is like a body with various parts -
   scalar, array, hash, filehandle, etc. -, so it can take the body-part
   plural suffix.)
+- Consider doing something about unary + -- at least have a HUH command
+  for it.
