@@ -256,7 +256,7 @@ my $v_arg0 = enqr keys %v_arg0;
 
 sub to_arg0 {
         my ($func) = @_;
-        return $func->{trans}."()";
+        return $func->{trans};
 }
 
 my %v_arg01 = qw(
@@ -344,8 +344,6 @@ my %v_arg1 = qw(
         Qong            sleep
         ra'             system
         loS             wait
-        ghomneH         wantarray
-        bogh            fork
 );
 my $v_arg1 = enqr keys %v_arg1;
 sub to_arg1 {
@@ -1141,11 +1139,15 @@ FILTER {
                 or /\G$any$v_blockop/gc and blockop("$1")
                 or /\G$sing$v_match/gc  and match("$1")
                 or /\G$any$v_change/gc  and change("$1")
+                or /\G$sing$v_arg0/gc   and arg0("$1")
                 or /\G$sing$v_arg1/gc   and arg1("$1")
-                or /\G$sing$v_arg1_da/gc        and arg1_da("$1")
+                or /\G$sing$v_arg1_da/gc
+                                        and arg1_da("$1")
                 or /\G$plur$v_arg2/gc   and arg2("$1")
-                # or /\G$plur$v_arg2_i/gc       and arg2_i("$1")
-                or /\G$sing$v_arg2_da/gc        and arg2_da("$1")
+                # or /\G$plur$v_arg2_i/gc
+                #                       and arg2_i("$1")
+                or /\G$sing$v_arg2_da/gc
+                                        and arg2_da("$1")
                 or /\G$sing$v_arg2_a/gc and arg2_a("$1")
                 or /\G$any$v_args/gc    and args("$1")
                 or /\G$any$v_args_da/gc and args_da("$1")

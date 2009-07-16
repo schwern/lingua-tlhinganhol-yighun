@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 858
+        # tests => 858
 ;
 use Carp;
 use Data::Dumper;
@@ -11,7 +11,7 @@ my $DEBUG;
 my $TRANSLATE;
 
 BEGIN { $DEBUG = 0; }
-BEGIN { $TRANSLATE = 0; }
+BEGIN { $TRANSLATE = 1; }
 
 BEGIN { require_ok 'Lingua::tlhInganHol::yIghun' }
 
@@ -1477,5 +1477,26 @@ varvaD << abc >> << def >> tImugh!
 wejmaH chorgh yIvan!
 nabvaD 'olvo' wejmaH chorgh DIch yInob!
 wejmaH chorgh yInabvetlh!
+
+wejmaH Hut yIlIH!
+yIpoH!
+wejmaH Hut yIvan!
+nabvaD 'olvo' wejmaH Hut DIch yInob!
+wejmaH Hut yInabvetlh!
+
+loSmaH yIlIH!
+yIghomneH!
+loSmaH yIvan!
+nabvaD 'olvo' loSmaH DIch yInob!
+loSmaH yInabvetlh!
+
+loSmaH wa' yIlIH! #'
+# TODO: test fork ('bogh')
+pIDwIj! pIDvaD yIbogh yInob! { mej! } pID pagh mI'rap'a' teHchugh! #'
+# or something like that.
+# my $pid; $pid = fork; if ($pid == 0) { exit; }
+loSmaH yIvan!
+nabvaD 'olvo' loSmaH wa' DIch yInob! #'
+loSmaH wa' yInabvetlh! #'
 
 yIdone_testing!
