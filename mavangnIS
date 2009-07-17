@@ -49,3 +49,9 @@ Things we have to do, or items to consider.
   plural suffix.)
 - Consider doing something about unary + -- at least have a HUH command
   for it.
+- For debugging: translate as we go along, rather than in one fell swoop
+  at the end of compilation. (This will also help catch syntax errors or
+  other compilation mistakes, which otherwise simply abort the
+  compilation, without our being able to figure out what, exactly, the
+  problem was, since it's difficult to see how far the compiler got
+  already.)
