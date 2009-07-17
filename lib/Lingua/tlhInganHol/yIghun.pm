@@ -795,7 +795,7 @@ sub arg0 {
 sub arg1 {
         my ($func) = @_;
         my $arg = top('acc')
-                or $func->{raw} =~ /$v_arg01/
+                or $func =~ /$v_arg01/
                 or die "$func: De' Sambe'!\n" ;        # missing data
         $func = tok('verb',$func,$v_arg1{$func});
         pushtok('acc', translate($arg, $func));
