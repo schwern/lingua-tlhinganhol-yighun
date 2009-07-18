@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        # tests => 858
+        tests => 903
 ;
 use Carp;
 use Data::Dumper;
@@ -1277,6 +1277,21 @@ sub {
         note 'fork';
         my $step = shift;
         is $step, 41, 'step 41';
+        my @stack = extract_stack($step);
+        is scalar(@stack), 7, '7 entries on callstack';
+        is $stack[1]{name}, 'to_arg0', 'to_arg0';
+        is $stack[1]{result}[0], 'fork', 'to_arg0() -> fork';
+        is $stack[2]{name}, 'translate', 'translate';
+        is $stack[2]{result}[0], 'bogh', 'translate->raw';
+        is $stack[2]{result}[1], 'fork', 'translate->trans';
+        is $stack[3]{name}, 'pushtok', 'Push token acc';
+        is $stack[3]{result}[0]{type}, 'acc', 'token->type';
+        is $stack[3]{result}[0]{raw}, 'bogh', 'token->raw';
+        is $stack[3]{result}[0]{trans}, 'fork', 'token->trans';
+        is $stack[4]{name}, 'arg0', 'arg0';
+        is $stack[4]{result}[0]{type}, 'acc', 'token->type';
+        is $stack[4]{result}[0]{raw}, 'bogh', 'token->raw';
+        is $stack[4]{result}[0]{trans}, 'fork', 'token->trans';
 },
 ];
 
@@ -1537,11 +1552,13 @@ loSmaH yIvan!
 nabvaD 'olvo' loSmaH DIch yInob!
 loSmaH yInabvetlh!
 
-loSmaH wa' yIlIH! #'
 # fork: exit if we're the child
 # my $pid; $pid = fork; if ($pid == 0) { exit; }
-pIDwIj! pIDvaD yIbogh yInob! { yImej! } pID pagh mI'rap'a' teHchugh! #'
+pIDwIj!
+loSmaH wa' yIlIH! #'
+pIDvaD yIbogh yInob!
 loSmaH wa' yIvan! #'
+{ yImej! } pID pagh mI'rap'a' teHchugh! #'
 nabvaD 'olvo' loSmaH wa' DIch yInob! #'
 loSmaH wa' yInabvetlh! #'
 
