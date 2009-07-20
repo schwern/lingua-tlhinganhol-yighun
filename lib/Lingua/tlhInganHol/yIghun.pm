@@ -687,7 +687,11 @@ sub top {
 }
 
 sub translate {
-        my $raw = join " ", map { ref $_ ? $_->{raw} : $_ } @_;
+        # $_[0] can be undef in functions that take one, optional, argument
+        # such as "exit". If called without an argument, then translate()
+        # will be called with arguments 'undef' and the verb token.
+        my $raw = join " ",
+                map { ref $_ ? $_->{raw} : defined $_ ? $_ : () } @_;
         my $what = (caller(1))[3];
         if ($what =~ /__ANON__/) {
                 # Allow for developer tests
