@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 65
+        tests => 73
 ;
 use strict;
 my $DEBUG;
@@ -20,21 +20,21 @@ wrap $_ for qw(
         pushtok
         translate
         conj_l
+        done
 );
 }
 
 my $Zol = [
 (undef)x14,
 sub {
-        # TODO: actually test the generated code
-        # For this, we'd have to mock "done", I suppose,
-        # since the code is not actually pieced together anywhere else.
-        # But this would lead to lots more "useless" stack entries.
         note "Low-priority and";
         my $step = shift;
         is $step, 14, 'step 14';
         my @stack = extract_stack($step);
-        is scalar(@stack), 4, '4 entries on callstack';
+        # extract_stack doesn't remove the stack entry for the "done"
+        # that finished the previous command, so get rid of that here.
+        shift @stack;
+        is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok', 'Push token(a)';
         is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
         is $stack[1]{name}, 'pushtok', 'Push token(and)';
@@ -45,13 +45,18 @@ sub {
         is $stack[2]{args}[0], "'ej", 'conj_l()';
         is $stack[3]{name}, 'pushtok', 'Push token(b)';
         is $stack[3]{args}[2], 'q<b>', 'token->trans = b';
+        is $stack[4]{name}, 'done', 'Done (and)';
+        like $stack[4]{result}[0], qr/\Qq<a> and q<b>;\E\n\z/, 'cmd (and)';
 },
 sub {
         note "Low-priority or";
         my $step = shift;
         is $step, 15, 'step 15';
         my @stack = extract_stack($step);
-        is scalar(@stack), 4, '4 entries on callstack';
+        # extract_stack doesn't remove the stack entry for the "done"
+        # that finished the previous command, so get rid of that here.
+        shift @stack;
+        is scalar(@stack), 5, '5 entries on callstack';
         is $stack[0]{name}, 'pushtok', 'Push token(a)';
         is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
         is $stack[1]{name}, 'pushtok', 'Push token(or)';
@@ -62,13 +67,18 @@ sub {
         is $stack[2]{args}[0], "qoj", 'conj_l()';
         is $stack[3]{name}, 'pushtok', 'Push token(b)';
         is $stack[3]{args}[2], 'q<b>', 'token->trans = b';
+        is $stack[4]{name}, 'done', 'Done (or)';
+        like $stack[4]{result}[0], qr/\Qq<a> or q<b>;\E\n\z/, 'cmd (or)';
 },
 sub {
         note "Low-priority and with multiple arguments";
         my $step = shift;
         is $step, 16, 'step 16';
         my @stack = extract_stack($step);
-        is scalar(@stack), 7, '7 entries on callstack';
+        # extract_stack doesn't remove the stack entry for the "done"
+        # that finished the previous command, so get rid of that here.
+        shift @stack;
+        is scalar(@stack), 8, '8 entries on callstack';
         is $stack[0]{name}, 'pushtok', 'Push token(a)';
         is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
         is $stack[1]{name}, 'pushtok', 'Push token(and)';
@@ -87,13 +97,18 @@ sub {
         is $stack[5]{args}[0], "'ej", 'conj_l()';
         is $stack[6]{name}, 'pushtok', 'Push token(c)';
         is $stack[6]{args}[2], 'q<c>', 'token->trans = c';
+        is $stack[7]{name}, 'done', 'Done (multiple and)';
+        like $stack[7]{result}[0], qr/\Qq<a> and q<b> and q<c>;\E\n\z/, 'cmd (multiple and)';
 },
 sub {
         note "Low-priority or with multiple arguments";
         my $step = shift;
         is $step, 17, 'step 17';
         my @stack = extract_stack($step);
-        is scalar(@stack), 7, '7 entries on callstack';
+        # extract_stack doesn't remove the stack entry for the "done"
+        # that finished the previous command, so get rid of that here.
+        shift @stack;
+        is scalar(@stack), 8, '8 entries on callstack';
         is $stack[0]{name}, 'pushtok', 'Push token(a)';
         is $stack[0]{args}[2], 'q<a>', 'token->trans = a';
         is $stack[1]{name}, 'pushtok', 'Push token(or)';
@@ -112,6 +127,8 @@ sub {
         is $stack[5]{args}[0], "qoj", 'conj_l()';
         is $stack[6]{name}, 'pushtok', 'Push token(c)';
         is $stack[6]{args}[2], 'q<c>', 'token->trans = c';
+        is $stack[7]{name}, 'done', 'Done (multiple or)';
+        like $stack[7]{result}[0], qr/\Qq<a> or q<b> or q<c>;\E\n\z/, 'cmd (multiple or)';
 },
 ];
 
