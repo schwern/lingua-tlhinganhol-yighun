@@ -44,8 +44,9 @@ sub wrap {
 
 my %end_index;
 
-sub extract_stack($) {
+sub extract_stack($;$) {
         my $step = shift;
+        my $skip = shift || 3;
         # Find the portion of the callstack that's actually part of this step
         my @stack = @callstack;
         my($start_index, $end_index) = (-1, -1);
@@ -61,7 +62,7 @@ sub extract_stack($) {
         }
         carp "Can't find start index for step $step!" unless $start_index >= 0;
         carp "Can't find end index for step $step!" unless $end_index >= 0;
-        @stack = @stack[$start_index+1 .. $end_index-4];
+        @stack = @stack[$start_index+1 .. $end_index-$skip];
         warn "Step $step: using stack " . Dumper(\@stack) if $DEBUG;
         return @stack;
 }
