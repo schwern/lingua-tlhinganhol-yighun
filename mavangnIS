@@ -67,3 +67,7 @@ Things we have to do, or items to consider.
   written {varwIj! varvaD <bla> nob!}.
 - Need to test objects ('e'), especially in connection with calling
   methods on them ({a b c} turning into {a->c(b)} rather than {c(a, b)})
+- Test noun conjunctions (conj_h, noun_conj)... there is some rather
+  strange code there. See whether it's still needed; if so, test it, if
+  not, dike it out. (I'm guessing it's a remnant from a translation from
+  Lingua::Romana::Perligata's -que etc.)
