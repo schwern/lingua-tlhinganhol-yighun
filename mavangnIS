@@ -65,3 +65,5 @@ Things we have to do, or items to consider.
 - I think we can't currently declare a variable and assign to it in one
   step; things such as {varwIjvaD <bla> nob!} don't work and have to be
   written {varwIj! varvaD <bla> nob!}.
+- Need to test objects ('e'), especially in connection with calling
+  methods on them ({a b c} turning into {a->c(b)} rather than {c(a, b)})
