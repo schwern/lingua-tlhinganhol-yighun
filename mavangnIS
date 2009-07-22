@@ -18,6 +18,8 @@ Things we have to do, or items to consider.
   variable/subroutine name itself) or colons (for accessing the package
   containing the variable/subroutine). Proposed solution: EOW should
   probably be changed to accept ':' and '_' as well.
+  Or do it like Lingua::Romana::Perligata and have special keywords for
+  '::'.
 - Match and search operations can't specify options (egimosx).
   This can be partially compensated by adding an (?egimosx:) inside the
   regular expression "line noise", but we might wish to consider
@@ -55,3 +57,11 @@ Things we have to do, or items to consider.
   compilation, without our being able to figure out what, exactly, the
   problem was, since it's difficult to see how far the compiler got
   already.)
+  We'll have to decide whether we translate at the end of each
+  statement, or only when we get back to the top level (E.g. after a
+  subroutine declaration.
+  At the end of each statement is probably better for debugging. So this
+  probably only involves adding a check and an output to done().
+- I think we can't currently declare a variable and assign to it in one
+  step; things such as {varwIjvaD <bla> nob!} don't work and have to be
+  written {varwIj! varvaD <bla> nob!}.
