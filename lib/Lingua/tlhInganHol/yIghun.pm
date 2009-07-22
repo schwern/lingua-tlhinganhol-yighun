@@ -344,6 +344,8 @@ my %v_arg1 = qw(
         Qong            sleep
         ra'             system
         loS             wait
+        SeppoH          localtime
+        Qo'noSpoH       gmtime
 );
 my $v_arg1 = enqr keys %v_arg1;
 sub to_arg1 {
