@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 505
+        tests => 547
 ;
 use strict;
 my $DEBUG;
@@ -526,26 +526,26 @@ sub {
         my $step = shift;
         is $step, 19, 'step 19';
         my @stack = extract_stack($step);
-        is scalar(@stack), 4, '4 entries on callstack';
-        is $stack[0]{name}, 'to_arg1', 'name = to_arg1';
-        ok !defined($stack[0]{args}[0]), 'to_arg1[0] = undef';
-        is $stack[0]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
-        is $stack[0]{args}[1]{raw}, 'Hegh', 'to_arg1[1]->raw = Hegh';
-        is $stack[0]{args}[1]{trans}, 'die', 'to_arg1[1]->trans = die';
-        is $stack[0]{result}[0], 'die()', 'to_arg1() = die()';
-        is $stack[1]{name}, 'translate', 'name = translate';
-        ok !defined($stack[1]{args}[0]), 'translate[0] = undef';
-        is $stack[1]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
-        is $stack[1]{args}[1]{raw}, 'Hegh', 'translate[1]->raw = Hegh';
-        is $stack[1]{args}[1]{trans}, 'die', 'translate[1]->trans = die';
-        is $stack[1]{result}[0], 'Hegh', 'translate()->raw = Hegh';
-        is $stack[1]{result}[1], 'die()', 'translate()->trans = die()';
-        is $stack[2]{name}, 'pushtok', 'name = pushtok';
-        is $stack[2]{args}[0], 'acc', 'token->type = "acc"';
-        is $stack[2]{args}[1], 'Hegh', 'token->raw = Hegh';
-        is $stack[2]{args}[2], 'die()', 'token->trans = die()';
-        is $stack[3]{name}, 'arg1', 'name = arg1';
-        is $stack[3]{args}[0], 'Hegh', 'arg1->args';
+        is scalar(@stack), 8, '8 entries on callstack';
+        is $stack[1]{name}, 'to_arg1', 'name = to_arg1';
+        ok !defined($stack[1]{args}[0]), 'to_arg1[0] = undef';
+        is $stack[1]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
+        is $stack[1]{args}[1]{raw}, 'Hegh', 'to_arg1[1]->raw = Hegh';
+        is $stack[1]{args}[1]{trans}, 'die', 'to_arg1[1]->trans = die';
+        is $stack[1]{result}[0], 'die()', 'to_arg1() = die()';
+        is $stack[2]{name}, 'translate', 'name = translate';
+        ok !defined($stack[2]{args}[0]), 'translate[0] = undef';
+        is $stack[2]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
+        is $stack[2]{args}[1]{raw}, 'Hegh', 'translate[1]->raw = Hegh';
+        is $stack[2]{args}[1]{trans}, 'die', 'translate[1]->trans = die';
+        is $stack[2]{result}[0], 'Hegh', 'translate()->raw = Hegh';
+        is $stack[2]{result}[1], 'die()', 'translate()->trans = die()';
+        is $stack[3]{name}, 'pushtok', 'name = pushtok';
+        is $stack[3]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[3]{args}[1], 'Hegh', 'token->raw = Hegh';
+        is $stack[3]{args}[2], 'die()', 'token->trans = die()';
+        is $stack[4]{name}, 'arg1', 'name = arg1';
+        is $stack[4]{args}[0], 'Hegh', 'arg1->args';
 },
 sub {
         note "warn(0)";
@@ -578,26 +578,26 @@ sub {
         my $step = shift;
         is $step, 21, 'step 21';
         my @stack = extract_stack($step);
-        is scalar(@stack), 4, '4 entries on callstack';
-        is $stack[0]{name}, 'to_arg1', 'name = to_arg1';
-        ok !defined($stack[0]{args}[0]), 'to_arg1[0] = undef';
-        is $stack[0]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
-        is $stack[0]{args}[1]{raw}, 'pa\'Hegh', 'to_arg1[1]->raw = pa\'Hegh';
-        is $stack[0]{args}[1]{trans}, 'Carp::croak', 'to_arg1[1]->trans = Carp::croak';
-        is $stack[0]{result}[0], 'Carp::croak()', 'to_arg1() = Carp::croak()';
-        is $stack[1]{name}, 'translate', 'name = translate';
-        ok !defined($stack[1]{args}[0]), 'translate[0] = undef';
-        is $stack[1]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
-        is $stack[1]{args}[1]{raw}, 'pa\'Hegh', 'translate[1]->raw = pa\'Hegh';
-        is $stack[1]{args}[1]{trans}, 'Carp::croak', 'translate[1]->trans = Carp::croak';
-        is $stack[1]{result}[0], 'pa\'Hegh', 'translate()->raw = pa\'Hegh';
-        is $stack[1]{result}[1], 'Carp::croak()', 'translate()->trans = Carp::croak()';
-        is $stack[2]{name}, 'pushtok', 'name = pushtok';
-        is $stack[2]{args}[0], 'acc', 'token->type = "acc"';
-        is $stack[2]{args}[1], 'pa\'Hegh', 'token->raw = pa\'Hegh';
-        is $stack[2]{args}[2], 'Carp::croak()', 'token->trans = Carp::croak()';
-        is $stack[3]{name}, 'arg1', 'name = arg1';
-        is $stack[3]{args}[0], 'pa\'Hegh', 'arg1->args';
+        is scalar(@stack), 8, '8 entries on callstack';
+        is $stack[1]{name}, 'to_arg1', 'name = to_arg1';
+        ok !defined($stack[1]{args}[0]), 'to_arg1[0] = undef';
+        is $stack[1]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
+        is $stack[1]{args}[1]{raw}, 'pa\'Hegh', 'to_arg1[1]->raw = pa\'Hegh';
+        is $stack[1]{args}[1]{trans}, 'Carp::croak', 'to_arg1[1]->trans = Carp::croak';
+        is $stack[1]{result}[0], 'Carp::croak()', 'to_arg1() = Carp::croak()';
+        is $stack[2]{name}, 'translate', 'name = translate';
+        ok !defined($stack[2]{args}[0]), 'translate[0] = undef';
+        is $stack[2]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
+        is $stack[2]{args}[1]{raw}, 'pa\'Hegh', 'translate[1]->raw = pa\'Hegh';
+        is $stack[2]{args}[1]{trans}, 'Carp::croak', 'translate[1]->trans = Carp::croak';
+        is $stack[2]{result}[0], 'pa\'Hegh', 'translate()->raw = pa\'Hegh';
+        is $stack[2]{result}[1], 'Carp::croak()', 'translate()->trans = Carp::croak()';
+        is $stack[3]{name}, 'pushtok', 'name = pushtok';
+        is $stack[3]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[3]{args}[1], 'pa\'Hegh', 'token->raw = pa\'Hegh';
+        is $stack[3]{args}[2], 'Carp::croak()', 'token->trans = Carp::croak()';
+        is $stack[4]{name}, 'arg1', 'name = arg1';
+        is $stack[4]{args}[0], 'pa\'Hegh', 'arg1->args';
 },
 sub {
         note "Carp::carp(0)";
@@ -951,7 +951,7 @@ wa'maH cha' yIvan! #'
 nabvaD 'olvo' wa'maH cha' DIch yInob! #'
 wa'maH cha' yInabvetlh! #'
 
-# TODO: Conflicts with 'yInargh' = last
+# TODO: 'nargh' = quotemeta conflicts with 'yInargh' = last
 # wa'maH wej yIlIH! #'
 # yInargh! #'
 # wa'maH wej yIvan! #'
@@ -991,13 +991,12 @@ wa'maH jav yInabvetlh! #'
 # wa'maH chorgh yInabvetlh! #'
 
 # TODO: die will exit the script (consider catching it)
-# wa'maH Hut yIlIH! #'
-# yIHegh! #'
-# wa'maH Hut yIvan! #'
-# nabvaD 'olvo' wa'maH Hut DIch yInob! #'
-# wa'maH Hut yInabvetlh! #'
+wa'maH Hut yIlIH! #'
+{ yIHegh! } yIchov! #'
+wa'maH Hut yIvan! #'
+nabvaD 'olvo' wa'maH Hut DIch yInob! #'
+wa'maH Hut yInabvetlh! #'
 
-# TODO: will print a warning
 cha'maH yIlIH! #'
 yIghuHmoH! #'
 cha'maH yIvan! #'
@@ -1005,13 +1004,12 @@ nabvaD 'olvo' cha'maH DIch yInob! #'
 cha'maH yInabvetlh! #'
 
 # TODO: Carp::croak will exit the script (consider catching it)
-# cha'maH wa' yIlIH! #'
-# yIpa'Hegh! #'
-# cha'maH wa' yIvan! #'
-# nabvaD 'olvo' cha'maH wa' DIch yInob! #'
-# cha'maH wa' yInabvetlh! #'
+cha'maH wa' yIlIH! #'
+{ yIpa'Hegh! } yIchov! #'
+cha'maH wa' yIvan! #'
+nabvaD 'olvo' cha'maH wa' DIch yInob! #'
+cha'maH wa' yInabvetlh! #'
 
-# TODO: will print a warning
 cha'maH cha' yIlIH! #'
 yIpa'ghuHmoH! #'
 cha'maH cha' yIvan! #'
