@@ -71,3 +71,4 @@ Things we have to do, or items to consider.
   strange code there. See whether it's still needed; if so, test it, if
   not, dike it out. (I'm guessing it's a remnant from a translation from
   Lingua::Romana::Perligata's -que etc.)
+- Are eval "string" and eval {BLOCK} both supported?
