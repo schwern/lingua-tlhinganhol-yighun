@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 547
+        tests => 568
 ;
 use strict;
 my $DEBUG;
@@ -861,8 +861,11 @@ sub {
 },
 ];
 
-# Quiet warnings
-BEGIN { $SIG{'__WARN__'} = sub { } }
+# Quiet warnings and ignore alarms
+BEGIN {
+        $SIG{'__WARN__'} = sub { };
+        $SIG{ALRM} = sub { };
+}
 
 my @module_args;
 BEGIN { push @module_args, 'yIQIj' if $DEBUG; }
@@ -1034,12 +1037,11 @@ cha'maH vagh yIvan! #'
 nabvaD 'olvo' cha'maH vagh DIch yInob! #'
 cha'maH vagh yInabvetlh! #'
 
-# TODO: alarm will kill the script
-# cha'maH jav yIlIH! #'
-# yIghum ! #'
-# cha'maH jav yIvan! #'
-# nabvaD 'olvo' cha'maH jav DIch yInob! #'
-# cha'maH jav yInabvetlh! #'
+cha'maH jav yIlIH! #'
+yIghum ! #'
+cha'maH jav yIvan! #'
+nabvaD 'olvo' cha'maH jav DIch yInob! #'
+cha'maH jav yInabvetlh! #'
 
 # TODO: dump will dump core
 # cha'maH Soch yIlIH! #'
