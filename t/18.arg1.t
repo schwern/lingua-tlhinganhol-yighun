@@ -422,26 +422,26 @@ sub {
         my $step = shift;
         is $step, 15, 'step 15';
         my @stack = extract_stack($step);
-        is scalar(@stack), 4, '4 entries on callstack';
-        is $stack[0]{name}, 'to_arg1', 'name = to_arg1';
-        ok !defined($stack[0]{args}[0]), 'to_arg1[0] = undef';
-        is $stack[0]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
-        is $stack[0]{args}[1]{raw}, 'SIj', 'to_arg1[1]->raw = SIj';
-        is $stack[0]{args}[1]{trans}, 'split', 'to_arg1[1]->trans = split';
-        is $stack[0]{result}[0], 'split()', 'to_arg1() = split()';
-        is $stack[1]{name}, 'translate', 'name = translate';
-        ok !defined($stack[1]{args}[0]), 'translate[0] = undef';
-        is $stack[1]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
-        is $stack[1]{args}[1]{raw}, 'SIj', 'translate[1]->raw = SIj';
-        is $stack[1]{args}[1]{trans}, 'split', 'translate[1]->trans = split';
-        is $stack[1]{result}[0], 'SIj', 'translate()->raw = SIj';
-        is $stack[1]{result}[1], 'split()', 'translate()->trans = split()';
-        is $stack[2]{name}, 'pushtok', 'name = pushtok';
-        is $stack[2]{args}[0], 'acc', 'token->type = "acc"';
-        is $stack[2]{args}[1], 'SIj', 'token->raw = SIj';
-        is $stack[2]{args}[2], 'split()', 'token->trans = split()';
-        is $stack[3]{name}, 'arg1', 'name = arg1';
-        is $stack[3]{args}[0], 'SIj', 'arg1->args';
+        is scalar(@stack), 7, '7 entries on callstack';
+        is $stack[1]{name}, 'to_arg1', 'name = to_arg1';
+        ok !defined($stack[1]{args}[0]), 'to_arg1[0] = undef';
+        is $stack[1]{args}[1]{type}, 'verb', 'to_arg1[1]->type = verb';
+        is $stack[1]{args}[1]{raw}, 'SIj', 'to_arg1[1]->raw = SIj';
+        is $stack[1]{args}[1]{trans}, 'split', 'to_arg1[1]->trans = split';
+        is $stack[1]{result}[0], 'split()', 'to_arg1() = split()';
+        is $stack[2]{name}, 'translate', 'name = translate';
+        ok !defined($stack[2]{args}[0]), 'translate[0] = undef';
+        is $stack[2]{args}[1]{type}, 'verb', 'translate[1]->type = verb';
+        is $stack[2]{args}[1]{raw}, 'SIj', 'translate[1]->raw = SIj';
+        is $stack[2]{args}[1]{trans}, 'split', 'translate[1]->trans = split';
+        is $stack[2]{result}[0], 'SIj', 'translate()->raw = SIj';
+        is $stack[2]{result}[1], 'split()', 'translate()->trans = split()';
+        is $stack[3]{name}, 'pushtok', 'name = pushtok';
+        is $stack[3]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[3]{args}[1], 'SIj', 'token->raw = SIj';
+        is $stack[3]{args}[2], 'split()', 'token->trans = split()';
+        is $stack[4]{name}, 'arg1', 'name = arg1';
+        is $stack[4]{args}[0], 'SIj', 'arg1->args';
 },
 sub {
         note "defined(0)";
@@ -861,12 +861,16 @@ sub {
 },
 ];
 
+# Quiet warnings
+BEGIN { $SIG{'__WARN__'} = sub { } }
+
 my @module_args;
 BEGIN { push @module_args, 'yIQIj' if $DEBUG; }
 BEGIN { push @module_args, 'yImugh' if $TRANSLATE; }
-no warnings 'void';
+no warnings qw/void/;
 use Lingua::tlhInganHol::yIghun @module_args;
 nabwIj!
+ghommeywIj!
 'oHvaD wa' yInob!
 
 pagh yIlIH!
@@ -961,7 +965,7 @@ nabvaD 'olvo' wa'maH loS DIch yInob! #'
 wa'maH loS yInabvetlh! #'
 
 wa'maH vagh yIlIH! #'
-yISIj! #'
+ghommeyvaD yISIj yInob! #'
 wa'maH vagh yIvan! #'
 nabvaD 'olvo' wa'maH vagh DIch yInob! #'
 wa'maH vagh yInabvetlh! #'
@@ -993,6 +997,7 @@ wa'maH jav yInabvetlh! #'
 # nabvaD 'olvo' wa'maH Hut DIch yInob! #'
 # wa'maH Hut yInabvetlh! #'
 
+# TODO: will print a warning
 cha'maH yIlIH! #'
 yIghuHmoH! #'
 cha'maH yIvan! #'
@@ -1006,6 +1011,7 @@ cha'maH yInabvetlh! #'
 # nabvaD 'olvo' cha'maH wa' DIch yInob! #'
 # cha'maH wa' yInabvetlh! #'
 
+# TODO: will print a warning
 cha'maH cha' yIlIH! #'
 yIpa'ghuHmoH! #'
 cha'maH cha' yIvan! #'
