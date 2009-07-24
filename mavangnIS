@@ -72,3 +72,5 @@ Things we have to do, or items to consider.
   not, dike it out. (I'm guessing it's a remnant from a translation from
   Lingua::Romana::Perligata's -que etc.)
 - Are eval "string" and eval {BLOCK} both supported?
+- I don't think we handle the file test operators ("-f" and friends)
+  yet. Consider whether to add them.
