@@ -72,5 +72,14 @@ Things we have to do, or items to consider.
   not, dike it out. (I'm guessing it's a remnant from a translation from
   Lingua::Romana::Perligata's -que etc.)
 - Are eval "string" and eval {BLOCK} both supported?
+  --> apparently, yes -- they're in both the 1-arg command list and the
+  blockop list! This should be remedied.
+- require "version" and require BAREWORD seem to be intended to be
+  parsed in two different ways, but I don't think it works like that.
+  Either split them up into two separate commands or unify the parsing
+  (or something).
 - I don't think we handle the file test operators ("-f" and friends)
   yet. Consider whether to add them.
+- "wait" is in the list of 1-optional-arg commands, but it takes no args
+  at all (you can't tell it what PID to wait for). Move it to the list
+  of 0-arg commands.
