@@ -83,3 +83,5 @@ Things we have to do, or items to consider.
 - "wait" is in the list of 1-optional-arg commands, but it takes no args
   at all (you can't tell it what PID to wait for). Move it to the list
   of 0-arg commands.
+- We have a command for 'link' but none for 'symlink'. Consider adding
+  one.
