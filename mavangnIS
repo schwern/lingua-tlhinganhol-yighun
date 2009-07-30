@@ -85,3 +85,9 @@ Things we have to do, or items to consider.
   of 0-arg commands.
 - We have a command for 'link' but none for 'symlink'. Consider adding
   one.
+- bless, chmod, chown, and index are all considered 2-arg functions.
+  However bless's second argument (the package to bless the reference
+  into) is technically optional; chmod/chown take a LIST of arguments
+  (one mode plus 1..n filenames or - possibly - filehandles); and index
+  can take a third argument (the position to search from). None of this
+  is currently supported; some or all of this should, perhaps, be.
