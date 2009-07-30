@@ -42,7 +42,11 @@ Things we have to do, or items to consider.
 - split is classified as a 1-arg function??? Check whether this does the
   right thing.
 - Check whether we can handle both C<require Pack::age;> and C<require
-  "library.pl";>.
+  "library.pl";>. Oh, and C<require 5.005_03;>.
+- require "version" and require BAREWORD seem to be intended to be
+  parsed in two different ways, but I don't think it works like that.
+  Either split them up into two separate commands or unify the parsing
+  (or something).
 - Possibly handle subroutine prototypes -- perhaps via an optional 'acc'
   token after the 'block' token, a la C<< { ... } <$\@> name nab >>.
 - Possibly do globs, perhaps with {-Du'}, the third plural suffix?
@@ -74,10 +78,6 @@ Things we have to do, or items to consider.
 - Are eval "string" and eval {BLOCK} both supported?
   --> apparently, yes -- they're in both the 1-arg command list and the
   blockop list! This should be remedied.
-- require "version" and require BAREWORD seem to be intended to be
-  parsed in two different ways, but I don't think it works like that.
-  Either split them up into two separate commands or unify the parsing
-  (or something).
 - I don't think we handle the file test operators ("-f" and friends)
   yet. Consider whether to add them.
 - "wait" is in the list of 1-optional-arg commands, but it takes no args
@@ -91,3 +91,6 @@ Things we have to do, or items to consider.
   (one mode plus 1..n filenames or - possibly - filehandles); and index
   can take a third argument (the position to search from). None of this
   is currently supported; some or all of this should, perhaps, be.
+- Go over the command names; some of them could possibly stand to be
+  altered (for example, by adding the causative -moH suffix) to be more
+  "Klingon-like".
