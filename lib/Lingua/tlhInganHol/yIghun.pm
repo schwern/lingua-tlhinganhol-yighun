@@ -1152,9 +1152,9 @@ FILTER {
                 or /\G$plur$v_arg2/gc   and arg2("$1")
                 # or /\G$plur$v_arg2_i/gc
                 #                       and arg2_i("$1")
-                or /\G$sing$v_arg2_da/gc
+                or /\G$plur$v_arg2_da/gc
                                         and arg2_da("$1")
-                or /\G$sing$v_arg2_a/gc and arg2_a("$1")
+                or /\G$plur$v_arg2_a/gc and arg2_a("$1")
                 or /\G$any$v_args/gc    and args("$1")
                 or /\G$any$v_args_da/gc and args_da("$1")
                 or /\G$sing$v_unop/gc   and unop("$1")
