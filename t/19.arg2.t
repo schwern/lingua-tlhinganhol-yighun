@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 389
+        tests => 436
 ;
 use strict;
 my $DEBUG;
@@ -458,7 +458,53 @@ sub {
         my $step = shift;
         is $step, 8, 'step 8';
         my @stack = extract_stack($step);
-        note scalar(@stack), ' entries on callstack';
+        is scalar(@stack), 12, '12 entries on callstack';
+        is $stack[2]{name}, 'to_arg2_da', 'name = to_arg2_da';
+        is scalar(@{$stack[2]{args}}), 3, '3 arguments to to_arg2_da';
+        is $stack[2]{args}[0]{trans}, '$ref', 'to_arg2_da[0]->trans = $ref';
+        is $stack[2]{args}[1]{trans}, 'q<abc>', 'to_arg2_da[1]->trans = q<abc>';
+        is $stack[2]{args}[2]{type}, 'verb', 'to_arg2_da[2]->type = verb';
+        is $stack[2]{args}[2]{raw}, 'DoQ', 'to_arg2_da[2]->raw = DoQ';
+        is $stack[2]{args}[2]{trans}, 'bless', 'to_arg2_da[2]->trans = bless';
+        is $stack[2]{result}[0], 'bless($ref, q<abc>)', 'to_arg2_da() = bless($ref, q<abc>)';
+        is $stack[3]{name}, 'translate', 'name = translate';
+        is scalar(@{$stack[3]{args}}), 3, '3 arguments to translate';
+        is $stack[3]{args}[0]{trans}, '$ref', 'translate[0]->trans = $ref';
+        is $stack[3]{args}[1]{trans}, 'q<abc>', 'translate[1]->trans = q<abc>';
+        is $stack[3]{args}[2]{type}, 'verb', 'translate[2]->type = verb';
+        is $stack[3]{args}[2]{raw}, 'DoQ', 'translate[2]->raw = DoQ';
+        is $stack[3]{args}[2]{trans}, 'bless', 'translate[2]->trans = bless';
+        is $stack[3]{result}[0], 'refvaD <abc> DoQ', 'translate()->raw = refvaD <abc> DoQ';
+        is $stack[3]{result}[1], 'bless($ref, q<abc>)', 'translate()->trans = bless($ref, q<abc>)';
+        is $stack[4]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[4]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[4]{args}[1], 'refvaD <abc> DoQ', 'token->raw = refvaD <abc> DoQ';
+        is $stack[4]{args}[2], 'bless($ref, q<abc>)', 'token->trans = bless($ref, q<abc>)';
+        is $stack[5]{name}, 'arg2_da', 'name = arg2_da';
+        is $stack[5]{args}[0], 'DoQ', 'arg2_da->args';
+        is $stack[8]{name}, 'to_arg2_da', 'name = to_arg2_da';
+        is scalar(@{$stack[8]{args}}), 3, '3 arguments to to_arg2_da';
+        is $stack[8]{args}[0]{trans}, '$ref', 'to_arg2_da[0]->trans = $ref';
+        is $stack[8]{args}[1]{trans}, 'q<abc>', 'to_arg2_da[1]->trans = q<abc>';
+        is $stack[8]{args}[2]{type}, 'verb', 'to_arg2_da[2]->type = verb';
+        is $stack[8]{args}[2]{raw}, 'DoQ', 'to_arg2_da[2]->raw = DoQ';
+        is $stack[8]{args}[2]{trans}, 'bless', 'to_arg2_da[2]->trans = bless';
+        is $stack[8]{result}[0], 'bless($ref, q<abc>)', 'to_arg2_da() = bless($ref, q<abc>)';
+        is $stack[9]{name}, 'translate', 'name = translate';
+        is scalar(@{$stack[9]{args}}), 3, '3 arguments to translate';
+        is $stack[9]{args}[0]{trans}, '$ref', 'translate[0]->trans = $ref';
+        is $stack[9]{args}[1]{trans}, 'q<abc>', 'translate[1]->trans = q<abc>';
+        is $stack[9]{args}[2]{type}, 'verb', 'translate[2]->type = verb';
+        is $stack[9]{args}[2]{raw}, 'DoQ', 'translate[2]->raw = DoQ';
+        is $stack[9]{args}[2]{trans}, 'bless', 'translate[2]->trans = bless';
+        is $stack[9]{result}[0], 'refvaD <abc> DoQ', 'translate()->raw = refvaD <abc> DoQ';
+        is $stack[9]{result}[1], 'bless($ref, q<abc>)', 'translate()->trans = bless($ref, q<abc>)';
+        is $stack[10]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[10]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[10]{args}[1], 'refvaD <abc> DoQ', 'token->raw = refvaD <abc> DoQ';
+        is $stack[10]{args}[2], 'bless($ref, q<abc>)', 'token->trans = bless($ref, q<abc>)';
+        is $stack[11]{name}, 'arg2_da', 'name = arg2_da';
+        is $stack[11]{args}[0], 'DoQ', 'arg2_da->args';
 },
 sub {
         note "flock";
