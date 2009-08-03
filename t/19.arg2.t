@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 483
+        tests => 861
 ;
 use strict;
 my $DEBUG;
@@ -567,14 +567,414 @@ sub {
         my $step = shift;
         is $step, 10, 'step 10';
         my @stack = extract_stack($step);
-        note scalar(@stack), ' entries on callstack';
+        is scalar(@stack), 46, '46 entries on callstack';
+
+        note "tIDIch";
+        is $stack[0]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[0]{args}[0], 'abl', 'token->type = abl';
+        is $stack[0]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[0]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[1]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[1]{args}[0], 'acc', 'token->type = acc';
+        is $stack[1]{args}[1], 'wa\'', 'token->raw = wa\'';
+        is $stack[1]{args}[2], '1', 'token->trans = 1';
+        is $stack[2]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[2]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[2]{args}[1]{trans}, '1', 'to_arg2_a[1]->trans = 1';
+        is $stack[2]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[2]{args}[2]{raw}, 'DIch', 'to_arg2_a[2]->raw = DIch';
+        is $stack[2]{args}[2]{trans}, '[1]', 'to_arg2_a[2]->trans (after s///) = [1]';
+        is scalar(@{$stack[2]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[2]{result}[0], '$ghom[1]', 'to_arg2_a() = $ghom[1]';
+        is $stack[3]{name}, 'translate', 'name = translate';
+        is $stack[3]{result}[0], 'ghommeyvo\' wa\' DIch', 'translate()->raw = ghommeyvo\' wa\' DIch';
+        is $stack[3]{result}[1], '$ghom[1]', 'translate()-trans = $ghom[1]';
+        is $stack[4]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[4]{args}[0], 'acc', 'token->type = acc';
+        is $stack[4]{args}[1], 'ghommeyvo\' wa\' DIch', 'token->raw = ghommeyvo\' wa\' DIch';
+        is $stack[4]{args}[2], '$ghom[1]', 'token->trans = $ghom[1]';
+        is $stack[5]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[5]{args}[0], 'DIch', 'arg2_a[0] = DIch';
+
+        note "tIDIchvo\'";
+        is $stack[6]{name}, 'pushtok', 'name = pushtok(array 1)';
+        is $stack[6]{args}[0], 'abl', 'token->type = abl';
+        is $stack[6]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[6]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[7]{name}, 'pushtok', 'name = pushtok(index 1)';
+        is $stack[7]{args}[0], 'acc', 'token->type = acc';
+        is $stack[7]{args}[1], 'cha\'', 'token->raw = cha\'';
+        is $stack[7]{args}[2], '2', 'token->trans = 2';
+        is $stack[8]{name}, 'to_arg2_a', 'name = to_arg2_a (1)';
+        is $stack[8]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[8]{args}[1]{trans}, '2', 'to_arg2_a[1]->trans = 2';
+        is $stack[8]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[8]{args}[2]{raw}, 'DIchvo\'', 'to_arg2_a[2]->raw = DIchvo\'';
+        is $stack[8]{args}[2]{trans}, '[2]', 'to_arg2_a[2]->trans (after s///) = [2]';
+        is scalar(@{$stack[8]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[8]{result}[0], '$ghom[2]', 'to_arg2_a() = $ghom[2]';
+        is $stack[9]{name}, 'translate', 'name = translate (1)';
+        is $stack[9]{result}[0], 'ghommeyvo\' cha\' DIchvo\'', 'translate()->raw = ghommeyvo\' cha\' DIchvo\'';
+        is $stack[9]{result}[1], '$ghom[2]', 'translate()-trans = $ghom[2]';
+        is $stack[10]{name}, 'pushtok', 'name = pushtok(func 1)';
+        is $stack[10]{args}[0], 'abl', 'token->type = abl';
+        is $stack[10]{args}[1], 'ghommeyvo\' cha\' DIchvo\'', 'token->raw = ghommeyvo\' cha\' DIchvo\'';
+        is $stack[10]{args}[2], '$ghom[2]', 'token->trans = $ghom[2]';
+        is $stack[11]{name}, 'arg2_a', 'name = arg2_a (1)';
+        is $stack[11]{args}[0], 'DIchvo\'', 'arg2_a[0] = DIchvo\'';
+        is $stack[12]{name}, 'pushtok', 'name = pushtok (index 2)';
+        is $stack[12]{args}[2], '3', 'token->trans = 3';
+        is $stack[13]{name}, 'to_arg2_a', 'name = to_arg2_a (2)';
+        is $stack[13]{args}[0]{trans}, '$ghom[2]->', 'to_arg2_a[0]->trans = $ghom[2]->';
+        is $stack[13]{args}[1]{trans}, '3', 'to_arg2_a[1]->trans = 3';
+        is $stack[13]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[13]{args}[2]{raw}, 'DIch', 'to_arg2_a[2]->raw = DIch';
+        is $stack[13]{args}[2]{trans}, '[3]', 'to_arg2_a[2]->trans = [3]';
+        is scalar(@{$stack[13]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[13]{result}[0], '$ghom[2]->[3]', 'to_arg2_a() = $ghom[2]->[3]';
+        is $stack[14]{name}, 'translate', 'name = translate (2)';
+        is $stack[14]{result}[0], 'ghommeyvo\' cha\' DIchvo\' wej DIch', 'translate()->raw = ghommeyvo\' cha\' DIchvo\' wej DIch';
+        is $stack[14]{result}[1], '$ghom[2]->[3]', 'translate()->trans = $ghom[2]->[3]';
+        is $stack[15]{name}, 'pushtok', 'name = pushtok (func 2)';
+        is $stack[15]{args}[0], 'acc', 'token->type = acc';
+        is $stack[15]{args}[1], 'ghommeyvo\' cha\' DIchvo\' wej DIch', 'token->raw = ghommeyvo\' cha\' DIchvo\' wej DIch';
+        is $stack[15]{args}[2], '$ghom[2]->[3]', 'token->trans = $ghom[2]->[3]';
+        is $stack[16]{name}, 'arg2_a', 'name = arg2_a (2)';
+        is $stack[16]{args}[0], 'DIch', 'arg2_a[0] = DIch';
+
+        note "tIDIchvaD";
+        is $stack[17]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[17]{args}[0], 'abl', 'token->type = abl';
+        is $stack[17]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[17]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[18]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[18]{args}[0], 'acc', 'token->type = acc';
+        is $stack[18]{args}[1], 'loS', 'token->raw = loS';
+        is $stack[18]{args}[2], '4', 'token->trans = 4';
+        is $stack[19]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[19]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[19]{args}[1]{trans}, '4', 'to_arg2_a[1]->trans = 4';
+        is $stack[19]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[19]{args}[2]{raw}, 'DIchvaD', 'to_arg2_a[2]->raw = DIchvaD';
+        is $stack[19]{args}[2]{trans}, '[4]', 'to_arg2_a[2]->trans (after s///) = [4]';
+        is scalar(@{$stack[19]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[19]{result}[0], '$ghom[4]', 'to_arg2_a() = $ghom[4]';
+        is $stack[20]{name}, 'translate', 'name = translate';
+        is $stack[20]{result}[0], 'ghommeyvo\' loS DIchvaD', 'translate()->raw = ghommeyvo\' loS DIchvaD';
+        is $stack[20]{result}[1], '$ghom[4]', 'translate()-trans = $ghom[4]';
+        is $stack[21]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[21]{args}[0], 'dat', 'token->type = dat';
+        is $stack[21]{args}[1], 'ghommeyvo\' loS DIchvaD', 'token->raw = ghommeyvo\' loS DIchvaD';
+        is $stack[21]{args}[2], '$ghom[4]', 'token->trans = $ghom[4]';
+        is $stack[22]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[22]{args}[0], 'DIchvaD', 'arg2_a[0] = DIchvaD';
+
+        note "DIch";
+        is $stack[23]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[23]{args}[0], 'abl', 'token->type = abl';
+        is $stack[23]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[23]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[24]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[24]{args}[0], 'acc', 'token->type = acc';
+        is $stack[24]{args}[1], 'vagh', 'token->raw = vagh';
+        is $stack[24]{args}[2], '5', 'token->trans = 5';
+        is $stack[25]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[25]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[25]{args}[1]{trans}, '5', 'to_arg2_a[1]->trans = 5';
+        is $stack[25]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[25]{args}[2]{raw}, 'DIch', 'to_arg2_a[2]->raw = DIch';
+        is $stack[25]{args}[2]{trans}, '[5]', 'to_arg2_a[2]->trans (after s///) = [5]';
+        is scalar(@{$stack[25]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[25]{result}[0], '$ghom[5]', 'to_arg2_a() = $ghom[5]';
+        is $stack[26]{name}, 'translate', 'name = translate';
+        is $stack[26]{result}[0], 'ghommeyvo\' vagh DIch', 'translate()->raw = ghommeyvo\' vagh DIch';
+        is $stack[26]{result}[1], '$ghom[5]', 'translate()-trans = $ghom[5]';
+        is $stack[27]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[27]{args}[0], 'acc', 'token->type = acc';
+        is $stack[27]{args}[1], 'ghommeyvo\' vagh DIch', 'token->raw = ghommeyvo\' vagh DIch';
+        is $stack[27]{args}[2], '$ghom[5]', 'token->trans = $ghom[5]';
+        is $stack[28]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[28]{args}[0], 'DIch', 'arg2_a[0] = DIch';
+
+        note "DIchvo\'";
+        is $stack[29]{name}, 'pushtok', 'name = pushtok(array 1)';
+        is $stack[29]{args}[0], 'abl', 'token->type = abl';
+        is $stack[29]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[29]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[30]{name}, 'pushtok', 'name = pushtok(index 1)';
+        is $stack[30]{args}[0], 'acc', 'token->type = acc';
+        is $stack[30]{args}[1], 'jav', 'token->raw = jav';
+        is $stack[30]{args}[2], '6', 'token->trans = 6';
+        is $stack[31]{name}, 'to_arg2_a', 'name = to_arg2_a (1)';
+        is $stack[31]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[31]{args}[1]{trans}, '6', 'to_arg2_a[1]->trans = 6';
+        is $stack[31]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[31]{args}[2]{raw}, 'DIchvo\'', 'to_arg2_a[2]->raw = DIchvo\'';
+        is $stack[31]{args}[2]{trans}, '[6]', 'to_arg2_a[2]->trans (after s///) = [6]';
+        is scalar(@{$stack[31]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[31]{result}[0], '$ghom[6]', 'to_arg2_a() = $ghom[6]';
+        is $stack[32]{name}, 'translate', 'name = translate (1)';
+        is $stack[32]{result}[0], 'ghommeyvo\' jav DIchvo\'', 'translate()->raw = ghommeyvo\' jav DIchvo\'';
+        is $stack[32]{result}[1], '$ghom[6]', 'translate()-trans = $ghom[6]';
+        is $stack[33]{name}, 'pushtok', 'name = pushtok(func 1)';
+        is $stack[33]{args}[0], 'abl', 'token->type = abl';
+        is $stack[33]{args}[1], 'ghommeyvo\' jav DIchvo\'', 'token->raw = ghommeyvo\' jav DIchvo\'';
+        is $stack[33]{args}[2], '$ghom[6]', 'token->trans = $ghom[6]';
+        is $stack[34]{name}, 'arg2_a', 'name = arg2_a (1)';
+        is $stack[34]{args}[0], 'DIchvo\'', 'arg2_a[0] = DIchvo\'';
+        is $stack[35]{name}, 'pushtok', 'name = pushtok (index 2)';
+        is $stack[35]{args}[2], '7', 'token->trans = 7';
+        is $stack[36]{name}, 'to_arg2_a', 'name = to_arg2_a (2)';
+        is $stack[36]{args}[0]{trans}, '$ghom[6]->', 'to_arg2_a[0]->trans = $ghom[6]->';
+        is $stack[36]{args}[1]{trans}, '7', 'to_arg2_a[1]->trans = 7';
+        is $stack[36]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[36]{args}[2]{raw}, 'DIch', 'to_arg2_a[2]->raw = DIch';
+        is $stack[36]{args}[2]{trans}, '[7]', 'to_arg2_a[2]->trans = [7]';
+        is scalar(@{$stack[36]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[36]{result}[0], '$ghom[6]->[7]', 'to_arg2_a() = $ghom[6]->[7]';
+        is $stack[37]{name}, 'translate', 'name = translate (2)';
+        is $stack[37]{result}[0], 'ghommeyvo\' jav DIchvo\' Soch DIch', 'translate()->raw = ghommeyvo\' jav DIchvo\' Soch DIch';
+        is $stack[37]{result}[1], '$ghom[6]->[7]', 'translate()->trans = $ghom[6]->[7]';
+        is $stack[38]{name}, 'pushtok', 'name = pushtok (func 2)';
+        is $stack[38]{args}[0], 'acc', 'token->type = acc';
+        is $stack[38]{args}[1], 'ghommeyvo\' jav DIchvo\' Soch DIch', 'token->raw = ghommeyvo\' jav DIchvo\' Soch DIch';
+        is $stack[38]{args}[2], '$ghom[6]->[7]', 'token->trans = $ghom[6]->[7]';
+        is $stack[39]{name}, 'arg2_a', 'name = arg2_a (2)';
+        is $stack[39]{args}[0], 'DIch', 'arg2_a[0] = DIch';
+
+        note "DIchvaD";
+        is $stack[40]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[40]{args}[0], 'abl', 'token->type = abl';
+        is $stack[40]{args}[1], 'ghommeyvo\'', 'token->raw = ghommeyvo\'';
+        is $stack[40]{args}[2], '@ghom', 'token->trans = @ghom';
+        is $stack[41]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[41]{args}[0], 'acc', 'token->type = acc';
+        is $stack[41]{args}[1], 'chorgh', 'token->raw = chorgh';
+        is $stack[41]{args}[2], '8', 'token->trans = 8';
+        is $stack[42]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[42]{args}[0]{trans}, '$ghom', 'to_arg2_a[0]->trans (after s///) = $ghom';
+        is $stack[42]{args}[1]{trans}, '8', 'to_arg2_a[1]->trans = 8';
+        is $stack[42]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[42]{args}[2]{raw}, 'DIchvaD', 'to_arg2_a[2]->raw = DIchvaD';
+        is $stack[42]{args}[2]{trans}, '[8]', 'to_arg2_a[2]->trans (after s///) = [8]';
+        is scalar(@{$stack[42]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[42]{result}[0], '$ghom[8]', 'to_arg2_a() = $ghom[8]';
+        is $stack[43]{name}, 'translate', 'name = translate';
+        is $stack[43]{result}[0], 'ghommeyvo\' chorgh DIchvaD', 'translate()->raw = ghommeyvo\' chorgh DIchvaD';
+        is $stack[43]{result}[1], '$ghom[8]', 'translate()-trans = $ghom[8]';
+        is $stack[44]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[44]{args}[0], 'dat', 'token->type = dat';
+        is $stack[44]{args}[1], 'ghommeyvo\' chorgh DIchvaD', 'token->raw = ghommeyvo\' chorgh DIchvaD';
+        is $stack[44]{args}[2], '$ghom[8]', 'token->trans = $ghom[8]';
+        is $stack[45]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[45]{args}[0], 'DIchvaD', 'arg2_a[0] = DIchvaD';
 },
 sub {
         note "{...}";
         my $step = shift;
         is $step, 11, 'step 11';
         my @stack = extract_stack($step);
-        note scalar(@stack), ' entries on callstack';
+        is scalar(@stack), 46, '46 entries on callstack';
+
+        note "tISuq";
+        is $stack[0]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[0]{args}[0], 'abl', 'token->type = abl';
+        is $stack[0]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[0]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[1]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[1]{args}[0], 'acc', 'token->type = acc';
+        is $stack[1]{args}[1], '<abc>', 'token->raw = <abc>';
+        is $stack[1]{args}[2], 'q<abc>', 'token->trans = q<abc>';
+        is $stack[2]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[2]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[2]{args}[1]{trans}, 'q<abc>', 'to_arg2_a[1]->trans = q<abc>';
+        is $stack[2]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[2]{args}[2]{raw}, 'Suq', 'to_arg2_a[2]->raw = Suq';
+        is $stack[2]{args}[2]{trans}, '{q<abc>}', 'to_arg2_a[2]->trans (after s///) = {q<abc>}';
+        is scalar(@{$stack[2]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[2]{result}[0], '$DIvIZ{q<abc>}', 'to_arg2_a() = $DIvIZ{q<abc>}';
+        is $stack[3]{name}, 'translate', 'name = translate';
+        is $stack[3]{result}[0], 'DIvI\'pu\'vo\' <abc> Suq', 'translate()->raw = DIvI\'pu\'vo\' <abc> Suq';
+        is $stack[3]{result}[1], '$DIvIZ{q<abc>}', 'translate()-trans = $DIvIZ{q<abc>}';
+        is $stack[4]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[4]{args}[0], 'acc', 'token->type = acc';
+        is $stack[4]{args}[1], 'DIvI\'pu\'vo\' <abc> Suq', 'token->raw = DIvI\'pu\'vo\' <abc> Suq';
+        is $stack[4]{args}[2], '$DIvIZ{q<abc>}', 'token->trans = $DIvIZ{q<abc>}';
+        is $stack[5]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[5]{args}[0], 'Suq', 'arg2_a[0] = Suq';
+
+        note "tISuqvo\'";
+        is $stack[6]{name}, 'pushtok', 'name = pushtok(array 1)';
+        is $stack[6]{args}[0], 'abl', 'token->type = abl';
+        is $stack[6]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[6]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[7]{name}, 'pushtok', 'name = pushtok(index 1)';
+        is $stack[7]{args}[0], 'acc', 'token->type = acc';
+        is $stack[7]{args}[1], '<def>', 'token->raw = <def>';
+        is $stack[7]{args}[2], 'q<def>', 'token->trans = q<def>';
+        is $stack[8]{name}, 'to_arg2_a', 'name = to_arg2_a (1)';
+        is $stack[8]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[8]{args}[1]{trans}, 'q<def>', 'to_arg2_a[1]->trans = q<def>';
+        is $stack[8]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[8]{args}[2]{raw}, 'Suqvo\'', 'to_arg2_a[2]->raw = Suqvo\'';
+        is $stack[8]{args}[2]{trans}, '{q<def>}', 'to_arg2_a[2]->trans (after s///) = {q<def>}';
+        is scalar(@{$stack[8]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[8]{result}[0], '$DIvIZ{q<def>}', 'to_arg2_a() = $DIvIZ{q<def>}';
+        is $stack[9]{name}, 'translate', 'name = translate (1)';
+        is $stack[9]{result}[0], 'DIvI\'pu\'vo\' <def> Suqvo\'', 'translate()->raw = DIvI\'pu\'vo\' <def> Suqvo\'';
+        is $stack[9]{result}[1], '$DIvIZ{q<def>}', 'translate()-trans = $DIvIZ{q<def>}';
+        is $stack[10]{name}, 'pushtok', 'name = pushtok(func 1)';
+        is $stack[10]{args}[0], 'abl', 'token->type = abl';
+        is $stack[10]{args}[1], 'DIvI\'pu\'vo\' <def> Suqvo\'', 'token->raw = DIvI\'pu\'vo\' <def> Suqvo\'';
+        is $stack[10]{args}[2], '$DIvIZ{q<def>}', 'token->trans = $DIvIZ{q<def>}';
+        is $stack[11]{name}, 'arg2_a', 'name = arg2_a (1)';
+        is $stack[11]{args}[0], 'Suqvo\'', 'arg2_a[0] = Suqvo\'';
+        is $stack[12]{name}, 'pushtok', 'name = pushtok (index 2)';
+        is $stack[12]{args}[2], 'q<ghi>', 'token->trans = q<ghi>';
+        is $stack[13]{name}, 'to_arg2_a', 'name = to_arg2_a (2)';
+        is $stack[13]{args}[0]{trans}, '$DIvIZ{q<def>}->', 'to_arg2_a[0]->trans = $DIvIZ{q<def>}->';
+        is $stack[13]{args}[1]{trans}, 'q<ghi>', 'to_arg2_a[1]->trans = q<ghi>';
+        is $stack[13]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[13]{args}[2]{raw}, 'Suq', 'to_arg2_a[2]->raw = Suq';
+        is $stack[13]{args}[2]{trans}, '{q<ghi>}', 'to_arg2_a[2]->trans = {q<ghi>}';
+        is scalar(@{$stack[13]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[13]{result}[0], '$DIvIZ{q<def>}->{q<ghi>}', 'to_arg2_a() = $DIvIZ{q<def>}->{q<ghi>}';
+        is $stack[14]{name}, 'translate', 'name = translate (2)';
+        is $stack[14]{result}[0], 'DIvI\'pu\'vo\' <def> Suqvo\' <ghi> Suq', 'translate()->raw = DIvI\'pu\'vo\' <def> Suqvo\' <ghi> Suq';
+        is $stack[14]{result}[1], '$DIvIZ{q<def>}->{q<ghi>}', 'translate()->trans = $DIvIZ{q<def>}->{q<ghi>}';
+        is $stack[15]{name}, 'pushtok', 'name = pushtok (func 2)';
+        is $stack[15]{args}[0], 'acc', 'token->type = acc';
+        is $stack[15]{args}[1], 'DIvI\'pu\'vo\' <def> Suqvo\' <ghi> Suq', 'token->raw = DIvI\'pu\'vo\' <def> Suqvo\' <ghi> Suq';
+        is $stack[15]{args}[2], '$DIvIZ{q<def>}->{q<ghi>}', 'token->trans = $DIvIZ{q<def>}->{q<ghi>}';
+        is $stack[16]{name}, 'arg2_a', 'name = arg2_a (2)';
+        is $stack[16]{args}[0], 'Suq', 'arg2_a[0] = Suq';
+
+        note "tISuqvaD";
+        is $stack[17]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[17]{args}[0], 'abl', 'token->type = abl';
+        is $stack[17]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[17]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[18]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[18]{args}[0], 'acc', 'token->type = acc';
+        is $stack[18]{args}[1], '<jkl>', 'token->raw = <jkl>';
+        is $stack[18]{args}[2], 'q<jkl>', 'token->trans = q<jkl>';
+        is $stack[19]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[19]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[19]{args}[1]{trans}, 'q<jkl>', 'to_arg2_a[1]->trans = q<jkl>';
+        is $stack[19]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[19]{args}[2]{raw}, 'SuqvaD', 'to_arg2_a[2]->raw = SuqvaD';
+        is $stack[19]{args}[2]{trans}, '{q<jkl>}', 'to_arg2_a[2]->trans (after s///) = {q<jkl>}';
+        is scalar(@{$stack[19]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[19]{result}[0], '$DIvIZ{q<jkl>}', 'to_arg2_a() = $DIvIZ{q<jkl>}';
+        is $stack[20]{name}, 'translate', 'name = translate';
+        is $stack[20]{result}[0], 'DIvI\'pu\'vo\' <jkl> SuqvaD', 'translate()->raw = DIvI\'pu\'vo\' <jkl> SuqvaD';
+        is $stack[20]{result}[1], '$DIvIZ{q<jkl>}', 'translate()-trans = $DIvIZ{q<jkl>}';
+        is $stack[21]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[21]{args}[0], 'dat', 'token->type = dat';
+        is $stack[21]{args}[1], 'DIvI\'pu\'vo\' <jkl> SuqvaD', 'token->raw = DIvI\'pu\'vo\' <jkl> SuqvaD';
+        is $stack[21]{args}[2], '$DIvIZ{q<jkl>}', 'token->trans = $DIvIZ{q<jkl>}';
+        is $stack[22]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[22]{args}[0], 'SuqvaD', 'arg2_a[0] = SuqvaD';
+
+        note "Suq";
+        is $stack[23]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[23]{args}[0], 'abl', 'token->type = abl';
+        is $stack[23]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[23]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[24]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[24]{args}[0], 'acc', 'token->type = acc';
+        is $stack[24]{args}[1], '<mno>', 'token->raw = <mno>';
+        is $stack[24]{args}[2], 'q<mno>', 'token->trans = q<mno>';
+        is $stack[25]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[25]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[25]{args}[1]{trans}, 'q<mno>', 'to_arg2_a[1]->trans = q<mno>';
+        is $stack[25]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[25]{args}[2]{raw}, 'Suq', 'to_arg2_a[2]->raw = Suq';
+        is $stack[25]{args}[2]{trans}, '{q<mno>}', 'to_arg2_a[2]->trans (after s///) = {q<mno>}';
+        is scalar(@{$stack[25]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[25]{result}[0], '$DIvIZ{q<mno>}', 'to_arg2_a() = $DIvIZ{q<mno>}';
+        is $stack[26]{name}, 'translate', 'name = translate';
+        is $stack[26]{result}[0], 'DIvI\'pu\'vo\' <mno> Suq', 'translate()->raw = DIvI\'pu\'vo\' <mno> Suq';
+        is $stack[26]{result}[1], '$DIvIZ{q<mno>}', 'translate()-trans = $DIvIZ{q<mno>}';
+        is $stack[27]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[27]{args}[0], 'acc', 'token->type = acc';
+        is $stack[27]{args}[1], 'DIvI\'pu\'vo\' <mno> Suq', 'token->raw = DIvI\'pu\'vo\' <mno> Suq';
+        is $stack[27]{args}[2], '$DIvIZ{q<mno>}', 'token->trans = $DIvIZ{q<mno>}';
+        is $stack[28]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[28]{args}[0], 'Suq', 'arg2_a[0] = Suq';
+
+        note "Suqvo\'";
+        is $stack[29]{name}, 'pushtok', 'name = pushtok(array 1)';
+        is $stack[29]{args}[0], 'abl', 'token->type = abl';
+        is $stack[29]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[29]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[30]{name}, 'pushtok', 'name = pushtok(index 1)';
+        is $stack[30]{args}[0], 'acc', 'token->type = acc';
+        is $stack[30]{args}[1], '<pqr>', 'token->raw = <pqr>';
+        is $stack[30]{args}[2], 'q<pqr>', 'token->trans = q<pqr>';
+        is $stack[31]{name}, 'to_arg2_a', 'name = to_arg2_a (1)';
+        is $stack[31]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[31]{args}[1]{trans}, 'q<pqr>', 'to_arg2_a[1]->trans = q<pqr>';
+        is $stack[31]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[31]{args}[2]{raw}, 'Suqvo\'', 'to_arg2_a[2]->raw = Suqvo\'';
+        is $stack[31]{args}[2]{trans}, '{q<pqr>}', 'to_arg2_a[2]->trans (after s///) = {q<pqr>}';
+        is scalar(@{$stack[31]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[31]{result}[0], '$DIvIZ{q<pqr>}', 'to_arg2_a() = $DIvIZ{q<pqr>}';
+        is $stack[32]{name}, 'translate', 'name = translate (1)';
+        is $stack[32]{result}[0], 'DIvI\'pu\'vo\' <pqr> Suqvo\'', 'translate()->raw = DIvI\'pu\'vo\' <pqr> Suqvo\'';
+        is $stack[32]{result}[1], '$DIvIZ{q<pqr>}', 'translate()-trans = $DIvIZ{q<pqr>}';
+        is $stack[33]{name}, 'pushtok', 'name = pushtok(func 1)';
+        is $stack[33]{args}[0], 'abl', 'token->type = abl';
+        is $stack[33]{args}[1], 'DIvI\'pu\'vo\' <pqr> Suqvo\'', 'token->raw = DIvI\'pu\'vo\' <pqr> Suqvo\'';
+        is $stack[33]{args}[2], '$DIvIZ{q<pqr>}', 'token->trans = $DIvIZ{q<pqr>}';
+        is $stack[34]{name}, 'arg2_a', 'name = arg2_a (1)';
+        is $stack[34]{args}[0], 'Suqvo\'', 'arg2_a[0] = Suqvo\'';
+        is $stack[35]{name}, 'pushtok', 'name = pushtok (index 2)';
+        is $stack[35]{args}[2], 'q<stu>', 'token->trans = q<stu>';
+        is $stack[36]{name}, 'to_arg2_a', 'name = to_arg2_a (2)';
+        is $stack[36]{args}[0]{trans}, '$DIvIZ{q<pqr>}->', 'to_arg2_a[0]->trans = $DIvIZ{q<pqr>}->';
+        is $stack[36]{args}[1]{trans}, 'q<stu>', 'to_arg2_a[1]->trans = q<stu>';
+        is $stack[36]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[36]{args}[2]{raw}, 'Suq', 'to_arg2_a[2]->raw = Suq';
+        is $stack[36]{args}[2]{trans}, '{q<stu>}', 'to_arg2_a[2]->trans = {q<stu>}';
+        is scalar(@{$stack[36]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[36]{result}[0], '$DIvIZ{q<pqr>}->{q<stu>}', 'to_arg2_a() = $DIvIZ{q<pqr>}->{q<stu>}';
+        is $stack[37]{name}, 'translate', 'name = translate (2)';
+        is $stack[37]{result}[0], 'DIvI\'pu\'vo\' <pqr> Suqvo\' <stu> Suq', 'translate()->raw = DIvI\'pu\'vo\' <pqr> Suqvo\' <stu> Suq';
+        is $stack[37]{result}[1], '$DIvIZ{q<pqr>}->{q<stu>}', 'translate()->trans = $DIvIZ{q<pqr>}->{q<stu>}';
+        is $stack[38]{name}, 'pushtok', 'name = pushtok (func 2)';
+        is $stack[38]{args}[0], 'acc', 'token->type = acc';
+        is $stack[38]{args}[1], 'DIvI\'pu\'vo\' <pqr> Suqvo\' <stu> Suq', 'token->raw = DIvI\'pu\'vo\' <pqr> Suqvo\' <stu> Suq';
+        is $stack[38]{args}[2], '$DIvIZ{q<pqr>}->{q<stu>}', 'token->trans = $DIvIZ{q<pqr>}->{q<stu>}';
+        is $stack[39]{name}, 'arg2_a', 'name = arg2_a (2)';
+        is $stack[39]{args}[0], 'Suq', 'arg2_a[0] = Suq';
+
+        note "SuqvaD";
+        is $stack[40]{name}, 'pushtok', 'name = pushtok(array)';
+        is $stack[40]{args}[0], 'abl', 'token->type = abl';
+        is $stack[40]{args}[1], 'DIvI\'pu\'vo\'', 'token->raw = DIvI\'pu\'vo\'';
+        is $stack[40]{args}[2], '%DIvIZ', 'token->trans = %DIvIZ';
+        is $stack[41]{name}, 'pushtok', 'name = pushtok(index)';
+        is $stack[41]{args}[0], 'acc', 'token->type = acc';
+        is $stack[41]{args}[1], '<vwx>', 'token->raw = <vwx>';
+        is $stack[41]{args}[2], 'q<vwx>', 'token->trans = q<vwx>';
+        is $stack[42]{name}, 'to_arg2_a', 'name = to_arg2_a';
+        is $stack[42]{args}[0]{trans}, '$DIvIZ', 'to_arg2_a[0]->trans (after s///) = $DIvIZ';
+        is $stack[42]{args}[1]{trans}, 'q<vwx>', 'to_arg2_a[1]->trans = q<vwx>';
+        is $stack[42]{args}[2]{type}, 'verb', 'to_arg2_a[2]->type = verb';
+        is $stack[42]{args}[2]{raw}, 'SuqvaD', 'to_arg2_a[2]->raw = SuqvaD';
+        is $stack[42]{args}[2]{trans}, '{q<vwx>}', 'to_arg2_a[2]->trans (after s///) = {q<vwx>}';
+        is scalar(@{$stack[42]{result}}), 1, 'to_arg2_a() has 1 result';
+        is $stack[42]{result}[0], '$DIvIZ{q<vwx>}', 'to_arg2_a() = $DIvIZ{q<vwx>}';
+        is $stack[43]{name}, 'translate', 'name = translate';
+        is $stack[43]{result}[0], 'DIvI\'pu\'vo\' <vwx> SuqvaD', 'translate()->raw = DIvI\'pu\'vo\' <vwx> SuqvaD';
+        is $stack[43]{result}[1], '$DIvIZ{q<vwx>}', 'translate()-trans = $DIvIZ{q<vwx>}';
+        is $stack[44]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[44]{args}[0], 'dat', 'token->type = dat';
+        is $stack[44]{args}[1], 'DIvI\'pu\'vo\' <vwx> SuqvaD', 'token->raw = DIvI\'pu\'vo\' <vwx> SuqvaD';
+        is $stack[44]{args}[2], '$DIvIZ{q<vwx>}', 'token->trans = $DIvIZ{q<vwx>}';
+        is $stack[45]{name}, 'arg2_a', 'name = arg2_a';
+        is $stack[45]{args}[0], 'SuqvaD', 'arg2_a[0] = SuqvaD';
 },
 ];
 
@@ -659,23 +1059,23 @@ nabvaD 'olvo' Hut DIch yInob! #'
 Hut yInabvetlh!
 
 wa'maH yIlIH! #'
-# ghommeyvo' wa' tIDIch! #'
-# ghommeyvo' cha' tIDIchvo' wej DIch! #'
-# ghommeyvo' loS tIDIchvaD! #'
-# ghommeyvo' wa' DIch! #'
-# ghommeyvo' cha' DIchvo' wej DIch! #'
-# ghommeyvo' loS DIchvaD! #'
+ghommeyvo' wa' tIDIch! #'
+ghommeyvo' cha' tIDIchvo' wej tIDIch! #'
+ghommeyvo' loS tIDIchvaD! #'
+ghommeyvo' vagh DIch! #'
+ghommeyvo' jav DIchvo' Soch DIch! #'
+ghommeyvo' chorgh DIchvaD! #'
 wa'maH yIvan! #'
 nabvaD 'olvo' wa'maH DIch yInob! #'
 wa'maH yInabvetlh! #'
 
 wa'maH wa' yIlIH! #'
-# DIvI'pu'vo' <abc> tISuq! #'
-# DIvI'pu'vo' <def> tISuqvo' <ghi> Suq! #'
-# DIvI'pu'vo' <jkl> tISuqvaD! #'
-# DIvI'pu'vo' <abc> Suq! #'
-# DIvI'pu'vo' <def> Suqvo' <ghi> Suq! #'
-# DIvI'pu'vo' <jkl> SuqvaD! #'
+DIvI'pu'vo' <abc> tISuq! #'
+DIvI'pu'vo' <def> tISuqvo' <ghi> tISuq! #'
+DIvI'pu'vo' <jkl> tISuqvaD! #'
+DIvI'pu'vo' <mno> Suq! #'
+DIvI'pu'vo' <pqr> Suqvo' <stu> Suq! #'
+DIvI'pu'vo' <vwx> SuqvaD! #'
 wa'maH wa' yIvan! #'
 nabvaD 'olvo' wa'maH wa' DIch yInob! #'
 wa'maH wa' yInabvetlh! #'
