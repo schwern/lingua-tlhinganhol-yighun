@@ -94,3 +94,4 @@ Things we have to do, or items to consider.
 - Go over the command names; some of them could possibly stand to be
   altered (for example, by adding the causative -moH suffix) to be more
   "Klingon-like".
+- DIch / Suq can also handle references to arrays or hashes. Test that.
