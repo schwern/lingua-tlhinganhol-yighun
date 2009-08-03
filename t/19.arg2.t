@@ -2,7 +2,7 @@
 # vim:set et si:
 #
 use Test::More
-        tests => 436
+        tests => 483
 ;
 use strict;
 my $DEBUG;
@@ -511,7 +511,56 @@ sub {
         my $step = shift;
         is $step, 9, 'step 9';
         my @stack = extract_stack($step);
-        note scalar(@stack), ' entries on callstack';
+        TODO: { local $TODO = 'test flock';
+        todo_skip 'flock', 47 unless @stack > 10;
+        is scalar(@stack), 12, '12 entries on callstack';
+        is $stack[2]{name}, 'to_arg2_da', 'name = to_arg2_da';
+        is scalar(@{$stack[2]{args}}), 3, '3 arguments to to_arg2_da';
+        is $stack[2]{args}[0]{trans}, 'STDIN', 'to_arg2_da[0]->trans = STDIN';
+        is $stack[2]{args}[1]{trans}, '5', 'to_arg2_da[1]->trans = 5';
+        is $stack[2]{args}[2]{type}, 'verb', 'to_arg2_da[2]->type = verb';
+        is $stack[2]{args}[2]{raw}, 'bot', 'to_arg2_da[2]->raw = bot';
+        is $stack[2]{args}[2]{trans}, 'flock', 'to_arg2_da[2]->trans = flock';
+        is $stack[2]{result}[0], 'flock(STDIN, 5)', 'to_arg2_da() = flock(STDIN, 5)';
+        is $stack[3]{name}, 'translate', 'name = translate';
+        is scalar(@{$stack[3]{args}}), 3, '3 arguments to translate';
+        is $stack[3]{args}[0]{trans}, 'STDIN', 'translate[0]->trans = STDIN';
+        is $stack[3]{args}[1]{trans}, '5', 'translate[1]->trans = 5';
+        is $stack[3]{args}[2]{type}, 'verb', 'translate[2]->type = verb';
+        is $stack[3]{args}[2]{raw}, 'bot', 'translate[2]->raw = bot';
+        is $stack[3]{args}[2]{trans}, 'flock', 'translate[2]->trans = flock';
+        is $stack[3]{result}[0], 'mungna\'vo\' vagh bot', 'translate()->raw = mungna\'vo\' vagh bot';
+        is $stack[3]{result}[1], 'flock(STDIN, 5)', 'translate()->trans = flock(STDIN, 5)';
+        is $stack[4]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[4]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[4]{args}[1], 'mungna\'vo\' vagh bot', 'token->raw = mungna\'vo\' vagh bot';
+        is $stack[4]{args}[2], 'flock(STDIN, 5)', 'token->trans = flock(STDIN, 5)';
+        is $stack[5]{name}, 'arg2_da', 'name = arg2_da';
+        is $stack[5]{args}[0], 'bot', 'arg2_da->args';
+        is $stack[8]{name}, 'to_arg2_da', 'name = to_arg2_da';
+        is scalar(@{$stack[8]{args}}), 3, '3 arguments to to_arg2_da';
+        is $stack[8]{args}[0]{trans}, 'STDOUT', 'to_arg2_da[0]->trans = STDOUT';
+        is $stack[8]{args}[1]{trans}, '6', 'to_arg2_da[1]->trans = 6';
+        is $stack[8]{args}[2]{type}, 'verb', 'to_arg2_da[2]->type = verb';
+        is $stack[8]{args}[2]{raw}, 'bot', 'to_arg2_da[2]->raw = bot';
+        is $stack[8]{args}[2]{trans}, 'flock', 'to_arg2_da[2]->trans = flock';
+        is $stack[8]{result}[0], 'flock(STDOUT, 6)', 'to_arg2_da() = flock(STDOUT, 6)';
+        is $stack[9]{name}, 'translate', 'name = translate';
+        is scalar(@{$stack[9]{args}}), 3, '3 arguments to translate';
+        is $stack[9]{args}[0]{trans}, 'STDOUT', 'translate[0]->trans = STDOUT';
+        is $stack[9]{args}[1]{trans}, '6', 'translate[1]->trans = 6';
+        is $stack[9]{args}[2]{type}, 'verb', 'translate[2]->type = verb';
+        is $stack[9]{args}[2]{raw}, 'bot', 'translate[2]->raw = bot';
+        is $stack[9]{args}[2]{trans}, 'flock', 'translate[2]->trans = flock';
+        is $stack[9]{result}[0], 'ghochna\' jav bot', 'translate()->raw = ghochna\' jav bot';
+        is $stack[9]{result}[1], 'flock(STDOUT, 6)', 'translate()->trans = flock(STDOUT, 6)';
+        is $stack[10]{name}, 'pushtok', 'name = pushtok(func)';
+        is $stack[10]{args}[0], 'acc', 'token->type = "acc"';
+        is $stack[10]{args}[1], 'ghochna\' jav bot', 'token->raw = ghochna\' jav bot';
+        is $stack[10]{args}[2], 'flock(STDOUT, 6)', 'token->trans = flock(STDOUT, 6)';
+        is $stack[11]{name}, 'arg2_da', 'name = arg2_da';
+        is $stack[11]{args}[0], 'bot', 'arg2_da->args';
+        }
 },
 sub {
         note "[...]";
