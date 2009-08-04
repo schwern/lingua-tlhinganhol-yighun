@@ -100,3 +100,4 @@ Things we have to do, or items to consider.
 - Do Klingon mathematics as revealed in HolQeD (boq & boq'egh for
   addition and multiplication, etc.). Doing this properly will entail
   supporting the number suffix -logh, IIRC.
+- Consider supporting C<exec PROGRAM LIST> somehow.
