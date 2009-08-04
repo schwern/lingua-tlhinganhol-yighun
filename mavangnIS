@@ -117,3 +117,6 @@ Things we have to do, or items to consider.
 - Maybe we should also separate the functions that take a handle as
   first parameter (print, open, seek) from those that take a dative
   argument as first parameter (substr, splice, tie, unshift).
+- Consider supporting postfix controls (if unless while until foreach).
+- Check whether both C<for(;;)> and C<foreach(LIST)> are supported.
+  Ideally, also support C<foreach VAR (LIST)>.
