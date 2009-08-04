@@ -104,3 +104,16 @@ Things we have to do, or items to consider.
   addition and multiplication, etc.). Doing this properly will entail
   supporting the number suffix -logh, IIRC.
 - Consider supporting C<exec PROGRAM LIST> somehow.
+- to_args doesn't seem to handle functions that can take 0 parameters
+  (for example, reverse() can take 0..n parameters).
+  Perhaps we should also treat differently functions that "need" at
+  least one parameter (exec), at least two (pack, kill, join), and at
+  least 0 (reverse, split, return, die, warn).
+  Note: die & warn & carp & croak are already in the list of 0/1-arg
+  functions! They should probably be moved out of there since they can
+  all take lists, not just a single error message string (though that's
+  likely to be the most common way they're called); this makes them
+  normal 0..n-arg functions.
+- Maybe we should also separate the functions that take a handle as
+  first parameter (print, open, seek) from those that take a dative
+  argument as first parameter (substr, splice, tie, unshift).
