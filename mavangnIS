@@ -69,6 +69,9 @@ Things we have to do, or items to consider.
 - I think we can't currently declare a variable and assign to it in one
   step; things such as {varwIjvaD <bla> nob!} don't work and have to be
   written {varwIj! varvaD <bla> nob!}.
+  --> this may work as C<varwIj <bla> nob!> since variable declarations
+  result in a 'dat' token. I still think that an optional C<-vaD> should
+  at least be accepted.
 - Need to test objects ('e'), especially in connection with calling
   methods on them ({a b c} turning into {a->c(b)} rather than {c(a, b)})
 - Test noun conjunctions (conj_h, noun_conj)... there is some rather
