@@ -78,6 +78,7 @@ Things we have to do, or items to consider.
 - Are eval "string" and eval {BLOCK} both supported?
   --> apparently, yes -- they're in both the 1-arg command list and the
   blockop list! This should be remedied.
+- What about C<grep EXPR, LIST> vs. C<grep {BLOCK} LIST> (and map)?
 - I don't think we handle the file test operators ("-f" and friends)
   yet. Consider whether to add them.
 - "wait" is in the list of 1-optional-arg commands, but it takes no args
@@ -95,3 +96,4 @@ Things we have to do, or items to consider.
   altered (for example, by adding the causative -moH suffix) to be more
   "Klingon-like".
 - DIch / Suq can also handle references to arrays or hashes. Test that.
+- Can we handle @{ ... } / ${ ... } / %{ ... }?
