@@ -97,3 +97,6 @@ Things we have to do, or items to consider.
   "Klingon-like".
 - DIch / Suq can also handle references to arrays or hashes. Test that.
 - Can we handle @{ ... } / ${ ... } / %{ ... }?
+- Do Klingon mathematics as revealed in HolQeD (boq & boq'egh for
+  addition and multiplication, etc.). Doing this properly will entail
+  supporting the number suffix -logh, IIRC.
